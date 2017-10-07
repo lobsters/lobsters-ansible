@@ -1,0 +1,8 @@
+- include: apt.yml
+  when: "'{{ family }}' == 'debian'"
+- include: yum.yml
+  when: "'{{ family }}' == 'redhat'"
+- name: include sudo supplementary group
+  include_vars: "{{ family }}.yml"
+- include: a.yml
+#- include: pushcx.yml

@@ -1,0 +1,8 @@
+- name: yum install nginx
+  yum: name={{ item }} state=latest
+  tags: pkg
+  with_items:
+    - ksh
+    - nvi
+    - psmisc
+    - tmux

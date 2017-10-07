@@ -1,0 +1,5 @@
+- name: apt-get install mariadb
+  apt: name={{ item }} state=latest update_cache=yes
+  tags: pkg
+  with_items:
+    - mariadb-server

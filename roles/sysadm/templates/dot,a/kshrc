@@ -1,0 +1,142 @@
+## env
+## ---
+##
+export BLOCKSIZE=1024
+export EDITOR=vi
+#export HISTFILE=/dev/null
+export LANG=en_US.UTF-8
+export LC_COLLATE=C
+#export LESSHISTFILE=/dev/null
+#export MYSQL_HISTFILE=/dev/null
+export PAGER=less
+
+
+## home
+## ----
+##
+if [ -d "$HOME/bin" ] ; then
+  PATH="${HOME}/bin${PATH:+:${PATH#${HOME}/bin:}}"
+fi
+
+
+## prompt
+## ------
+##
+if [ -n "${TERM}" ] ; then
+  rst="$(tput sgr0 2>/dev/null)"
+
+  #bld="$(tput bold 2>/dev/null)"
+
+{% if ps1_fg == 'black' %}
+  afN="$(tput setaf 0 2>/dev/null)" # black
+{% elif ps1_fg == 'red' %}
+  afN="$(tput setaf 1 2>/dev/null)" # red
+{% elif ps1_fg == 'green' %}
+  afN="$(tput setaf 2 2>/dev/null)" # green
+{% elif ps1_fg == 'yellow' %}
+  afN="$(tput setaf 3 2>/dev/null)" # yellow
+{% elif ps1_fg == 'blue' %}
+  afN="$(tput setaf 4 2>/dev/null)" # blue
+{% elif ps1_fg == 'magenda' %}
+  afN="$(tput setaf 5 2>/dev/null)" # magenta
+{% elif ps1_fg == 'cyan' %}
+  afN="$(tput setaf 6 2>/dev/null)" # cyan
+{% elif ps1_fg == 'white' %}
+  afN="$(tput setaf 7 2>/dev/null)" # white
+{% else %}
+  afN=""
+{% endif %}
+
+  #ab0="$(tput setab 0 2>/dev/null)" # black
+  #ab1="$(tput setab 1 2>/dev/null)" # red
+  #ab2="$(tput setab 2 2>/dev/null)" # green
+  #ab3="$(tput setab 3 2>/dev/null)" # yellow
+  #ab4="$(tput setab 4 2>/dev/null)" # blue
+  #ab5="$(tput setab 5 2>/dev/null)" # magenta
+  #ab6="$(tput setab 6 2>/dev/null)" # cyan
+  #ab7="$(tput setab 7 2>/dev/null)" # white
+
+  PS1="$afN--($rst$USER@\$(hostname 2>/dev/null | sed 's/\..*$//')$afN)-($rst$(tty)$afN)-($rst\$(date '+%Y-%m-%d %H:%M:%S %z')$afN)--$rst
+$afN--($rst\${PWD#$HOME}$afN)--$rst
+$afN--($rst>:$afN)--$rst "
+fi
+
+
+## alias
+## -----
+##
+
+alias diff='diff -u'
+
+# line count
+#
+alias lc='wc -l'
+
+# various ls shortcuts
+#
+alias ls-l='ls -l'
+alias ls-la='ls -lA'
+alias la='ls -A'
+alias lla='ls -lA'
+alias lld='ls -ld'
+alias llt='ls -lt'
+alias llart='ls -lart'
+alias lsl='ls -l'
+alias lsa='ls -A'
+alias lsd='ls -d'
+alias lsla='ls -lA'
+alias lsld='ls -ld'
+alias lsrt='ls -rt'
+alias lslrt='ls -lrt'
+
+# interactive file operations
+#
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+
+## typo
+## ----
+##
+alias cdcd=cd
+alias cd..='cd ..'
+alias eco=echo
+alias eho=echo
+alias ecoh=echo
+alias exitexit=exit
+alias exxt=exit
+alias exti=exit
+alias exih=exit
+alias eit=exit
+alias exi=exit
+alias ext=exit
+alias xit=exit
+alias Exit=exit
+alias qfg=fg
+alias ffg=fg
+alias fgf=fg
+alias fgfg=fg
+alias fidn=find
+alias fgerp=fgrep
+alias fgep=fgrep
+alias fgrp=fgrep
+alias gerp=grep
+alias gep=grep
+alias grp=grep
+alias gt=git
+alias pygerp=pygrep
+alias pygep=pygrep
+alias pygrp=pygrep
+alias jbos=jobs
+alias amke=make
+alias mroe=less
+alias ptach=patch
+alias rmdri=rmdir
+alias rmidr=rmdir
+alias suod=sudo
+alias taks=task
+alias tumx=tmux
+alias umaks=umask
+alias wegt=wget
+alias vm=mv

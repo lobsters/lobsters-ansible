@@ -1,0 +1,2 @@
+- name: set_fact arch, family, platform
+  action: systype

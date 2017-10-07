@@ -1,0 +1,5 @@
+- name: apt-get install nginx
+  apt: name={{ item }} state=latest update_cache=yes
+  tags: pkg
+  with_items:
+    - nginx

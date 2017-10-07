@@ -1,0 +1,390 @@
+"
+" general options
+"
+"syntax off
+set compatible
+"set modeline
+
+set encoding=utf-8
+set fenc=utf-8
+set tenc=utf-8
+
+" map f1 to tab folding
+map OP :%s/	/        /g
+
+" map f2 to tab scrunching
+map OQ :%s/    /  /g
+
+" map f3 to super tab scrunching
+map OR :%s/        /  /g
+
+" map f4 to fmt
+map OS :,/^$/!fmt -w74
+
+" map f5 to fmt for e-mail
+map [15~ :,/^$/!fmt -w68
+
+" map f6 to forward search text under cursor
+
+
+"automatically break lines from the left-hand margin
+set textwidth=68
+
+"do left-right scrolling instead of line-wrapping
+"set leftright
+
+"remember substitution flags
+set edcompatible
+
+"case insensitive regular expressions
+set smartcase
+
+
+"use a global tags file
+"set tags=tags,~/tags
+
+
+"
+" ui options
+"
+
+"report all changes and yanks
+set report=0
+
+"display row/column ruler on the colon command line
+set ruler
+
+"display current mode and modification flag
+"set showmode
+
+"tab interpretation
+set tabstop=8
+
+
+"don't display long messages
+set shortmess=aoOtTI
+
+"
+" programming options
+"
+
+"expand tabs into spaces
+set expandtab
+
+"automatically indent new lines
+set autoindent
+
+"lips mode adds '-' to the set of characters in a word
+set lisp
+
+"autoindent and shift command indentation width
+set shiftwidth=2
+
+"note matching parentheses
+set showmatch
+
+"
+" text substitution
+"
+"map! accesories accessories
+"map! accomodate accommodate
+"map! acheive achieve
+"map! acheiving achieving
+"map! acn can
+"map! acommodate accommodate
+"map! acomodate accommodate
+"map! adn and
+"map! agian again
+"map! ahppen happen
+"map! ahve have
+"map! allready already
+"map! almsot almost
+"map! alot a lot
+"map! alreayd already
+"map! alwasy always
+"map! amke make
+"map! anbd and
+"map! andthe and the
+"map! appeares appears
+"map! applyed applied
+"map! arguement argument
+"map! artical article
+"map! audeince audience
+"map! audiance audience
+"map! awya away
+"map! bakc back
+"map! balence balance
+"map! baout about
+"map! bcak back
+"map! beacuse because
+"map! becasue because
+"map! becomeing becoming
+"map! becuase because
+"map! becuse because
+"map! befoer before
+"map! begining beginning
+"map! beleive believe
+"map! boxs boxes
+"map! bve be
+"map! changeing changing
+"map! charachter character
+"map! charecter character
+"map! charector character
+"map! cheif chief
+"map! circut circuit
+"map! claer clear
+"map! claerly clearly
+"map! cna can
+"map! colection collection
+"map! comany company
+"map! comapny company
+"map! comittee committee
+"map! commitee committee
+"map! committe committee
+"map! committy committee
+"map! compair compare
+"map! compleated completed
+"map! completly completely
+"map! comunicate communicate
+"map! comunity community
+"map! conected connected
+"map! cotten cotton
+"map! coudl could
+"map! cpoy copy
+"map! cxan can
+"map! danceing dancing
+"map! definately definitely
+"map! develope develop
+"map! developement development
+"map! differant different
+"map! differnt different
+"map! diffrent different
+"map! disatisfied dissatisfied
+"map! discoverd discovered
+"map! doese does
+"map! doign doing
+"map! dollers dollars
+"map! donig doing
+"map! driveing driving
+"map! drnik drink
+"map! ehr her
+"map! embarass embarrass
+"map! equippment equipment
+"map! esle else
+"map! excitment excitement
+"map! eyt yet
+"map! familar familiar
+"map! feild field
+map! fileds fields
+"map! fianlly finally
+"map! fidn find
+map! firts first
+"map! follwo follow
+"map! follwoing following
+"map! foriegn foreign
+"map! foudn found
+"map! foward forward
+"map! freind friend
+"map! frmo from
+"map! fwe few
+"map! gerat great
+"map! geting getting
+"map! giveing giving
+"map! goign going
+"map! gonig going
+"map! govenment government
+"map! gruop group
+"map! grwo grow
+"map! haev have
+"map! happend happened
+"map! haveing having
+"map! hda had
+"map! helpfull helpful
+"map! herat heart
+"map! hge he
+"map! hismelf himself
+"map! hsa has
+"map! hsi his
+map! hte the
+map! htere there
+map! htey they
+map! hting thing
+map! htink think
+map! htis this
+"map! hvae have
+"map! hvaing having
+"map! idae idea
+"map! idaes ideas
+"map! ihs his
+"map! immediatly immediately
+"map! indecate indicate
+"map! insted instead
+"map! inthe in the
+"map! iwll will
+"map! iwth with
+"map! jsut just
+"map! knwo know
+"map! knwos knows
+"map! konw know
+"map! konws knows
+"map! levle level
+"map! libary library
+"map! librarry library
+"map! librery library
+"map! liek like
+"map! liekd liked
+"map! liev live
+"map! likly likely
+"map! littel little
+"map! liuke like
+"map! liveing living
+"map! loev love
+"map! lonly lonely
+"map! makeing making
+"map! mkae make
+"map! mkaes makes
+"map! mkaing making
+"map! moeny money
+"map! mroe more
+"map! mysefl myself
+"map! myu my
+"map! neccessary necessary
+"map! necesary necessary
+"map! nkow know
+"map! nwe new
+"map! nwo now
+"map! ocasion occasion
+"map! occassion occasion
+"map! occurence occurrence
+"map! occurrance occurrence
+"map! ocur occur
+"map! oging going
+"map! ohter other
+"map! omre more
+"map! onyl only
+"map! opperation operation
+"map! orginized organized
+""map! ot to
+"map! otehr other
+"map! otu out
+"map! owrk work
+"map! peopel people
+"map! perhasp perhaps
+"map! perhpas perhaps
+"map! pleasent pleasant
+"map! poeple people
+"map! porblem problem
+"map! probelm problem
+"map! puting putting
+"map! pwoer power
+"map! quater quarter
+"map! questoin question
+"map! reccomend recommend
+"map! reccommend recommend
+"map! receieve receive
+map! recieve receive
+"map! recieved received
+"map! recomend recommend
+"map! reconize recognize
+"map! recrod record
+"map! religous religious
+"map! rwite write
+"map! rythm rhythm
+"map! seh she
+"map! selectoin selection
+"map! sentance sentence
+"map! seperate separate
+"map! shineing shining
+"map! shiped shipped
+"map! shoudl should
+"map! similiar similar
+"map! sincerly sincerely
+"map! smae same
+"map! smoe some
+"map! soem some
+"map! sohw show
+"map! soudn sound
+"map! soudns sounds
+"map! statment statement
+"map! stnad stand
+"map! stopry story
+"map! stoyr story
+"map! stpo stop
+"map! strentgh strength
+"map! stroy story
+"map! struggel struggle
+"map! strugle struggle
+"map! sucess success
+"map! swiming swimming
+"map! tahn than
+"map! taht that
+"map! talekd talked
+"map! tath that
+map! teh the
+"map! tehy they
+"map! tghe the
+"map! thansk thanks
+"map! themselfs themselves
+"map! theri their
+"map! thgat that
+"map! thge the
+map! thier their
+"map! thme them
+"map! thna than
+"map! thne then
+"map! thnig thing
+"map! thnigs things
+"map! thsi this
+"map! thsoe those
+"map! thta that
+"map! tihs this
+"map! timne time
+"map! tje the
+"map! tjhe the
+"map! tkae take
+"map! tkaes takes
+"map! tkaing taking
+"map! tlaking talking
+"map! todya today
+"map! tongiht tonight
+"map! tonihgt tonight
+"map! towrad toward
+"map! truely truly
+"map! tyhat that
+"map! tyhe the
+"map! useing using
+"map! veyr very
+"map! vrey very
+"map! waht what
+"map! watn want
+"map! wehn when
+"map! whcih which
+"map! whic which
+map! WHen When
+"map! whihc which
+"map! whta what
+"map! wief wife
+"map! wierd weird
+"map! wihch which
+"map! wiht with
+"map! windoes windows
+"map! withe with
+"map! wiull will
+"map! wnat want
+"map! wnated wanted
+"map! wnats wants
+"map! woh who
+"map! wohle whole
+"map! wokr work
+"map! woudl would
+"map! wriet write
+"map! wrod word
+"map! wroking working
+"map! wtih with
+"map! wya way
+"map! yera year
+"map! yeras years
+"map! ytou you
+"map! yuo you
+"map! yuor your
+
