@@ -1,0 +1,31 @@
+- name: groupadd pushcx
+  tags: user
+  group: name=pushcx gid=1090 state=present
+
+- name: useradd pushcx
+  tags: user
+  user: >
+    name=pushcx
+    comment='Peter Bhat Harkins'
+    group=pushcx
+    groups={{ sudo_group }}
+    state=present
+    uid=1090
+
+- name: add pushcx's ssh keys
+  tags: user
+  authorized_key: >
+    user=a
+    key="{{ lookup('file', 'ssh/{{ item.file }}') }}"
+    state=present
+  with_items:
+    - { file: 'pushcx-20171001.pub' }
+
+#- name: revoke pushcx's ssh keys
+#  tags: user
+#  authorized_key: >
+#    user=a
+#    key=ssh/{{ item.file }}
+#    state=absent
+#  with_items:
+#    - { file: 'pushcx-20171001.pub' }
