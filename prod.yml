@@ -1,0 +1,63 @@
+---
+- name: mariadb
+  tags: mariadb
+  sudo: yes
+  hosts: db
+  roles:
+    - { role: mariadb }
+
+#- name: dns
+#  tags: dns
+#  sudo: yes
+#  hosts: dns
+#  roles:
+#    - { role: dns }
+
+#- name: lobsters
+#  tags: lobsters
+#  sudo: yes
+#  hosts: www-worker
+#  roles:
+#    - { role: lobsters }
+
+- name: nginx
+  tags: nginx
+  sudo: yes
+  hosts: www
+  roles:
+    - { role: nginx }
+
+- name: postfix
+  tags: postfix
+  sudo: yes
+  hosts: mx:smtp
+  roles:
+    - { role: postfix }
+
+#- name: prgmr
+#  tags: prgmr
+#  sudo: yes
+#  hosts: console
+#  roles:
+#    - { role: console }
+
+#- name: rsync
+#  tags: rsync
+#  sudo: yes
+#  hosts: backup
+#  roles:
+#    - { role: rsync }
+
+- name: sysadm
+  tags: sysadm
+  sudo: yes
+  hosts: all:!console
+  roles:
+    - { role: sysadm, ps1_fg: red }
+
+- name: unicorn
+  tags: unicorn
+  sudo: yes
+  hosts: www-worker
+  roles:
+    - { role: unicorn }
