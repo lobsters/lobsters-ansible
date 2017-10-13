@@ -2,6 +2,11 @@
   yum: name={{ item }} state=latest
   tags: pkg
   with_items:
+    - gcc
     - git
+    - glibc-devel
+    - make
     - nodejs
     - ruby2.3
+    - ruby2.3-dev
+    - ruby-bundler

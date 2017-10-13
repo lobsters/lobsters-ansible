@@ -2,6 +2,11 @@
   apt: name={{ item }} state=latest update_cache=yes
   tags: pkg
   with_items:
+    - gcc
     - git
+    - libc-dev
+    - make
     - nodejs
     - ruby2.3
+    - ruby2.3-devel
+    - ruby-bundler
