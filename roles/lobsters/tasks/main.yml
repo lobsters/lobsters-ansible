@@ -1,0 +1,45 @@
+- include: apt.yml
+  when: "'{{ family }}' == 'debian'"
+- include: yum.yml
+  when: "'{{ family }}' == 'redhat'"
+
+- name: groupadd lobsters
+  tags: user
+  group: name=lobsters gid=1024 state=present
+
+- name: useradd lobsters
+  tags: user
+  user: >
+    name=lobsters
+    comment='lobste.rs'
+    group=lobsters
+    home='/srv/lobste.rs'
+    state=present
+    uid=1024
+
+- name: mkdir ~lobste.rs/.%
+  file: >
+    state=directory
+    path="/srv/lobste.rs/.{{ item.file }}"
+    owner=lobsters
+    group=lobsters
+    mode="{{ item.mode }}"
+  with_items:
+  - { file: 'ssh', mode: '02700' }
+
+- name: cp % ~lobsters/.%
+  copy: >
+    src="{{ item.file }}"
+    dest="/srv/lobste.rs/.{{ item.file }}"
+    owner=lobsters
+    group=lobsters
+    mode={{ item.mode }}
+  with_items:
+    - { file: 'ssh/known_hosts', mode: '0600' }
+
+- name: git clone lobsters
+  sudo: yes
+  sudo_user: lobsters
+  git: >
+    repo='https://github.com/lobsters/lobsters.git'
+    dest='/srv/lobste.rs/http'

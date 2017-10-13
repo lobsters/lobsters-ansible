@@ -1,0 +1,7 @@
+- name: apt-get install lobsters dependencies
+  apt: name={{ item }} state=latest update_cache=yes
+  tags: pkg
+  with_items:
+    - git
+    - nodejs
+    - ruby2.3

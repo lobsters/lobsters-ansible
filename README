@@ -74,6 +74,7 @@ Roles
 -----
 
   mariadb         - SQL database.
+  lobsters        - web application.
   nginx           - http proxy and SSL termination.
   sysadm          - accounts and ssh shell acess for system administrators.
   systype         - operating system and host architecture detection.

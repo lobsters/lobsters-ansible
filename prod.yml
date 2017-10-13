@@ -13,12 +13,12 @@
 #  roles:
 #    - { role: dns }
 
-#- name: lobsters
-#  tags: lobsters
-#  sudo: yes
-#  hosts: www-worker
-#  roles:
-#    - { role: lobsters }
+- name: lobsters
+  tags: lobsters
+  sudo: yes
+  hosts: www-worker
+  roles:
+    - { role: lobsters }
 
 - name: nginx
   tags: nginx

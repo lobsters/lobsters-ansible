@@ -1,0 +1,7 @@
+- name: yum install lobsters dependencies
+  yum: name={{ item }} state=latest
+  tags: pkg
+  with_items:
+    - git
+    - nodejs
+    - ruby2.3
