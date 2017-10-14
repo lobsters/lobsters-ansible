@@ -2,3 +2,9 @@
   when: "'{{ family }}' == 'debian'"
 - include: yum.yml
   when: "'{{ family }}' == 'redhat'"
+
+# DKIM
+# ----
+# $ openssl genrsa -out dkim.key 1024
+# $ openssl rsa -in dkim.key -out dkim.pub -pubout -outform PEM
+# $ grep -v -e '^-' dkim.pub | tr -d '\n'
