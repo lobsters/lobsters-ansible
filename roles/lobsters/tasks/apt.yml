@@ -2,11 +2,18 @@
   apt: name={{ item }} state=latest update_cache=yes
   tags: pkg
   with_items:
+    - cmake
+    - g++
     - gcc
     - git
     - libc-dev
+    - libmysqlclient-dev
+    - libsqlite3-dev
     - make
+    - mariadb-client
     - nodejs
+    - rails
     - ruby2.3
     - ruby2.3-devel
     - ruby-bundler
+    - sqlite3

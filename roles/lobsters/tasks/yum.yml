@@ -2,11 +2,17 @@
   yum: name={{ item }} state=latest
   tags: pkg
   with_items:
+    - cmake
+    - g++
     - gcc
     - git
     - glibc-devel
     - make
+    - mysql-devel
     - nodejs
+    - rails
     - ruby2.3
     - ruby2.3-dev
     - ruby-bundler
+    - sqlite
+    - sqlite-devel
