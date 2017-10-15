@@ -51,7 +51,6 @@
     owner=lobsters
     group=lobsters
     mode={{ item.mode }}
-    recurse=yes
   with_items:
     - { file: 'app', mode: '0600' }
     - { file: 'public', mode: '0600' }
