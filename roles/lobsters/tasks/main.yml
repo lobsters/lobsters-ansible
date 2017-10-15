@@ -43,3 +43,15 @@
   git: >
     repo='https://github.com/lobsters/lobsters.git'
     dest='/srv/lobste.rs/http'
+
+- name: copy templates and icons
+  copy: >
+    src="{{ item.file }}"
+    dest="/srv/lobste.rs/http/{{ item.file }}"
+    owner=lobsters
+    group=lobsters
+    mode={{ item.mode }}
+    recurse=yes
+  with_items:
+    - { file: 'app', mode: '0600' }
+    - { file: 'public', mode: '0600' }
