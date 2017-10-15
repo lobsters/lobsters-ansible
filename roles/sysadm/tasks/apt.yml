@@ -4,5 +4,6 @@
   with_items:
     - fail2ban
     - ksh
+    - locate
     - nvi
     - tmux
