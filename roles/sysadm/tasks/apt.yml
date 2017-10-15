@@ -2,6 +2,7 @@
   apt: name={{ item }} state=latest update_cache=yes
   tags: pkg
   with_items:
+    - fail2ban
     - ksh
     - nvi
     - tmux
