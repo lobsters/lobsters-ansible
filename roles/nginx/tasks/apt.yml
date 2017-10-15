@@ -3,3 +3,4 @@
   tags: pkg
   with_items:
     - nginx
+    #- libnginx-mod-http-headers-more-filter
