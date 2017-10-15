@@ -47,13 +47,13 @@
 - name: copy templates and icons
   copy: >
     src="{{ item.file }}"
-    dest="/srv/lobste.rs/http/{{ item.file }}"
+    dest="/srv/lobste.rs/http/"
     owner=lobsters
     group=lobsters
     mode={{ item.mode }}
   with_items:
     - { file: 'app', mode: '0600' }
-    - { file: 'public', mode: '0600' }
+    - { file: 'public', mode: '0644' }
 
 - name: cp cron script
   copy: >
