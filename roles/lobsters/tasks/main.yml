@@ -54,3 +54,20 @@
   with_items:
     - { file: 'app', mode: '0600' }
     - { file: 'public', mode: '0600' }
+
+- name: cp cron script
+  copy: >
+    src="sbin/lobsters-cron"
+    dest="/usr/local/sbin/lobsters-cron"
+    owner=root
+    group=root
+    mode='0755'
+
+- name: add crontab entry
+  tags: cron
+  cron: >
+    state=present
+    name=lobsters-cron
+    user=lobsters
+    minute="*/5"
+    job=/usr/local/sbin/lobsters-cron

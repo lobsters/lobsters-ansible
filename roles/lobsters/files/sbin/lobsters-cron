@@ -1,0 +1,7 @@
+#!/bin/sh
+cd /srv/lobste.rs/http
+export RAILS_ENV=production
+bundle exec ruby script/mail_new_activity
+STATUS=$?
+bundle exec ruby script/post_to_twitter || exit $STATUS
+exit $?
