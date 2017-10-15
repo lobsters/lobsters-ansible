@@ -1,4 +1,4 @@
-- name: yum install nginx
+- name: yum install sysadm dependencies
   yum: name={{ item }} state=latest
   tags: pkg
   with_items:

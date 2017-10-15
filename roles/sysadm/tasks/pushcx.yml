@@ -15,7 +15,7 @@
 - name: add pushcx's ssh keys
   tags: user
   authorized_key: >
-    user=a
+    user=pushcx
     key="{{ lookup('file', 'ssh/{{ item.file }}') }}"
     state=present
   with_items:
@@ -24,7 +24,7 @@
 #- name: revoke pushcx's ssh keys
 #  tags: user
 #  authorized_key: >
-#    user=a
+#    user=pushcx
 #    key=ssh/{{ item.file }}
 #    state=absent
 #  with_items:
