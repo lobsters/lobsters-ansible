@@ -17,6 +17,7 @@ def main():
 
     OS = 'unknown'
     OSVERSION = 'unknown'
+    CODENAME = 'unknown'
 
     system = platform.system()
 
@@ -29,6 +30,7 @@ def main():
         # ('Ubuntu', '16.04', 'xenial')
         dist = platform.linux_distribution()
         OS = dist[0].lower()
+        CODENAME = dist[2].lower()
         if 0 == len(OS):
             with open('/etc/os-release', 'r') as file:
                 for line in file.readlines():
@@ -58,7 +60,8 @@ def main():
 
     ansible_facts = dict(arch=ARCH,
                          family=FAMILY,
-                         platform='%s-%s' % (OS, OSVERSION))
+                         platform='%s-%s' % (OS, OSVERSION),
+                         codename=CODENAME)
     module.exit_json(changed=False, ansible_facts=ansible_facts)
 
 
