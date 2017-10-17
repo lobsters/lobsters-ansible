@@ -1,0 +1,8 @@
+/srv/lobste.rs/log
+{
+  delaycompress
+
+  lastaction
+    invoke-rc.d unicorn reopen-logs
+  endscript
+}

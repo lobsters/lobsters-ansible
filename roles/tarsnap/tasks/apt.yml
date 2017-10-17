@@ -20,3 +20,7 @@
 - name: apt-get install tarsnap
   apt: name=tarsnap state=latest update_cache=yes
   tags: pkg
+
+- name: apt-get install logrotate
+  apt: name=logrotate state=latest update_cache=yes
+  tags: pkg

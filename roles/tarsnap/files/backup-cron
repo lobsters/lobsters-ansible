@@ -1,0 +1,50 @@
+#!/bin/bash
+
+ERRORS_TO="peter@malaprop.org"
+DATE=`date '+%Y%m%d_%H%M%S'`
+YESTERDAY=`date '+%Y%m%d' --date=yesterday`
+BACKUP_FILENAME="/tmp/database-$DATE.sql.bz2"
+WARNINGS_FILENAME="/tmp/database-warnings-$DATE.log"
+
+umask 177
+
+/usr/sbin/logrotate /etc/logrotate.conf
+
+/usr/bin/mysqldump \
+  --defaults-extra-file=/root/backup.password.cnf \
+  -u lobsters \
+  --all-databases \
+  --opt \
+  --skip-add-drop-table \
+  --allow-keywords \
+  --comments \
+  --compress \
+  --dump-date \
+  --force \
+  --log-error=$WARNINGS_FILENAME \
+  --routines \
+  --single-transaction \
+  --tz-utc \
+  | bzip2 > $BACKUP_FILENAME
+
+if [ -s $WARNINGS_FILENAME ]; then
+  ERROR=`/bin/cat $WARNINGS_FILENAME`
+  echo -e "Subject: Lobsters backup warnings\n\n$ERROR" | /usr/bin/sendmail $ERRORS_TO
+fi
+
+# database
+/usr/bin/tarsnap -c -f "$(uname -n)-database-$DATE" \
+  $BACKUP_FILENAME \
+  $WARNINGS_FILENAME
+
+/bin/rm -f $BACKUP_FILENAME $WARNINGS_FILENAME
+
+# logs and config files not in ansible repo
+/usr/bin/tarsnap -c -f "$(uname -n)-logs-$DATE" \
+  /var/log/nginx/*$YESTERDAY* \
+  /srv/lobste.rs/log/*$YESTERDAY* \
+  /srv/lobste.rs/http/log/*$YESTERDAY* \
+  /var/log/mysql/*$YESTERDAY* \
+  /srv/lobste.rs/http/config/initializers/production.rb \
+  /srv/lobste.rs/http/config/database.yml \
+  /root/backup.password.cnf
