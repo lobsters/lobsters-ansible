@@ -1,7 +1,18 @@
-#!/bin/sh
+#!/bin/bash
+
+err=0
+report() {
+  err=1
+  echo -n "error at line ${BASH_LINENO[0]}, in call to "
+  sed -n ${BASH_LINENO[0]}p $0
+} >&2
+trap report ERR
+
 cd /srv/lobste.rs/http
 export RAILS_ENV=production
+
+bundle exec script/sync_twitter_users
 bundle exec ruby script/mail_new_activity
-STATUS=$?
-bundle exec ruby script/post_to_twitter || exit $STATUS
-exit $?
+bundle exec ruby script/post_to_twitter
+
+exit $err
