@@ -41,10 +41,10 @@ fi
 
 # logs and config files not in ansible repo
 /usr/bin/tarsnap -c -f "$(uname -n)-logs-$STAMP" \
-  /var/log/nginx/*$DATE* \
-  /srv/lobste.rs/log/*$DATE* \
-  /srv/lobste.rs/http/log/*$DATE* \
-  /var/log/mysql/*$DATE* \
-  /srv/lobste.rs/http/config/initializers/production.rb \
-  /srv/lobste.rs/http/config/database.yml \
   /root/backup.password.cnf
+  /srv/lobste.rs/http/config/database.yml \
+  /srv/lobste.rs/http/config/initializers/production.rb \
+  /srv/lobste.rs/http/log/*$DATE* \
+  /srv/lobste.rs/log/*$DATE* \
+  /var/log/mysql/*$DATE* \
+  /var/log/nginx/*$DATE* \
