@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ERRORS_TO="peter@malaprop.org"
-DATE=`date '+%Y%m%d_%H%M%S'`
-YESTERDAY=`date '+%Y%m%d' --date=yesterday`
-BACKUP_FILENAME="/tmp/database-$DATE.sql.bz2"
-WARNINGS_FILENAME="/tmp/database-warnings-$DATE.log"
+STAMP=`date '+%Y%m%d_%H%M%S'`
+DATE=`date '+%Y%m%d'`
+BACKUP_FILENAME="/tmp/database-$STAMP.sql.bz2"
+WARNINGS_FILENAME="/tmp/database-warnings-$STAMP.log"
 
 umask 177
 
@@ -33,18 +33,18 @@ if [ -s $WARNINGS_FILENAME ]; then
 fi
 
 # database
-/usr/bin/tarsnap -c -f "$(uname -n)-database-$DATE" \
+/usr/bin/tarsnap -c -f "$(uname -n)-database-$STAMP" \
   $BACKUP_FILENAME \
   $WARNINGS_FILENAME
 
 /bin/rm -f $BACKUP_FILENAME $WARNINGS_FILENAME
 
 # logs and config files not in ansible repo
-/usr/bin/tarsnap -c -f "$(uname -n)-logs-$DATE" \
-  /var/log/nginx/*$YESTERDAY* \
-  /srv/lobste.rs/log/*$YESTERDAY* \
-  /srv/lobste.rs/http/log/*$YESTERDAY* \
-  /var/log/mysql/*$YESTERDAY* \
+/usr/bin/tarsnap -c -f "$(uname -n)-logs-$STAMP" \
+  /var/log/nginx/*$DATE* \
+  /srv/lobste.rs/log/*$DATE* \
+  /srv/lobste.rs/http/log/*$DATE* \
+  /var/log/mysql/*$DATE* \
   /srv/lobste.rs/http/config/initializers/production.rb \
   /srv/lobste.rs/http/config/database.yml \
   /root/backup.password.cnf

@@ -1,4 +1,4 @@
-/srv/lobste.rs/log
+/srv/lobste.rs/log/*log
 {
   delaycompress
 

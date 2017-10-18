@@ -14,6 +14,7 @@
     - { dest: "/etc/logrotate.d", file: "mysql-server" }
     - { dest: "/etc/logrotate.d", file: "rails" }
     - { dest: "/etc/logrotate.d", file: "nginx" }
+    - { dest: "/etc/logrotate.d", file: "unicorn" }
 
 - name: remove logrotate package's cron job
   file:
