@@ -33,7 +33,7 @@
   tags: cron
   cron: >
     state=present
-    name=lobsters-cron
+    name=backup-cron
     user=root
     minute="0"
     hour="0"
