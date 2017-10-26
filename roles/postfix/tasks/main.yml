@@ -8,3 +8,25 @@
 # $ openssl genrsa -out dkim.key 1024
 # $ openssl rsa -in dkim.key -out dkim.pub -pubout -outform PEM
 # $ grep -v -e '^-' dkim.pub | tr -d '\n'
+
+- name: cp /etc/default/opendkim
+  copy: >
+    src={{ item.name }}
+    dest=/{{ item.name }}
+    owner=root
+    group=root
+    mode={{ item.mode }}
+  with_items:
+    - { name: 'etc/default/opendkim', mode: '0644' }
+    - { name: 'etc/opendkim.conf',    mode: '0644' }
+
+- name: cp /etc/postfix
+  template: >
+    src=etc/postfix/{{ item.name }}
+    dest=/etc/postfix/{{ item.name }}
+    owner=root
+    group=root
+    mode={{ item.mode }}
+  with_items:
+    - { name: 'main.cf',   mode: '0644' }
+    - { name: 'master.cf', mode: '0644' }
