@@ -11,10 +11,9 @@
   with_items:
     - { dest: "/etc", file: "logrotate.conf",}
     - { dest: "/etc", file: "tarsnap.conf" }
-    - { dest: "/etc/logrotate.d", file: "mysql-server" }
-    - { dest: "/etc/logrotate.d", file: "rails" }
-    - { dest: "/etc/logrotate.d", file: "nginx" }
-    - { dest: "/etc/logrotate.d", file: "unicorn" }
+
+- name: copy up logrotate.d
+  copy: src="logrotate.d" dest="/etc/" owner=root group=root mode="0644"
 
 - name: remove logrotate package's cron job
   file:

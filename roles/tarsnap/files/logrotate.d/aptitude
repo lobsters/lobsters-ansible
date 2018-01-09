@@ -1,0 +1,8 @@
+/var/log/aptitude {
+  su root syslog
+  rotate 6
+  monthly
+  compress
+  missingok
+  notifempty
+}

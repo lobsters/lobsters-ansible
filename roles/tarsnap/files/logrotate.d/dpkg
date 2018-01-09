@@ -1,0 +1,20 @@
+/var/log/dpkg.log {
+	su root root
+	monthly
+	rotate 12
+	compress
+	delaycompress
+	missingok
+	notifempty
+	create 644 root root
+}
+/var/log/alternatives.log {
+	su root root
+	monthly
+	rotate 12
+	compress
+	delaycompress
+	missingok
+	notifempty
+	create 644 root root
+}
