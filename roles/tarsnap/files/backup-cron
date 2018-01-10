@@ -41,7 +41,7 @@ fi
 
 # logs and config files not in ansible repo
 /usr/bin/tarsnap -c -f "$(uname -n)-logs-$STAMP" \
-  /root/backup.password.cnf
+  /root/backup.password.cnf \
   /srv/lobste.rs/http/config/database.yml \
   /srv/lobste.rs/http/config/initializers/production.rb \
   /srv/lobste.rs/http/log/*$DATE* \
