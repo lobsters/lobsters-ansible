@@ -44,6 +44,11 @@
     repo='https://github.com/lobsters/lobsters.git'
     dest='/srv/lobste.rs/http'
 
+- name: bundle install
+  shell: bundle install
+  args:
+    chdir: "/srv/lobste.rs/http"
+
 - name: copy templates and icons
   copy: >
     src="{{ item.file }}"
