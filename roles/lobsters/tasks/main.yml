@@ -53,10 +53,16 @@
     chdir: "/srv/lobste.rs/http"
 
 - name: recompile assets
-  when: clone|changed or bundler|changed
+  when: clone.changed or bundler.changed
   environment:
     RAILS_ENV: production
   command: chdir="{{ build_path }}" bundle exec rails assets:precompile
+
+- name: migrate database
+  when: clone.changed
+  environment:
+    RAILS_ENV: production
+  command: chdir="{{ build_path }}" bundle exec rails db:migrate
 
 - name: copy templates and icons
   copy: >
