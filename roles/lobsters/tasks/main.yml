@@ -40,14 +40,23 @@
 - name: git clone lobsters
   sudo: yes
   sudo_user: lobsters
+  register: clone
   git: >
     repo='https://github.com/lobsters/lobsters.git'
     dest='/srv/lobste.rs/http'
 
 - name: bundle install
   shell: bundle install
+  register: bundler
+  changed_when: "'Installing' in bundler or 'Updating' in bundler or 'upgrade' in bundler"
   args:
     chdir: "/srv/lobste.rs/http"
+
+- name: recompile assets
+  when: clone|changed or bundler|changed
+  environment:
+    RAILS_ENV: production
+  command: chdir="{{ build_path }}" bundle exec rails assets:precompile
 
 - name: copy templates and icons
   copy: >
