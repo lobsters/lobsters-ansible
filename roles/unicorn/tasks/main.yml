@@ -2,3 +2,11 @@
   when: "'{{ family }}' == 'debian'"
 - include: yum.yml
   when: "'{{ family }}' == 'redhat'"
+
+- name: copy up unicorn config
+  copy: >
+    src="unicorn.conf.rb"
+    dest="/srv/lobste.rs/http/config"
+    owner=lobsters
+    group=lobsters
+    mode="0644"
