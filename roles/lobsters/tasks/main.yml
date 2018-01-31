@@ -44,6 +44,7 @@
   git: >
     repo='https://github.com/lobsters/lobsters.git'
     dest='/srv/lobste.rs/http'
+    force=yes
 
 - name: bundle install
   shell: bundle install
@@ -56,13 +57,17 @@
   when: clone.changed or bundler.changed
   environment:
     RAILS_ENV: production
-  command: chdir="{{ build_path }}" bundle exec rails assets:precompile
+  command: chdir="/srv/lobste.rs/http" bundle exec rails assets:precompile
 
 - name: migrate database
   when: clone.changed
   environment:
     RAILS_ENV: production
-  command: chdir="{{ build_path }}" bundle exec rails db:migrate
+  command: chdir="/srv/lobste.rs/http" bundle exec rails db:migrate
+
+- name: restart unicorn
+  when: clone.changed or bundler.changed
+  command: pkill -HUP -f 'unicorn_rails master'
 
 - name: copy templates and icons
   copy: >
