@@ -1,7 +1,9 @@
-- include: apt.yml
-  when: "'{{ family }}' == 'debian'"
-- include: yum.yml
-  when: "'{{ family }}' == 'redhat'"
+---
+- when: ansible_os_family == 'Debian'
+  include_tasks: apt.yml
+
+- when: ansible_os_family == 'Redhat'
+  include_tasks: yum.yml
 
 # DKIM
 # ----

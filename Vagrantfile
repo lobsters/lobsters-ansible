@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
           }
 
         ansible.compatibility_mode = "2.0"
-        ansible.playbook = "prod.yml"
+        ansible.playbook = "site.yml"
     end
   end
 

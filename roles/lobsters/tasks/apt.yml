@@ -1,5 +1,9 @@
+---
 - name: apt-get install lobsters dependencies
-  apt: name={{ item }} state=latest update_cache=yes
+  apt:
+    name: "{{ item }}"
+    state: "{{ packages_version }}"
+    update_cache: yes
   tags: pkg
   with_items:
     - cmake
@@ -7,7 +11,7 @@
     - gcc
     - git
     - libc-dev
-    - libmysqlclient-dev
+    - libmariadbclient-dev
     - libsqlite3-dev
     - make
     - mariadb-client
@@ -17,3 +21,4 @@
     - ruby2.3-dev
     - ruby-bundler
     - sqlite3
+    - unicorn

@@ -1,4 +1,33 @@
-- include: apt.yml
-  when: "'{{ family }}' == 'debian'"
-- include: yum.yml
-  when: "'{{ family }}' == 'redhat'"
+---
+- when: ansible_os_family == 'Debian'
+  include_tasks: apt.yml
+
+- when: ansible_os_family == 'Redhat'
+  include_tasks: yum.yml
+
+- name: install python-mysql
+  pip:
+    name: mysqlclient
+    state: latest
+
+- name: launch mariadb
+  systemd:
+    name: mariadb
+    state: started
+    daemon_reload: yes
+
+- name: wait for mariadb to be up
+  wait_for:
+    port: 3306
+
+- name: Create a new database with name 'bobdata'
+  mysql_db:
+    name: lobsters
+    state: present
+
+- name: add mysql user
+  mysql_user:
+    name: lobsters
+    password: "{{ database_password }}"
+    priv: 'lobsters.*:ALL'
+    state: present

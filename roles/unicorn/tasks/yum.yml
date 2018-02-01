@@ -1,5 +1,0 @@
-- name: yum install unicorn
-  yum: name={{ item }} state=latest
-  tags: pkg
-  with_items:
-    - unicorn

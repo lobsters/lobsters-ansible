@@ -1,0 +1,53 @@
+---
+- name: sysadm
+  tags: sysadm
+  become: yes
+  hosts: all:!console
+  roles:
+    - { role: systype }
+    - { role: sysadm, ps1_fg: red }
+
+- name: mariadb
+  tags: mariadb
+  become: yes
+  hosts: db
+  roles:
+    - { role: mariadb }
+
+#- name: dns
+#  tags: dns
+#  become: yes
+#  hosts: dns
+#  roles:
+#    - { role: dns }
+
+- import_playbook: deploy_lobsters.yml
+
+- name: postfix
+  tags: postfix
+  become: yes
+  hosts: mx:smtp
+  roles:
+    - { role: postfix }
+
+#- name: prgmr
+#  tags: prgmr
+#  become: yes
+#  hosts: console
+#  roles:
+#    - { role: console }
+
+#- name: rsync
+#  tags: rsync
+#  become: yes
+#  hosts: backup
+#  roles:
+#    - { role: rsync }
+
+#- name: tarsnap
+#  tags: tarsnap
+#  sudo: yes
+#  hosts: all:!console
+#  roles:
+#    - { role: tarsnap }
+

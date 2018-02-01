@@ -1,3 +1,0 @@
-- name: yum install python
-  yum: name=python
-  tags: pkg

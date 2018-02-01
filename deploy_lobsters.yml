@@ -1,0 +1,18 @@
+---
+
+# TODO: Change the state of the packages to present instead of latest
+# TODO: Implement rolling deploy
+
+- name: lobsters
+  tags: lobsters
+  hosts: www-worker
+  become: true
+  roles:
+    - { role: lobsters }
+
+- name: nginx
+  tags: nginx
+  become: yes
+  hosts: www
+  roles:
+    - { role: nginx }

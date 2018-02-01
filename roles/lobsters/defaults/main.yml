@@ -1,0 +1,12 @@
+---
+database_type: mysql
+database_use_socket: true
+
+packages_version: present
+
+lobsters_user: lobsters
+lobsters_home_path: /srv/lobste.rs
+lobsters_app_path: "{{ lobsters_home_path }}/http"
+
+unicorn_pid_file: "{{ lobsters_home_path }}/run/unicorn.pid"
+unicorn_socket_file: "{{ lobsters_home_path }}/run/unicorn.sock"

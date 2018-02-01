@@ -1,7 +1,11 @@
 - name: apt-get install sysadm dependencies
-  apt: name={{ item }} state=latest update_cache=yes
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
   tags: pkg
   with_items:
+    - aptitude
     - fail2ban
     - ksh
     - locate

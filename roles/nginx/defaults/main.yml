@@ -1,0 +1,5 @@
+---
+lobsters_home_path: /srv/lobste.rs
+lobsters_app_path: "{{ lobsters_home_path }}/http"
+
+unicorn_socket_file: "{{ lobsters_home_path }}/run/unicorn.sock"
