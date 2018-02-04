@@ -1,0 +1,8 @@
+---
+
+- name: reload unicorn
+  systemd:
+    name: unicorn
+    state: reloaded
+    daemon_reload: yes
+

@@ -1,1 +1,5 @@
+.vagrant/
 /lobsters-ansible.log
+*.retry
+*.swp
+.vault_password_file

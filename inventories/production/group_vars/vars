@@ -1,0 +1,18 @@
+---
+#backup_host: lobsters-backup.xen.prgmr.com
+console_host: lobsters.xen.prgmr.com
+db_host: lobsters.xen.prgmr.com
+#dns_host:
+mx_host: lobsters.xen.prgmr.com
+smtp_host: lobsters.xen.prgmr.com
+www_host: lobsters.xen.prgmr.com
+
+# This is either mysql or postgres
+database_type: mysql
+# If set to false, be sure to set database_hostname correctly
+database_use_socket: true
+
+database_hostname: 127.0.0.1
+database_name: lobsters
+database_username: lobsters
+database_password: "{{ vault_database_password }}"

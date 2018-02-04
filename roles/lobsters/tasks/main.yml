@@ -1,50 +1,98 @@
-- include: apt.yml
-  when: "'{{ family }}' == 'debian'"
-- include: yum.yml
-  when: "'{{ family }}' == 'redhat'"
+---
+- when: ansible_os_family == 'Debian'
+  include_tasks: apt.yml
+
+- when: ansible_os_family == 'Redhat'
+  include_tasks: yum.yml
 
 - name: groupadd lobsters
   tags: user
-  group: name=lobsters gid=1024 state=present
+  group:
+    name: lobsters
+    gid: 1024
+    state: present
 
 - name: useradd lobsters
   tags: user
-  user: >
-    name=lobsters
-    comment='lobste.rs'
-    group=lobsters
-    home='/srv/lobste.rs'
-    state=present
-    uid=1024
+  user:
+    name: lobsters
+    comment: lobste.rs
+    group: lobsters
+    home: /srv/lobste.rs
+    state: present
+    uid: 1024
 
 - name: mkdir ~lobste.rs/.%
-  file: >
-    state=directory
-    path="/srv/lobste.rs/.{{ item.file }}"
-    owner=lobsters
-    group=lobsters
-    mode="{{ item.mode }}"
+  file:
+    state: directory
+    path: "/srv/lobste.rs/.{{ item.file }}"
+    owner: lobsters
+    group: lobsters
+    mode: "{{ item.mode }}"
   with_items:
   - { file: 'ssh', mode: '02700' }
 
 - name: cp % ~lobsters/.%
-  copy: >
-    src="{{ item.file }}"
-    dest="/srv/lobste.rs/.{{ item.file }}"
-    owner=lobsters
-    group=lobsters
-    mode={{ item.mode }}
+  copy:
+    src: "{{ item.file }}"
+    dest: "/srv/lobste.rs/.{{ item.file }}"
+    owner: lobsters
+    group: lobsters
+    mode: "{{ item.mode }}"
   with_items:
     - { file: 'ssh/known_hosts', mode: '0600' }
 
+- name: created directories
+  file:
+    state: directory
+    path: "/srv/lobste.rs/{{ item }}"
+    owner: lobsters
+    group: lobsters
+  with_items:
+  - run
+  - log
+
 - name: git clone lobsters
-  sudo: yes
-  sudo_user: lobsters
+  become: true
+  become_user: lobsters
   register: clone
-  git: >
-    repo='https://github.com/lobsters/lobsters.git'
-    dest='/srv/lobste.rs/http'
-    force=yes
+  git:
+    repo: https://github.com/lobsters/lobsters.git
+    version: master
+    dest: /srv/lobste.rs/http
+    force: yes
+
+- name: template lobsters config files
+  template:
+    src: "config/{{ item }}.j2"
+    dest: "/srv/lobste.rs/http/config/{{ item }}"
+    owner: lobsters
+    group: lobsters
+    mode: 0440
+  with_items:
+  - database.yml
+  - unicorn.conf.rb
+
+- name: template unicorn config files
+  template:
+    src: "systemd/{{ item }}.j2"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: lobsters
+    group: lobsters
+    mode: 0440
+  with_items:
+    - lobsters-unicorn.service
+
+- name: copy templates and icons
+  copy:
+    src: "{{ item.file }}"
+    dest: "/srv/lobste.rs/http/"
+    owner: lobsters
+    group: lobsters
+    mode: "{{ item.mode }}"
+  with_items:
+    - { file: 'app', mode: '0600' }
+    - { file: 'public', mode: '0644' }
 
 - name: bundle install
   shell: bundle install
@@ -57,42 +105,37 @@
   when: clone.changed or bundler.changed
   environment:
     RAILS_ENV: production
-  command: chdir="/srv/lobste.rs/http" bundle exec rails assets:precompile
+  command: bundle exec rails assets:precompile
+  args:
+    chdir: "/srv/lobste.rs/http"
 
 - name: migrate database
   when: clone.changed
   environment:
     RAILS_ENV: production
-  command: chdir="/srv/lobste.rs/http" bundle exec rails db:migrate
-
-- name: restart unicorn
-  when: clone.changed or bundler.changed
-  command: pkill -HUP -f 'unicorn_rails master'
-
-- name: copy templates and icons
-  copy: >
-    src="{{ item.file }}"
-    dest="/srv/lobste.rs/http/"
-    owner=lobsters
-    group=lobsters
-    mode={{ item.mode }}
-  with_items:
-    - { file: 'app', mode: '0600' }
-    - { file: 'public', mode: '0644' }
+  command: bundle exec rails db:migrate
+  args:
+    chdir: /srv/lobste.rs/http
+  notify:
+    - reload unicorn
 
 - name: cp cron script
-  copy: >
-    src="sbin/lobsters-cron"
-    dest="/usr/local/sbin/lobsters-cron"
-    owner=root
-    group=root
-    mode='0755'
+  copy:
+    src: "sbin/lobsters-cron"
+    dest: "/usr/local/sbin/lobsters-cron"
+    owner: root
+    group: root
+    mode: '0755'
 
 - name: add crontab entry
   tags: cron
-  cron: >
-    state=present
-    name=lobsters-cron
-    user=lobsters
-    minute="*/5"
-    job=/usr/local/sbin/lobsters-cron
+  cron:
+    state: present
+    name: lobsters-cron
+    user: lobsters
+    minute: "*/5"
+    job: /usr/local/sbin/lobsters-cron
+
+#- name: restart unicorn
+#  when: clone.changed or bundler.changed
+#  command: pkill -HUP -f 'unicorn_rails master'

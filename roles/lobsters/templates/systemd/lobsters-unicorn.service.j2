@@ -1,0 +1,16 @@
+[Unit]
+Description=Lobsters Unicorn Server
+#Wants=mariadb.service
+#After=mariadb.service
+
+[Service]
+User=lobsters
+WorkingDirectory={{ lobsters_app_path }}
+Environment=RAILS_ENV=production
+SyslogIdentifier=lobsters-unicorn
+PIDFile={{ unicorn_pid_file }}
+
+ExecStart=/usr/bin/bundle exec "unicorn_rails -c config/unicorn.conf.rb -E production -D config.ru"
+
+[Install]
+WantedBy=multi-user.target

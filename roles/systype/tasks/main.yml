@@ -1,2 +1,24 @@
+---
+- name: install python
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - python
+  - python-dev # required for some python modules
+  - python-pip
+
+- name: install python-yum
+  yum:
+    name: python-yum
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: install python-apt
+  apt:
+    name: python-apt
+    state: present
+  when: ansible_os_family == 'Debian'
+
 - name: set_fact arch, family, platform
   action: systype

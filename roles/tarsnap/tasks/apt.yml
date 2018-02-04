@@ -1,3 +1,4 @@
+---
 - name: copy up tarsnap key
   copy: >
     src="tarsnap-deb-packaging-key.asc"

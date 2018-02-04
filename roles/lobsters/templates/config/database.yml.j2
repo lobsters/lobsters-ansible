@@ -1,0 +1,10 @@
+production:
+  adapter: "{{ 'mysql2' if database_type == 'mysql' else 'postgres' }}"
+  database: "{{ database_name }}"
+  username: "{{ database_username }}"
+  password: "{{ database_password }}"
+{% if database_use_socket %}
+  socket: /var/run/mysqld/mysqld.sock
+{% else %}
+  host: "{{ database_hostname }}"
+{% endif %}
