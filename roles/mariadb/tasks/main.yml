@@ -1,4 +1,4 @@
-- include: apt.yml
+- include_tasks: apt.yml
   when: "'{{ family }}' == 'debian'"
-- include: yum.yml
+- include_tasks: yum.yml
   when: "'{{ family }}' == 'redhat'"

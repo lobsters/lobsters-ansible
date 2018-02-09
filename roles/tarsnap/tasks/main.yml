@@ -1,4 +1,4 @@
-- include: apt.yml
+- include_tasks: apt.yml
   when: "'{{ family }}' == 'debian'"
 
 - name: copy up logrotate and tarsnap configs
