@@ -38,8 +38,8 @@
     - { file: 'ssh/known_hosts', mode: '0600' }
 
 - name: git clone lobsters
-  sudo: yes
-  sudo_user: lobsters
+  become: true
+  become_user: lobsters
   register: clone
   git: >
     repo='https://github.com/lobsters/lobsters.git'

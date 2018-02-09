@@ -57,7 +57,7 @@
 
 - name: tarsnap
   tags: tarsnap
-  sudo: yes
+  become: true
   hosts: all:!console
   roles:
     - { role: tarsnap }
