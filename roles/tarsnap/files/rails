@@ -1,7 +1,0 @@
-/srv/lobste.rs/http/log/*.log
-{
-  copytruncate
-  postrotate
-    kill -s HUP `cat /srv/lobste.rs/run/unicorn.pid`
-  endscript
-}
