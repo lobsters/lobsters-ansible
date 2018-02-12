@@ -65,10 +65,6 @@
     RAILS_ENV: production
   command: chdir="/srv/lobste.rs/http" bundle exec rails db:migrate
 
-- name: restart unicorn
-  when: clone.changed or bundler.changed
-  command: pkill -HUP -f 'unicorn_rails master'
-
 - name: copy templates and icons
   copy: >
     src="{{ item.file }}"
@@ -79,6 +75,10 @@
   with_items:
     - { file: 'app', mode: '0600' }
     - { file: 'public', mode: '0644' }
+
+- name: restart unicorn
+  when: clone.changed or bundler.changed
+  command: pkill -HUP -f 'unicorn_rails master'
 
 - name: cp cron script
   copy: >
