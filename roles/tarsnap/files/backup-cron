@@ -24,6 +24,7 @@ umask 177
   --log-error=$WARNINGS_FILENAME \
   --routines \
   --single-transaction \
+  --quick \
   --tz-utc \
   | nice bzip2 > $BACKUP_FILENAME
 
