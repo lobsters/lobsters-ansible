@@ -26,7 +26,7 @@ umask 177
   --single-transaction \
   --quick \
   --tz-utc \
-  | nice bzip2 > $BACKUP_FILENAME
+  | nice -n 15 ionice -c 2 -n 7 bzip2 > $BACKUP_FILENAME
 
 if [ -s $WARNINGS_FILENAME ]; then
   ERROR=`/bin/cat $WARNINGS_FILENAME`
