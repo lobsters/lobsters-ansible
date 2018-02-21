@@ -78,7 +78,7 @@
 
 - name: restart unicorn
   when: clone.changed or bundler.changed
-  command: pkill -HUP -f 'unicorn_rails master'
+  command: pkill -USR2 -f 'unicorn_rails master'
 
 - name: cp cron script
   copy: >

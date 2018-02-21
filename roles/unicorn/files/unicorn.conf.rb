@@ -8,7 +8,7 @@ timeout 30
 stderr_path "/srv/lobste.rs/log/unicorn.stderr.log"
 stdout_path "/srv/lobste.rs/log/unicorn.stdout.log"
 
-preload_app false
+preload_app true
 
 before_fork do |server, worker|
   if defined?(ActiveRecord::Base)
