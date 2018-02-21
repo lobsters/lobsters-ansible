@@ -24,7 +24,7 @@ before_fork do |server, worker|
     end
   end
 
-  system("rm -rf /srv/lobste.rs/cache")
+  system("rm -rf /srv/lobste.rs/cache/*")
 end
 
 after_fork do |server, worker|
