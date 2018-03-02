@@ -53,12 +53,6 @@
   args:
     chdir: "/srv/lobste.rs/http"
 
-- name: recompile assets
-  when: clone.changed or bundler.changed
-  environment:
-    RAILS_ENV: production
-  command: chdir="/srv/lobste.rs/http" bundle exec rails assets:precompile
-
 - name: migrate database
   when: clone.changed
   environment:
@@ -72,12 +66,19 @@
     owner=lobsters
     group=lobsters
     mode={{ item.mode }}
+  register: sitefiles
   with_items:
     - { file: 'app', mode: '0600' }
     - { file: 'public', mode: '0644' }
 
+- name: recompile assets
+  when: clone.changed or bundler.changed or sitefiles.changed
+  environment:
+    RAILS_ENV: production
+  command: chdir="/srv/lobste.rs/http" bundle exec rails assets:precompile
+
 - name: restart unicorn
-  when: clone.changed or bundler.changed
+  when: clone.changed or bundler.changed or sitefiles.changed
   command: pkill -USR2 -f 'unicorn_rails master'
 
 - name: cp cron script
