@@ -11,8 +11,8 @@ trap report ERR
 cd /srv/lobste.rs/http
 export RAILS_ENV=production
 
-bundle exec script/sync_twitter_users
-bundle exec ruby script/mail_new_activity
-bundle exec ruby script/post_to_twitter
+/usr/local/bin/bundle exec script/sync_twitter_users
+/usr/local/bin/bundle exec ruby script/mail_new_activity
+/usr/local/bin/bundle exec ruby script/post_to_twitter
 
 exit $err

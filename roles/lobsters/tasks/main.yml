@@ -47,7 +47,9 @@
     force=yes
 
 - name: bundle install
-  shell: bundle install
+  become: true
+  become_user: lobsters
+  shell: bundle install --path http/vendor/bundle
   register: bundler
   changed_when: "'Installing' in bundler or 'Updating' in bundler or 'upgrade' in bundler"
   args:
@@ -73,6 +75,8 @@
 
 - name: recompile assets
   when: clone.changed or bundler.changed or sitefiles.changed
+  become: true
+  become_user: lobsters
   environment:
     RAILS_ENV: production
   command: chdir="/srv/lobste.rs/http" bundle exec rails assets:precompile
