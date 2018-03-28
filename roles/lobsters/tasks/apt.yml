@@ -12,8 +12,6 @@
     - make
     - mariadb-client
     - nodejs
-    - rails
     - ruby2.3
     - ruby2.3-dev
-    - ruby-bundler
     - sqlite3

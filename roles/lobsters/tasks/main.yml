@@ -46,6 +46,15 @@
     dest='/srv/lobste.rs/http'
     force=yes
 
+- name: check if bundler needs installing
+  register: need_bundler
+  shell: gem list --local bundler
+  changed_when: "'bundler (' not in need_bundler"
+
+- name: install bundler
+  when: need_bundler.changed
+  shell: gem install bundler
+
 - name: bundle install
   become: true
   become_user: lobsters
