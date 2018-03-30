@@ -1,3 +1,0 @@
-- name: apt-get install python
-  apt: name=python
-  tags: pkg

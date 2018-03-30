@@ -1,4 +1,4 @@
 - include_tasks: apt.yml
-  when: "'{{ family }}' == 'debian'"
+  when: "'{{ ansible_os_family }}' == 'Debian'"
 - include_tasks: yum.yml
-  when: "'{{ family }}' == 'redhat'"
+  when: "'{{ ansible_os_family }}' == 'RedHat'"
