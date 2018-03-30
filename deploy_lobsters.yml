@@ -1,0 +1,21 @@
+---
+- name: lobsters
+  tags: lobsters
+  become: yes
+  hosts: www-worker
+  roles:
+    - { role: lobsters }
+
+- name: nginx
+  tags: nginx
+  become: yes
+  hosts: www
+  roles:
+    - { role: nginx }
+
+- name: unicorn
+  tags: unicorn
+  become: yes
+  hosts: www-worker
+  roles:
+    - { role: unicorn }

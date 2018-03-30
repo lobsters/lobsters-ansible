@@ -1,0 +1,7 @@
+#backup_host: lobsters-backup.xen.prgmr.com
+console_host: lobsters.xen.prgmr.com
+db_host: lobsters.xen.prgmr.com
+#dns_host: 
+mx_host: lobsters.xen.prgmr.com
+smtp_host: lobsters.xen.prgmr.com
+www_host: lobsters.xen.prgmr.com

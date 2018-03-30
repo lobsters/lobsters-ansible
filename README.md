@@ -6,13 +6,13 @@ Lobsters is a technology-focused link aggregation site.
 
 To run:
 
-    $ ansible-playbook -K prod.yml
+    $ ansible-playbook -K site.yml
 
 
 #### Playbooks
 
     backup          - TODO: backup site.
-    prod            - deploy to production.
+    site            - deploy to production.
     restore         - TODO: restore from backup.
 
 
