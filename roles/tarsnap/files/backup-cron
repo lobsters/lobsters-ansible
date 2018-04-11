@@ -46,6 +46,7 @@ fi
   /srv/lobste.rs/http/config/database.yml \
   /srv/lobste.rs/http/config/initializers/production.rb \
   /srv/lobste.rs/http/config/initializers/secret_token.rb \
+  /srv/lobste.rs/http/config/skylight.yml \
   /srv/lobste.rs/http/log/*$DATE* \
   /srv/lobste.rs/log/*$DATE* \
   /var/log/mysql/*$DATE* \
