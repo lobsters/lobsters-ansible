@@ -92,7 +92,9 @@
 
 - name: restart unicorn
   when: clone.changed or bundler.changed or sitefiles.changed
-  command: pkill -USR2 -f 'unicorn_rails master'
+  systemd: >
+    name="lobsters-unicorn"
+    state=reloaded
 
 - name: cp cron script
   copy: >

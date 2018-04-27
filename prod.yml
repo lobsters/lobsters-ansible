@@ -13,6 +13,13 @@
 #  roles:
 #    - { role: dns }
 
+- name: unicorn
+  tags: unicorn
+  become: yes
+  hosts: www-worker
+  roles:
+    - { role: unicorn }
+
 - name: lobsters
   tags: lobsters
   become: yes
@@ -62,9 +69,3 @@
   roles:
     - { role: tarsnap }
 
-- name: unicorn
-  tags: unicorn
-  become: yes
-  hosts: www-worker
-  roles:
-    - { role: unicorn }

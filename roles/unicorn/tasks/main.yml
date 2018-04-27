@@ -10,3 +10,17 @@
     owner=lobsters
     group=lobsters
     mode="0644"
+
+- name: copy unicorn systemd service config
+  copy: >
+    src="lobsters-unicorn.service"
+    dest="/etc/systemd/system/"
+    owner=lobsters
+    group=lobsters
+    mode="0440"
+
+- name: just force systemd to reread configs
+  systemd: >
+    name="lobsters-unicorn"
+    enabled=yes
+    daemon_reload=yes
