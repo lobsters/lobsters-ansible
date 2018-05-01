@@ -58,11 +58,11 @@
 - name: bundle install
   become: true
   become_user: lobsters
-  shell: bundle install --path http/vendor/bundle
+  shell: bundle install --path vendor/bundle
   register: bundler
   changed_when: "'Installing' in bundler or 'Updating' in bundler or 'upgrade' in bundler"
   args:
-    chdir: "/srv/lobste.rs/http"
+    chdir: "/srv/lobste.rs/http/"
 
 - name: migrate database
   when: clone.changed
