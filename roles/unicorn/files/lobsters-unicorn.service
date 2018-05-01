@@ -13,9 +13,14 @@ Environment=RAILS_ENV=production
 SyslogIdentifier=lobsters-unicorn
 PIDFile=/srv/lobste.rs/run/unicorn.pid
 
-ExecStart=/usr/bin/bundle exec "unicorn_rails -c config/unicorn.conf.rb -E production -D config.ru"
-ExecStop=/usr/bin/pkill -QUIT -f 'unicorn_rails master'
-ExecReload=/usr/bin/pkill -USR2 -f 'unicorn_rails master'
+Restart=always
+RestartSec=60
+StartLimitBurst=5
+StartLimitInterval=3600
+
+ExecStart=/usr/local/bin/bundle exec "unicorn_rails -c config/unicorn.conf.rb -E production -D config.ru"
+ExecReload=/usr/bin/kill -USR2 $MAINPID
+ExecStop=/usr/bin/kill -QUIT $MAINPID
 
 [Install]
 WantedBy=multi-user.target
