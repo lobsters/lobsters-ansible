@@ -2,3 +2,14 @@
   when: "'{{ family }}' == 'debian'"
 - include_tasks: yum.yml
   when: "'{{ family }}' == 'redhat'"
+
+- name: Template my.cnf
+  become: true
+  template:
+    src: my.cnf.j2
+    dest: /etc/mysql/my.cnf
+
+- name: Enable mariadb at startup
+  systemd:
+    name: mysql
+    enabled: yes
