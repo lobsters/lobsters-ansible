@@ -16,3 +16,4 @@
     - ruby-bundler
     - sqlite
     - sqlite-devel
+    - unicorn
