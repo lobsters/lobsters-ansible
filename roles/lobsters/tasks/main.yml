@@ -3,39 +3,16 @@
 - include_tasks: yum.yml
   when: "'{{ family }}' == 'redhat'"
 
-- name: groupadd lobsters
-  tags: user
-  group: name=lobsters gid=1024 state=present
+- include_tasks: user.yml
 
-- name: useradd lobsters
-  tags: user
-  user: >
-    name=lobsters
-    comment='lobste.rs'
-    group=lobsters
-    home='/srv/lobste.rs'
-    state=present
-    uid=1024
-
-- name: mkdir ~lobste.rs/.%
+- name: create lobsters directory
   file: >
+    path="/srv/lobste.rs/{{ item }}/"
     state=directory
-    path="/srv/lobste.rs/.{{ item.file }}"
-    owner=lobsters
-    group=lobsters
-    mode="{{ item.mode }}"
   with_items:
-  - { file: 'ssh', mode: '02700' }
-
-- name: cp % ~lobsters/.%
-  copy: >
-    src="{{ item.file }}"
-    dest="/srv/lobste.rs/.{{ item.file }}"
-    owner=lobsters
-    group=lobsters
-    mode={{ item.mode }}
-  with_items:
-    - { file: 'ssh/known_hosts', mode: '0600' }
+    - http
+    - run
+    - log
 
 - name: git clone lobsters
   become: true
@@ -81,6 +58,7 @@
   with_items:
     - { file: 'app', mode: '0600' }
     - { file: 'public', mode: '0644' }
+    - { file: 'config', mode: '0644' }
 
 - name: recompile assets
   when: clone.changed or bundler.changed or sitefiles.changed
@@ -90,6 +68,22 @@
     RAILS_ENV: production
   command: chdir="/srv/lobste.rs/http" bundle exec rails assets:precompile
 
+- name: copy unicorn systemd service config
+  copy: >
+    src="systemd/lobsters-unicorn.service"
+    dest="/etc/systemd/system/"
+    owner=lobsters
+    group=lobsters
+    mode="0440"
+
+# TODO: Add condition to do this only when systemd unit file changed
+- name: just force systemd to reread configs
+  systemd: >
+    name="lobsters-unicorn"
+    enabled=yes
+    daemon_reload=yes
+
+# TODO: Add step to start if service is stopped since reloaded won't start it
 - name: restart unicorn
   when: clone.changed or bundler.changed or sitefiles.changed
   systemd: >
