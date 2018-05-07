@@ -1,4 +1,4 @@
-worker_processes 12
+worker_processes 15
 user "lobsters"
 working_directory "/srv/lobste.rs/http"
 listen "/srv/lobste.rs/run/unicorn.sock", :backlog => 64
