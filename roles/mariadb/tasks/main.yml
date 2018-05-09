@@ -3,11 +3,13 @@
 - include_tasks: yum.yml
   when: "'{{ family }}' == 'redhat'"
 
-- name: Template my.cnf
-  become: true
-  template:
-    src: my.cnf.j2
-    dest: /etc/mysql/my.cnf
+- name: mariadb config files
+  copy:
+    src: mysql
+    dest: /etc/
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Enable mariadb at startup
   systemd:
