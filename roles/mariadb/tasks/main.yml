@@ -4,12 +4,19 @@
   when: "'{{ family }}' == 'redhat'"
 
 - name: mariadb config files
+  register: mariadb-config
   copy:
     src: mysql
     dest: /etc/
     owner: root
     group: root
     mode: 0644
+
+- name: Use new config
+  when: mariadb-config.changed
+  systemdb:
+    name=mysql
+    state=reloaded
 
 - name: Enable mariadb at startup
   systemd:
