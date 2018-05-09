@@ -20,8 +20,8 @@ StartLimitBurst=5
 StartLimitInterval=3600
 
 ExecStart=/usr/local/bin/bundle exec "unicorn_rails -c config/unicorn.conf.rb -E production -D config.ru"
-ExecReload=/usr/bin/kill -USR2 $MAINPID
-ExecStop=/usr/bin/kill -QUIT $MAINPID
+ExecReload=/bin/kill -USR2 $MAINPID
+ExecStop=/bin/kill -QUIT $MAINPID
 
 [Install]
 WantedBy=multi-user.target
