@@ -83,6 +83,33 @@ server {
     break;
   }
 
+  # file-based full-page caching, bypass if user has cookies
+  set $use_file_cache "";
+  if ($http_cookie ~* "lobster_trap") {
+    set $use_file_cache "${use_file_cache}S";       # S = no session cookie
+  }
+  if ($http_cookie ~* "tag_filters") {
+    set $use_file_cache "${use_file_cache}F";       # F = no filter cookie
+  }
+  if (-f $document_root/cache/$uri/index.html) {
+    set $use_file_cache "${use_file_cache}I";       # I = index file cached
+  }
+  if ($use_file_cache = "SFI") {
+    rewrite (.*) /cache/$1/index.html break;
+  }
+  if (-f $document_root/cache/$uri.html) {
+    set $use_file_cache "${use_file_cache}H";       # H = HTML file cached
+  }
+  if ($use_file_cache = "SFH") {
+    rewrite (.*) /cache/$1.html break;
+  }
+  if (-f $document_root/cache/$uri) {
+    set $use_file_cache "${use_file_cache}O";       # O = other non-extentioned file cached
+  }
+  if ($use_file_cache = "SFO") {
+    rewrite (.*) /cache/$1 break;
+  }
+
   location / {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
