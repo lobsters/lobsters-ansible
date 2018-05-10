@@ -1,5 +1,6 @@
 #!/bin/bash
 
+MAILER="/usr/sbin/sendmail"
 ERRORS_TO="peter@malaprop.org"
 STAMP=`date '+%Y%m%d_%H%M%S'`
 DATE=`date '+%Y%m%d'`
@@ -30,7 +31,7 @@ umask 177
 
 if [ -s $WARNINGS_FILENAME ]; then
   ERROR=`/bin/cat $WARNINGS_FILENAME`
-  echo -e "Subject: Lobsters backup warnings\n\n$ERROR" | /usr/bin/sendmail $ERRORS_TO
+  echo -e "Subject: Lobsters backup warnings\n\n$ERROR" | $MAILER $ERRORS_TO
 fi
 
 # database
