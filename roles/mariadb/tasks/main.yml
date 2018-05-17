@@ -4,7 +4,7 @@
   when: "'{{ family }}' == 'redhat'"
 
 - name: mariadb config files
-  register: mariadb-config
+  register: mariadb_config
   copy:
     src: mysql
     dest: /etc/
@@ -13,7 +13,7 @@
     mode: '0644'
 
 - name: Use new config
-  when: mariadb-config.changed
+  when: mariadb_config.changed
   systemd:
     name: mysql
     state: reloaded

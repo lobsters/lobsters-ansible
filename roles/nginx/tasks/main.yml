@@ -2,3 +2,23 @@
   when: "'{{ family }}' == 'debian'"
 - include_tasks: yum.yml
   when: "'{{ family }}' == 'redhat'"
+
+- name: nginx config files
+  register: nginx_config
+  copy:
+    src: nginx
+    dest: /etc/
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Use new config
+  when: nginx_config.changed
+  systemd:
+    name: nginx
+    state: reloaded
+
+- name: Enable nginx at startup
+  systemd:
+    name: nginx
+    enabled: yes
