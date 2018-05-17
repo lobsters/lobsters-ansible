@@ -112,3 +112,12 @@
     user=lobsters
     minute="*/5"
     job=/usr/local/sbin/lobsters-cron
+
+- name: page expiration cron job
+  tags: cron
+  cron: >
+    state=present
+    name=lobsters-page-expiration
+    user=lobsters
+    minute="*"
+    job=/srv/lobste.rs/http/script/expire_page_cache
