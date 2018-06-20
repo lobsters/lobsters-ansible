@@ -73,22 +73,11 @@ Roles
     lobsters        - web application.
     nginx           - http proxy and SSL termination.
     sysadm          - accounts and ssh shell acess for system administrators.
-    systype         - operating system and host architecture detection.
     postfix         - MX and smtp server.
     unicorn         - Rack/Ruby FastCGI server.
 
 https://docs.ansible.com/ansible/latest/playbooks.html
 https://docs.ansible.com/ansible/latest/playbooks_reuse_roles.html
-
-
-#### Library
-
-The following modules are available:
-
-    systype         - runtime detection of operating system and
-                      machine architecture.
-
-https://docs.ansible.com/ansible/latest/dev_guide/developing_modules.html
 
 
 #### SSH Keys
