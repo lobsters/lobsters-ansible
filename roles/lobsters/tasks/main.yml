@@ -58,11 +58,11 @@
 - name: bundle install
   become: true
   become_user: lobsters
-  shell: bundle install --path http/vendor/bundle
+  shell: bundle install --path vendor/bundle
   register: bundler
   changed_when: "'Installing' in bundler or 'Updating' in bundler or 'upgrade' in bundler"
   args:
-    chdir: "/srv/lobste.rs/http"
+    chdir: "/srv/lobste.rs/http/"
 
 - name: migrate database
   when: clone.changed
@@ -92,7 +92,9 @@
 
 - name: restart unicorn
   when: clone.changed or bundler.changed or sitefiles.changed
-  command: pkill -USR2 -f 'unicorn_rails master'
+  systemd: >
+    name="lobsters-unicorn"
+    state=reloaded
 
 - name: cp cron script
   copy: >
@@ -110,3 +112,12 @@
     user=lobsters
     minute="*/5"
     job=/usr/local/sbin/lobsters-cron
+
+- name: page expiration cron job
+  tags: cron
+  cron: >
+    state=present
+    name=lobsters-page-expiration
+    user=lobsters
+    minute="*"
+    job=/srv/lobste.rs/http/script/expire_page_cache

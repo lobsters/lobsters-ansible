@@ -1,0 +1,9 @@
+# See man 5 aliases for format
+root: peter@push.cx
+postmaster: root
+admin: root
+webmaster: root
+lobsters: root
+contact: root
+pushcx: peter@push.cx
+peter: peter@push.cx

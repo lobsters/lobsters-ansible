@@ -20,7 +20,16 @@
     - { name: 'etc/default/opendkim', mode: '0644' }
     - { name: 'etc/opendkim.conf',    mode: '0644' }
 
+- name: cp /etc/aliases
+  template: >
+    src=etc/aliases
+    dest=/etc/aliases
+    owner=root
+    group=root
+    mode=644
+
 - name: cp /etc/postfix
+  register: postfix_config
   template: >
     src=etc/postfix/{{ item.name }}
     dest=/etc/postfix/{{ item.name }}
@@ -30,3 +39,12 @@
   with_items:
     - { name: 'main.cf',   mode: '0644' }
     - { name: 'master.cf', mode: '0644' }
+    - { name: 'transport', mode: '0644' }
+
+- name: postmap
+  when: postfix_config.changed
+  shell: postmap /etc/postfix/transport
+
+- name: postfix reload
+  when: postfix_config.changed
+  shell: postfix reload

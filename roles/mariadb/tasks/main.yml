@@ -2,3 +2,23 @@
   when: "'{{ ansible_os_family }}' == 'Debian'"
 - include_tasks: yum.yml
   when: "'{{ ansible_os_family }}' == 'RedHat'"
+
+- name: mariadb config files
+  register: mariadb_config
+  copy:
+    src: mysql
+    dest: /etc/
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Use new config
+  when: mariadb_config.changed
+  systemd:
+    name: mysql
+    state: reloaded
+
+- name: Enable mariadb at startup
+  systemd:
+    name: mysql
+    enabled: yes
