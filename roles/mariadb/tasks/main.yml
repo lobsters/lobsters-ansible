@@ -12,6 +12,11 @@
     group: root
     mode: '0644'
 
+- name: debian-start permission
+  file:
+    path: /etc/mysql/debian-start
+    mode: u=rwx,g=rx,o=rx
+
 - name: Use new config
   when: mariadb_config.changed
   systemd:
