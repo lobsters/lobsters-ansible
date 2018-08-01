@@ -96,7 +96,7 @@
     name="lobsters-unicorn"
     state=reloaded
 
-- name: cp cron script
+- name: cp 5m maintenance job
   copy: >
     src="sbin/lobsters-cron"
     dest="/usr/local/sbin/lobsters-cron"
@@ -104,7 +104,7 @@
     group=root
     mode='0755'
 
-- name: add crontab entry
+- name: add crontab entry for maintenance job
   tags: cron
   cron: >
     state=present
@@ -112,6 +112,24 @@
     user=lobsters
     minute="*/5"
     job=/usr/local/sbin/lobsters-cron
+
+- name: cp daily job
+  copy: >
+    src="sbin/lobsters-daily"
+    dest="/usr/local/sbin/lobsters-daily"
+    owner=root
+    group=root
+    mode='0755'
+
+- name: add crontab entry for daily job
+  tags: cron
+  cron: >
+    state=present
+    name=lobsters-cron
+    user=lobsters
+    minute="0"
+    hour="0"
+    job=/usr/local/sbin/lobsters-daily
 
 - name: page expiration cron job
   tags: cron
