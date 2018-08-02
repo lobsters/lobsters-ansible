@@ -125,7 +125,7 @@
   tags: cron
   cron: >
     state=present
-    name=lobsters-cron
+    name=lobsters-daily
     user=lobsters
     minute="0"
     hour="0"
