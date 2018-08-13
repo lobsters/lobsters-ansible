@@ -1,9 +1,16 @@
 # See man 5 aliases for format
+
+# system
 root: peter@push.cx
-postmaster: root
+abuse: root
 admin: root
-webmaster: root
-lobsters: root
 contact: root
-pushcx: peter@push.cx
+help: root
+lobsters: root
+support: root
+postmaster: root
+webmaster: root
+
+# personal
 peter: peter@push.cx
+pushcx: peter@push.cx
