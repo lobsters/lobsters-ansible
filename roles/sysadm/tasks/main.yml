@@ -3,6 +3,6 @@
 - include_tasks: yum.yml
   when: "'{{ ansible_os_family }}' == 'RedHat'"
 - name: include sudo supplementary group
-  include_vars: "{{ family }}.yml"
+  include_vars: "{{ ansible_os_family }}.yml"
 - include_tasks: a.yml
 - include_tasks: pushcx.yml
