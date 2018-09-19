@@ -13,7 +13,7 @@
 
 - name: add tarsnap repo
   apt_repository:
-    repo: "deb http://pkg.tarsnap.com/deb/{{ codename }} ./"
+    repo: "deb http://pkg.tarsnap.com/deb/{{ ansible_distribution_release }} ./"
     state: present
     validate_certs: yes
 

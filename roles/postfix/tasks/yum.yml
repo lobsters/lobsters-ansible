@@ -1,6 +1,0 @@
-- name: yum install postfix
-  yum: name={{ item }} state=latest
-  tags: pkg
-  with_items:
-    - opendkim
-    - postfix

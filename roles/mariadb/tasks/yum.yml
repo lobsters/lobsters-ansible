@@ -1,5 +1,0 @@
-- name: yum install mariadb
-  yum: name={{ item }} state=latest
-  tags: pkg
-  with_items:
-    - mariadb

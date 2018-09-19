@@ -1,7 +1,5 @@
 - include_tasks: apt.yml
-  when: "'{{ ansible_os_family }}' == 'Debian'"
-- include_tasks: yum.yml
-  when: "'{{ ansible_os_family }}' == 'RedHat'"
+
 - name: include sudo supplementary group
   include_vars: "{{ ansible_os_family }}.yml"
 - include_tasks: a.yml

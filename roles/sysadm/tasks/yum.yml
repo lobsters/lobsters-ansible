@@ -1,9 +1,0 @@
-- name: yum install sysadm dependencies
-  yum: name={{ item }} state=latest
-  tags: pkg
-  with_items:
-    - fail2ban
-    - ksh
-    - nvi
-    - psmisc
-    - tmux
