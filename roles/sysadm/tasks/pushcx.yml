@@ -8,7 +8,7 @@
     name=pushcx
     comment='Peter Bhat Harkins'
     group=pushcx
-    groups={{ sudo_group }}
+    groups="adm, sudo"
     state=present
     uid=1090
 

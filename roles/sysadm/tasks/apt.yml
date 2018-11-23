@@ -3,6 +3,7 @@
   tags: pkg
   with_items:
     - fail2ban
+    - htop
     - ksh
     - locate
     - nvi
