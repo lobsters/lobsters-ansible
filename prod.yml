@@ -55,6 +55,13 @@
 #  roles:
 #    - { role: rsync }
 
+- name: search
+  tags: search
+  become: yes
+  hosts: search
+  roles:
+    - { role: search }
+
 - name: sysadm
   tags: sysadm
   become: yes

@@ -1,0 +1,16 @@
+- name: add elastic search public key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: add elastic search repository
+  apt_repository:
+    filename: elasticsearch
+    repo: deb https://artifacts.elastic.co/packages/6.x/apt stable main
+
+- name: apt-get install search dependencies
+  apt: name={{ item }} state=latest update_cache=yes
+  tags: pkg
+  with_items:
+    - apt-transport-https
+    - default-jre-headless
+    - elasticsearch
