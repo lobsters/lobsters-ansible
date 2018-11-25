@@ -16,7 +16,7 @@
   tags: user
   authorized_key: >
     user=pushcx
-    key="{{ lookup('file', 'ssh/{{ item.file }}') }}"
+    key="{{ lookup('file', 'ssh/{{ env }}/{{ item.file }}') }}"
     state=present
   with_items:
     - { file: 'pushcx-20171001.pub' }
@@ -25,7 +25,7 @@
 #  tags: user
 #  authorized_key: >
 #    user=pushcx
-#    key=ssh/{{ item.file }}
+#    key="{{ lookup('file', 'ssh/{{ env }}/{{ item.file }}') }}"
 #    state=absent
 #  with_items:
 #    - { file: 'pushcx-20171001.pub' }

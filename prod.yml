@@ -60,19 +60,24 @@
   become: yes
   hosts: search
   roles:
-    - { role: search }
+    - { role: search,
+        # search middleware not present on test.
+        when: "'{{ env }}' == 'prod'"
+      }
 
 - name: sysadm
   tags: sysadm
   become: yes
   hosts: all:!console
   roles:
-    - { role: sysadm, ps1_fg: red }
+    - { role: sysadm }
 
 - name: tarsnap
   tags: tarsnap
   become: true
   hosts: all:!console
   roles:
-    - { role: tarsnap }
-
+    - { role: tarsnap,
+        # don't back up the test system.
+        when: "'{{ env }}' == 'prod'"
+      }

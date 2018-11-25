@@ -1,3 +1,5 @@
 - include_tasks: apt.yml
 - include_tasks: a.yml
+- include_tasks: hmadison.yml
+  when: "env == 'test'"
 - include_tasks: pushcx.yml

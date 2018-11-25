@@ -8,6 +8,10 @@ To run:
 
     $ ansible-playbook -K prod.yml
 
+When working on test:
+
+    $ ansible-playbook --inventory=inventories/test.ini -K prod.yml
+
 
 #### Playbooks
 
@@ -88,9 +92,13 @@ along with an SSH key pair.
     $ ssh-keygen
     <++> ~/.ssh/config
     Host lobsters.xen.prgmr.com
+      IdentityAgent none
       IdentityFile ~/.ssh/id_rsa-lobste.rs
+      IdentitiesOnly yes
 
     Host lobsters.console.xen.prgmr.com
-      User lobsters
+      IdentityAgent none
       IdentityFile ~/.ssh/id_rsa-lobste.rs
+      IdentitiesOnly yes
+      User lobsters
     <-->

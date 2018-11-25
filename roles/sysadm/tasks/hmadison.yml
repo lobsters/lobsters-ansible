@@ -1,0 +1,31 @@
+- name: groupadd hmadison
+  tags: user
+  group: name=hmadison gid=1097 state=present
+
+- name: useradd hmadison
+  tags: user
+  user: >
+    name=hmadison
+    comment='Hunter Madison'
+    group=hmadison
+    groups="adm, sudo"
+    state=present
+    uid=1097
+
+- name: add hmadison's ssh keys
+  tags: user
+  authorized_key: >
+    user=hmadison
+    key="{{ lookup('file', 'ssh/{{ env }}/{{ item.file }}') }}"
+    state=present
+  with_items:
+    - { file: 'hmadison-20181123.pub' }
+
+#- name: revoke hmadison's ssh keys
+#  tags: user
+#  authorized_key: >
+#    user=hmadison
+#    key="{{ lookup('file', 'ssh/{{ env }}/{{ item.file }}') }}"
+#    state=absent
+#  with_items:
+#    - { file: 'hmadison-20181123.pub' }
