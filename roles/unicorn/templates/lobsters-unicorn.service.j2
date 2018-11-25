@@ -10,7 +10,7 @@ Description=Lobsters Unicorn Server
 User=lobsters
 Group=lobsters
 WorkingDirectory=/srv/lobste.rs/http/
-Environment=RAILS_ENV=production
+Environment=RAILS_ENV={{ env }}
 SyslogIdentifier=lobsters-unicorn
 PIDFile=/srv/lobste.rs/run/unicorn.pid
 
@@ -19,7 +19,7 @@ RestartSec=60
 StartLimitBurst=5
 StartLimitInterval=3600
 
-ExecStart=/usr/local/bin/bundle exec "unicorn_rails -c config/unicorn.conf.rb -E production -D config.ru"
+ExecStart=/usr/local/bin/bundle exec "unicorn_rails -c config/unicorn.conf.rb -E {{ env }} -D config.ru"
 ExecReload=/bin/kill -USR2 $MAINPID
 ExecStop=/bin/kill -QUIT $MAINPID
 

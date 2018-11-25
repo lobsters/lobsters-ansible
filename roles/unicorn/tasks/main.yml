@@ -1,14 +1,5 @@
 - include_tasks: apt.yml
 
-- name: lobsters directory
-  file: >
-    path="/srv/lobste.rs/{{ item }}/"
-    state=directory
-  with_items:
-    - http
-    - run
-    - log
-
 - name: copy up unicorn config
   copy: >
     src="unicorn.conf.rb"
@@ -18,12 +9,12 @@
     mode="0644"
 
 - name: copy unicorn systemd service config
-  copy: >
-    src="lobsters-unicorn.service"
-    dest="/etc/systemd/system/"
-    owner=lobsters
-    group=lobsters
-    mode="0440"
+  template: >
+    src="lobsters-unicorn.service.j2"
+    dest="/etc/systemd/system/lobsters-unicorn.service"
+    owner=root
+    group=root
+    mode="0644"
 
 - name: just force systemd to reread configs
   systemd: >

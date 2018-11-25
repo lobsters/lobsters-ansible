@@ -24,6 +24,18 @@
   with_items:
   - { file: 'ssh', mode: '02700' }
 
+- name: mkdir ~lobste.rs/%
+  file: >
+    state=directory
+    path="/srv/lobste.rs/{{ item.file }}/"
+    owner=lobsters
+    group=lobsters
+    mode="{{ item.mode }}"
+  with_items:
+    - { file: 'http', mode: '0755' }
+    - { file: 'run',  mode: '0755' }
+    - { file: 'log',  mode: '0755' }
+
 - name: cp % ~lobsters/.%
   copy: >
     src="{{ item.file }}"
@@ -64,7 +76,7 @@
 - name: migrate database
   when: clone.changed
   environment:
-    RAILS_ENV: production
+    RAILS_ENV: "{{ env }}"
   command: chdir="/srv/lobste.rs/http" bundle exec rails db:migrate
 
 - name: copy templates and icons
@@ -84,7 +96,7 @@
   become: true
   become_user: lobsters
   environment:
-    RAILS_ENV: production
+    RAILS_ENV: "{{ env }}"
   command: chdir="/srv/lobste.rs/http" bundle exec rails assets:precompile
 
 - name: restart unicorn
@@ -94,8 +106,8 @@
     state=reloaded
 
 - name: cp 5m maintenance job
-  copy: >
-    src="sbin/lobsters-cron"
+  template: >
+    src="sbin/lobsters-cron.j2"
     dest="/usr/local/sbin/lobsters-cron"
     owner=root
     group=root
@@ -111,8 +123,8 @@
     job=/usr/local/sbin/lobsters-cron
 
 - name: cp daily job
-  copy: >
-    src="sbin/lobsters-daily"
+  template: >
+    src="sbin/lobsters-daily.j2"
     dest="/usr/local/sbin/lobsters-daily"
     owner=root
     group=root

@@ -9,7 +9,7 @@ report() {
 trap report ERR
 
 cd /srv/lobste.rs/http
-export RAILS_ENV=production
+export RAILS_ENV={{ env }}
 
 /usr/local/bin/bundle exec rake sitemap:refresh -s
 

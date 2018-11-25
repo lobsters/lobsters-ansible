@@ -1,16 +1,25 @@
 - include_tasks: apt.yml
 
-- name: nginx config files
-  register: nginx_config
+- name: copy environment-agnostic nginx config files
+  register: nginx_agnostic_config
   copy:
-    src: nginx
+    src: _env/nginx
+    dest: /etc/
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: copy environment-specific nginx config files
+  register: nginx_specific_config
+  copy:
+    src: "{{ env }}/nginx"
     dest: /etc/
     owner: root
     group: root
     mode: '0644'
 
 - name: Use new config
-  when: nginx_config.changed
+  when: nginx_agnostic_config.changed or nginx_specific_config.changed
   systemd:
     name: nginx
     state: reloaded

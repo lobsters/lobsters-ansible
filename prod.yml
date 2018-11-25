@@ -6,19 +6,12 @@
   roles:
     - { role: mariadb }
 
-#- name: dns
-#  tags: dns
-#  become: yes
-#  hosts: dns
-#  roles:
-#    - { role: dns }
-
-- name: unicorn
-  tags: unicorn
-  become: yes
-  hosts: www-worker
-  roles:
-    - { role: unicorn }
+# - name: dns
+#   tags: dns
+#   become: yes
+#   hosts: dns
+#   roles:
+#     - { role: dns }
 
 - name: lobsters
   tags: lobsters
@@ -26,6 +19,13 @@
   hosts: www-worker
   roles:
     - { role: lobsters }
+
+- name: unicorn
+  tags: unicorn
+  become: yes
+  hosts: www-worker
+  roles:
+    - { role: unicorn }
 
 - name: nginx
   tags: nginx
@@ -41,19 +41,22 @@
   roles:
     - { role: postfix }
 
-#- name: prgmr
-#  tags: prgmr
-#  become: yes
-#  hosts: console
-#  roles:
-#    - { role: console }
+# - name: prgmr
+#   tags: prgmr
+#   become: yes
+#   hosts: console
+#   roles:
+#     - { role: console }
 
-#- name: rsync
-#  tags: rsync
-#  become: yes
-#  hosts: backup
-#  roles:
-#    - { role: rsync }
+# - name: rsync
+#   tags: rsync
+#   become: yes
+#   hosts: backup
+#   roles:
+#     - { role: rsync,
+#         # don't back up the test system.
+#         when: "env == 'prod'"
+#       }
 
 - name: search
   tags: search
@@ -62,7 +65,7 @@
   roles:
     - { role: search,
         # search middleware not present on test.
-        when: "'{{ env }}' == 'prod'"
+        when: "env == 'prod'"
       }
 
 - name: sysadm
@@ -79,5 +82,5 @@
   roles:
     - { role: tarsnap,
         # don't back up the test system.
-        when: "'{{ env }}' == 'prod'"
+        when: "env == 'prod'"
       }

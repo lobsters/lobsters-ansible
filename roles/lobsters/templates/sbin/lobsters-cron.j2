@@ -9,7 +9,7 @@ report() {
 trap report ERR
 
 cd /srv/lobste.rs/http
-export RAILS_ENV=production
+export RAILS_ENV={{ env }}
 
 /usr/local/bin/bundle exec script/sync_twitter_users
 /usr/local/bin/bundle exec ruby script/mail_new_activity

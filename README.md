@@ -30,6 +30,7 @@ The following host groups are available:
     db              - SQL server.
     dns             - authoritative DNS.
     mx*             - incoming email.
+    search          - search middleware (Elasticsearch).
     smtp*           - outgoing email.
     www*            - http over SSL.
 
@@ -40,10 +41,11 @@ The following variables are available:
 
     backup_server   - database dump, log, static file, and email backup.
     console_server  - serial console (for grub), installer (with live cd),
-                      reverse DNS, and SSH key management. 
+                      reverse DNS, and SSH key management.
     db_server       - SQL server.
     dns_server      - authoritative DNS server.
     mx_server       - incoming mail server.
+    search_server   - search middleware.
     smtp_server     - outgoing mail server.
     www_server      - http.
 
