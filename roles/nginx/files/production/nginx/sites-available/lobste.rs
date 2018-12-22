@@ -58,6 +58,8 @@ server {
   ssl_dhparam /etc/ssl/dhparams-2048.pem;
   ssl_stapling on;
 
+  if ($http_user_agent ~* "Brave") { return 400 "Blocked cryptocurrency scam."; }
+
   location @unicorn {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
