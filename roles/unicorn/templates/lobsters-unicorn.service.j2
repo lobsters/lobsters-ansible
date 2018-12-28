@@ -23,6 +23,6 @@ ExecStart=/usr/local/bin/bundle exec "unicorn_rails -c config/unicorn.conf.rb -E
 ExecReload=/bin/kill -USR2 $MAINPID
 ExecStop=/bin/kill -QUIT $MAINPID
 
+EnvironmentFile=/srv/lobsters/environment
 [Install]
 WantedBy=multi-user.target
-

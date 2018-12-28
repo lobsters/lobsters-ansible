@@ -113,14 +113,24 @@
     group=root
     mode='0755'
 
-- name: add crontab entry for maintenance job
+- name: add timer entry for maintenance job
   tags: cron
-  cron: >
-    state=present
-    name=lobsters-cron
-    user=lobsters
-    minute="*/5"
-    job=/usr/local/sbin/lobsters-cron
+  template: >
+    src="lobsters.timer.j2"
+    dest="/var/lib/systemd/timers/lobsters-cron.timer"
+    owner=root
+    group=root
+    mode='0755'
+  vars:
+    script_name: "/usr/local/sbin/lobsters-cron"
+    frequency: "15min"
+
+- name: enable timer for lobsters-cron
+  tags: cron
+  systemd:
+    name: lobsters-cron.timer
+    state: started
+    enabled: yes
 
 - name: cp daily job
   template: >
@@ -130,15 +140,25 @@
     group=root
     mode='0755'
 
-- name: add crontab entry for daily job
+- name: add timer entry for daily job
   tags: cron
-  cron: >
-    state=present
-    name=lobsters-daily
-    user=lobsters
-    minute="0"
-    hour="0"
-    job=/usr/local/sbin/lobsters-daily
+  template: >
+    src="lobsters.timer.j2"
+    dest="/var/lib/systemd/timers/lobsters-daily.timer"
+    owner=root
+    group=root
+    mode='0755'
+  vars:
+    script_name: "/usr/local/sbin/lobsters-daily"
+    frequency: "1d"
+
+- name: enable timer for lobsters-daily
+  tags: cron
+  systemd:
+    name: lobsters-daily.timer
+    state: started
+    enabled: yes
+
 
 - name: page expiration cron job
   tags: cron

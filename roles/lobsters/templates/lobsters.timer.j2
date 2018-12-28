@@ -1,0 +1,12 @@
+[Unit]
+Description=Run {{ script_name }} every {{ frequency }}
+After=lobsters-unicorn.service
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec={{ frequency }}
+ExecStart={{ script_name }}
+EnvironmentFile=/srv/lobsters/environment
+
+[Install]
+WantedBy=timers.target
