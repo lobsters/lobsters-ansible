@@ -79,18 +79,6 @@
     RAILS_ENV: "{{ env }}"
   command: chdir="/srv/lobste.rs/http" bundle exec rails db:migrate
 
-- name: copy templates and icons
-  copy: >
-    src="{{ item.file }}"
-    dest="/srv/lobste.rs/http/"
-    owner=lobsters
-    group=lobsters
-    mode={{ item.mode }}
-  register: sitefiles
-  with_items:
-    - { file: 'app', mode: '0600' }
-    - { file: 'public', mode: '0644' }
-
 - name: recompile assets
   when: clone.changed or bundler.changed or sitefiles.changed
   become: true
