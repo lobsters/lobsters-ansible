@@ -55,7 +55,7 @@
 #   roles:
 #     - { role: rsync,
 #         # don't back up the test system.
-#         when: "env == 'prod'"
+#         when: "env == 'production'"
 #       }
 
 - name: search
@@ -65,7 +65,7 @@
   roles:
     - { role: search,
         # search middleware not present on test.
-        when: "env == 'prod'"
+        when: "env == 'production'"
       }
 
 - name: sysadm
@@ -82,5 +82,5 @@
   roles:
     - { role: tarsnap,
         # don't back up the test system.
-        when: "env == 'prod'"
+        when: "env == 'production'"
       }
