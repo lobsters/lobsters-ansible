@@ -1,5 +1,8 @@
 - include_tasks: apt.yml
 
+- name: populate service facts
+  service_facts:
+
 - name: groupadd lobsters
   tags: user
   group: name=lobsters gid=1024 state=present
@@ -73,8 +76,18 @@
   args:
     chdir: "/srv/lobste.rs/http/"
 
+- name: update config/database.yml
+  register: database_config
+  template:
+    src: "database.yml.j2"
+    dest: "/srv/lobste.rs/http/config/database.yml"
+    owner: lobsters
+    group: lobsters
+
 - name: migrate database
   when: clone.changed
+  become: true
+  become_user: lobsters
   environment:
     RAILS_ENV: "{{ env }}"
   command: chdir="/srv/lobste.rs/http" bundle exec rails db:migrate
@@ -88,7 +101,7 @@
   command: chdir="/srv/lobste.rs/http" bundle exec rails assets:precompile
 
 - name: restart unicorn
-  when: clone.changed or bundler.changed
+  when: (clone.changed or bundler.changed or sitefiles.changed) and 'lobsters-unicorn' in services
   systemd: >
     name="lobsters-unicorn"
     state=reloaded
