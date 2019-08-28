@@ -18,7 +18,7 @@
   when: mariadb_config.changed
   systemd:
     name: mysql
-    state: reloaded
+    state: restarted
 
 - name: Enable mariadb at startup
   systemd:
