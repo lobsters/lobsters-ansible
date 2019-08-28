@@ -1,6 +1,6 @@
 - name: apt-get install nginx
-  apt: name={{ item }} state=latest update_cache=yes
+  apt:
+    name: "{{ required_packages }}"
+    state: latest
+    update_cache: yes
   tags: pkg
-  with_items:
-    - nginx
-    #- libnginx-mod-http-headers-more-filter

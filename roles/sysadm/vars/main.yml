@@ -1,0 +1,8 @@
+---
+required_packages:
+  - fail2ban
+  - htop
+  - ksh
+  - locate
+  - nvi
+  - tmux
