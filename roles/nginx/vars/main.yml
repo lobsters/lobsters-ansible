@@ -1,0 +1,4 @@
+---
+required_packages:
+  - nginx
+# - libnginx-mod-http-headers-more-filter
