@@ -16,14 +16,14 @@
 - name: lobsters
   tags: lobsters
   become: yes
-  hosts: www-worker
+  hosts: www_worker
   roles:
     - { role: lobsters }
 
 - name: unicorn
   tags: unicorn
   become: yes
-  hosts: www-worker
+  hosts: www_worker
   roles:
     - { role: unicorn }
 
