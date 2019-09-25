@@ -1,2 +1,17 @@
 ---
 - include_tasks: apt.yml
+
+- name: groupadd mockturtle
+  group:
+    name: mockturtle
+    state: present
+  tags: user
+
+- name: useradd mockturtle
+  user:
+    name: mockturtle
+    comment: Mock Turtle
+    home: /srv/turtle.chat
+    group: mockturtle
+    state: present
+  tags: user
