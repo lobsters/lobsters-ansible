@@ -1,0 +1,8 @@
+---
+required_packages:
+  - execline
+  - irker
+  - notqmail
+  - s6
+  - sopel
+  - znc
