@@ -15,3 +15,89 @@
     group: mockturtle
     state: present
   tags: user
+
+- name: mkdir ~mockturtle/%
+  file:
+    path: "/srv/turtle.chat/{{ item }}"
+    owner: mockturtle
+    group: mockturtle
+    state: directory
+  with_items:
+    - bin
+    - mail
+  tags: mail
+
+- name: cp ~mockturtle/bin/%
+  template:
+    src: "{{ item.file }}"
+    dest: "/srv/turtle.chat/bin{{ item.file }}"
+    owner: mockturtle
+    group: mockturtle
+    mode: "{{ item.mode }}"
+  with_items:
+    - { file: 'irk,lobsters', mode: '0775' }
+  tags: mail
+
+- name: cp ~mockturtle/.%
+  copy:
+    src: "{{ item.file }}"
+    dest: "/srv/turtle.chat/.{{ item.file }}"
+    owner: mockturtle
+    group: mockturtle
+    mode: "{{ item.mode }}"
+  with_items:
+    - { file: 'qmail', mode: '0644' }
+    - { file: 'qmail-default', mode: '0644' }
+  tags: mail
+
+# TODO: This override conf is required because the unit included isn't
+#       configuring qmail properly. See about upstreaming this fix.
+
+- name: mkdir /etc/systemd/system/notqmail.service.d
+  file:
+    path: "/etc/systemd/system/notqmail.service.d"
+    state: directory
+  tags: mail
+
+- name: cp /etc/systemd/system/notqmail.service.d/%
+  copy:
+    src: "{{ item.file }}"
+    dest: "/etc/systemd/system/notqmail.service.d/{{ item.file }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { file: 'qmail-override.conf', mode: '0644' }
+  tags: mail
+  notify:
+    - Restart qmail
+
+- name: echo % > /var/lib/qmail/control/%
+  copy:
+    content: "{{ item.content }}"
+    dest: "/var/qmail/control/{{ item.file }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { file: 'me', content: 'turtle.chat', mode: '0644' }
+    - { file: 'rcpthosts', content: 'turtle.chat', mode: '0644' }
+    - { file: 'smtproutes', content: ':turtle.chat', mode: '0644' }
+    - { file: 'virtualdomains', content: 'turtle.chat:mockturtle', mode: '0644' }
+  tags: mail
+  notify:
+    - Restart qmail
+
+- name: cp /var/lib/sopel/modules/%
+  copy:
+    src: "sopel_modules/{{ item | basename }}"
+    dest: "/var/lib/sopel/modules/{{ item | basename}}"
+  with_fileglob:
+    "roles/mockturtle/files/sopel_modules/*"
+  tags: irc
+  notify:
+    - Restart Sopel
+
+- name: cp /etc/sopel.conf
+  template:
+    src: "sopel.conf"
+    dest: "/etc/sopel.cfg"
+  tags: irc
+  notify:
+    - Restart Sopel

@@ -1,0 +1,88 @@
+#!/usr/bin/env python
+
+import json
+import logging
+import re
+import socket
+import sys
+from email.header import decode_header
+from email.parser import Parser
+
+
+def irk(to=None, mess=None):
+    j = {'to': to, 'privmsg': mess}
+    s = socket.create_connection(('127.0.0.1', 6659))
+    s.sendall(json.dumps(j))
+    s.close()
+
+
+def parse(file=None):
+    return Parser().parsestr(file.read())
+
+
+def unrecognized(mess=None):
+    msg = 'skipping |%s|' % mess['Subject']
+    logging.warn(msg)
+
+
+
+def lobsters(mess=None):
+    """
+    2 types of messages, stories and comments.
+    other than the message id, comments have a
+    In-Reply-To with the message id of their
+    story.
+
+    for a story, the subject is the title, with
+    tags in square brackets at the end.
+
+    the source URI is on a Via: line, and the
+    lobste.rs URI is on a Vote: line.
+    """
+    subj = decode_header(mess['Subject'])[0][0]
+
+    if 'In-Reply-To' in mess:
+        logging.info('ignoring lobster.rs comment: %s' % subj)
+        return
+
+    if mess.is_multipart():
+        logging.warn('lobster.rs message is multipart: %s' % subj)
+        return
+
+    body = mess.get_payload()
+    body = body.split("\n")
+    prog = re.compile(r'^Vote:\s*(.*)=$')
+
+    for line in reversed(body):
+        r = prog.match(line)
+        if r:
+            uri = r.group(1)
+            irk(mess='%s (%s) - %s' % (subj,
+                                       mess['From'].split(' ')[0],
+                                       uri),
+                to=['irc://freenode@localhost:6697/#lobsters',
+                    'irc://freenode@localhost:6697/#lobsters-feed'])
+            return
+        if line.startswith('--'):
+            msg = 'could not find URI in message: %s'
+            logging.warn(msg % subj)
+            return
+
+    msg = 'could not find URI in message: %s'
+    logging.warn(msg % subj)
+
+
+def main():
+    mess = parse(file=sys.stdin)
+
+    # logging.getLogger().setLevel(logging.INFO)
+
+    if 'lobsters-{{ lobsters_email_token }}@lobste.rs' == mess['To']:
+        lobsters(mess=mess)
+        return
+
+    unrecognized(mess=mess)
+
+
+if '__main__' == __name__:
+    main()
