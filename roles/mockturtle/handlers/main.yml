@@ -1,0 +1,12 @@
+---
+- name: Restart Sopel
+  systemd:
+    daemon_reload: true
+    name: sopel
+    state: restarted
+
+- name: Restart qmail
+  systemd:
+    daemon_reload: true
+    name: qmail
+    state: restarted
