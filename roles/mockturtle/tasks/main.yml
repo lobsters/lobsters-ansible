@@ -25,12 +25,13 @@
   with_items:
     - bin
     - mail
-  tags: mail
+  tags:
+    - mail
 
 - name: cp ~mockturtle/bin/%
   template:
     src: "{{ item.file }}"
-    dest: "/srv/turtle.chat/bin{{ item.file }}"
+    dest: "/srv/turtle.chat/bin/{{ item.file }}"
     owner: mockturtle
     group: mockturtle
     mode: "{{ item.mode }}"

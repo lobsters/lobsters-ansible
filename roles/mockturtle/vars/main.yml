@@ -1,8 +1,36 @@
 ---
 required_packages:
-  - execline
-  - irker
   - notqmail
-  - s6
   - sopel
-  - znc
+
+sopel:
+  nickname: mockturtle
+  owner: alynpost
+  username: "{{ sopel_username }}"
+  password: "{{ sopel_password }}"
+  admins:
+    - aleph-
+    - c3553eb
+    - pushcx
+  channels:
+    - "#lobsters"
+    - "#lobsters-feed"
+    - "##mockturtle"
+  modules:
+    - clock
+    - find
+    - irker
+    - peterson
+    - quadrille
+    - safety
+    - salute
+    - search
+    - seen
+    - systemd
+    - tell
+    - uptime
+    - url
+    - wikipedia
+    - wiktionary
+    - xkcd
+    - zoidberg
