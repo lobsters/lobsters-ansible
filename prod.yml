@@ -68,6 +68,13 @@
         when: "env == 'production'"
       }
 
+- name: mockturtle
+  tags: mockturtle
+  become: yes
+  hosts: mockturtle
+  roles:
+    - { role: mockturtle }
+
 - name: sysadm
   tags: sysadm
   become: yes
