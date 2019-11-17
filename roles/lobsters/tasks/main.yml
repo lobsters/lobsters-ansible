@@ -81,6 +81,7 @@
   template:
     src: "database.yml.j2"
     dest: "/srv/lobste.rs/http/config/database.yml"
+    force: no
     owner: lobsters
     group: lobsters
 
