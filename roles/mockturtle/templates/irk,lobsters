@@ -10,9 +10,11 @@ from email.parser import Parser
 
 
 def irk(to=None, mess=None):
+    UDP_IP = "127.0.0.1"
+    UDP_PORT = 6659
     j = {'to': to, 'privmsg': mess}
-    s = socket.create_connection(('127.0.0.1', 6659))
-    s.sendall(json.dumps(j))
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.sendto(json.dumps(j, (UDP_IP, UDP_PORT))
     s.close()
 
 
