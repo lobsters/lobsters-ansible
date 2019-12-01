@@ -18,13 +18,17 @@
 
 - name: mkdir ~mockturtle/%
   file:
-    path: "/srv/turtle.chat/{{ item }}"
+    path: "/srv/turtle.chat/{{ item.dir }}"
+    mode: "{{ item.mode }}"
     owner: mockturtle
     group: mockturtle
     state: directory
   with_items:
-    - bin
-    - mail
+    - { mode: "02755", dir: "bin", }
+    - { mode: "02700", dir: "mail", }
+    - { mode: "02700", dir: "mail/cur", }
+    - { mode: "02700", dir: "mail/new", }
+    - { mode: "02700", dir: "mail/tmp", }
   tags:
     - mail
 
