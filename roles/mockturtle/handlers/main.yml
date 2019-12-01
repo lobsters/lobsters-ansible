@@ -10,3 +10,9 @@
     daemon_reload: true
     name: qmail
     state: restarted
+
+- name: Restart qmail-smtpd
+  systemd:
+    daemon_reload: true
+    name: qmail-smtpd
+    state: restarted
