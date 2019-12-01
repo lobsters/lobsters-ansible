@@ -85,7 +85,7 @@
 - name: tarsnap
   tags: tarsnap
   become: true
-  hosts: all:!console
+  hosts: all:!console:!mockturtle
   roles:
     - { role: tarsnap,
         # don't back up the test system.
