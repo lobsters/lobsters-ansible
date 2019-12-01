@@ -1,6 +1,6 @@
 - name: groupadd pushcx
   tags: user
-  group: name=pushcx gid=1090 state=present
+  group: name=pushcx state=present
 
 - name: useradd pushcx
   tags: user
@@ -10,7 +10,6 @@
     group=pushcx
     groups="adm, sudo"
     state=present
-    uid=1090
 
 - name: add pushcx's ssh keys
   tags: user

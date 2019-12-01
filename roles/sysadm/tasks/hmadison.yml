@@ -1,6 +1,6 @@
 - name: groupadd hmadison
   tags: user
-  group: name=hmadison gid=1097 state=present
+  group: name=hmadison state=present
 
 - name: useradd hmadison
   tags: user
@@ -10,7 +10,6 @@
     group=hmadison
     groups="adm, sudo"
     state=present
-    uid=1097
 
 - name: add hmadison's ssh keys
   tags: user
