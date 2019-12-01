@@ -1,5 +1,7 @@
 - include_tasks: apt.yml
 - include_tasks: a.yml
+- include_tasks: aleph.yml
+  when: "env == 'test' or 'mockturtle' in group_names"
 - include_tasks: hmadison.yml
-  when: "env == 'test'"
+  when: "env == 'test' or 'mockturtle' in group_names"
 - include_tasks: pushcx.yml

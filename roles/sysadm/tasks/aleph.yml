@@ -1,0 +1,29 @@
+- name: groupadd aleph
+  tags: user
+  group: name=aleph state=present
+
+- name: useradd aleph
+  tags: user
+  user: >
+    name=aleph
+    group=aleph
+    groups="adm, sudo"
+    state=present
+
+- name: add aleph's ssh keys
+  tags: user
+  authorized_key: >
+    user=aleph
+    key="{{ lookup('file', 'ssh/{{ env }}/{{ item.file }}') }}"
+    state=present
+  with_items:
+    - { file: 'aleph-20190301.pub' }
+
+#- name: revoke aleph's ssh keys
+#  tags: user
+#  authorized_key: >
+#    user=aleph
+#    key="{{ lookup('file', 'ssh/{{ env }}/{{ item.file }}') }}"
+#    state=absent
+#  with_items:
+#    - { file: 'aleph-20190301.pub' }
