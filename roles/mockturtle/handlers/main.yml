@@ -14,5 +14,5 @@
 - name: Restart qmail-smtpd
   systemd:
     daemon_reload: true
-    name: qmail-smtpd
+    name: qmail-smtpd.socket
     state: restarted
