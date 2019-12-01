@@ -75,6 +75,19 @@
   notify:
     - Restart qmail
 
+- name: cp /etc/systemd/system/%
+  copy:
+    src: "{{ item.file }}"
+    dest: "/etc/systemd/system/{{ item.file }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { file: 'qmail-smtpd@.service', mode: '0644' }
+    - { file: 'qmail-smtpd.socket', mode: '0644' }
+  tags: mail
+  notify:
+    - Restart qmail-smtpd
+
+
 - name: echo % > /var/lib/qmail/control/%
   copy:
     content: "{{ item.content }}"
