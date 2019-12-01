@@ -1,13 +1,22 @@
 ---
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  tags: pkg
+  with_items:
+    - gpg
+
 - name: Add notqmail pgp key
   apt_key:
-    url: https://download.opensuse.org/repositories/home:/notqmail/xUbuntu_19.04/Release.key
+    url: https://download.opensuse.org/repositories/home:/notqmail/xUbuntu_18.04/Release.key
     state: present
   tags: pkg
 
 - name: Add notqmail repository
   apt_repository:
-    repo: deb https://download.opensuse.org/repositories/home:/notqmail/xUbuntu_19.04/ ./
+    repo: deb https://download.opensuse.org/repositories/home:/notqmail/xUbuntu_18.04/ ./
     state: present
   tags: pkg
 
@@ -15,5 +24,4 @@
   apt:
     name: "{{ required_packages }}"
     state: latest
-    update_cache: yes
   tags: pkg
