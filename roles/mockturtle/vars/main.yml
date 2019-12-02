@@ -19,6 +19,7 @@ sopel:
   modules:
     - clock
     - find
+    - invite
     - irker
     - peterson
     - quadrille
