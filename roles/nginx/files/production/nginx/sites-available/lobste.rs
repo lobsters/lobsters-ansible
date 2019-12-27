@@ -39,6 +39,8 @@ server {
 
 # main lobste.rs
 server {
+  error_page 420 = @calm;	
+	
   listen 71.19.148.33:443 ssl http2 default_server;
   listen [2605:2700:0:2:a800:ff:fe83:b1e7]:443 ssl http2 default_server;
   server_name lobste.rs;
@@ -59,7 +61,16 @@ server {
   ssl_stapling on;
 
   if ($http_user_agent ~* "Brave") { return 400 "Blocked cryptocurrency scam."; }
-
+  if ( $args ~ "q=domain:" ) { return 420; }
+	
+  location @calm {
+    gzip_static on;
+    expires     max;
+    add_header  Cache-Control public;
+    
+    try_files calm.html;
+  }
+	
   location @unicorn {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
