@@ -68,7 +68,7 @@ server {
     expires     max;
     add_header  Cache-Control public;
     
-    try_files calm.html;
+    try_files $uri /calm.html;
   }
 	
   location @unicorn {
