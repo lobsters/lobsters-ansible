@@ -7,8 +7,8 @@ server {
   listen 71.19.148.33:80;
   listen [2605:2700:0:2:a800:ff:fe83:b1e7]:80;
   server_name lobste.rs;
-	access_log /var/log/nginx/lobste.rs.access.log main;
-	error_log /var/log/nginx/lobste.rs.error.log;
+  access_log /var/log/nginx/lobste.rs.access.log main;
+  error_log /var/log/nginx/lobste.rs.error.log;
   rewrite ^/(.*)$ https://lobste.rs/$1 permanent;
   keepalive_timeout 0;
 }
@@ -18,8 +18,8 @@ server {
   listen 71.19.148.33:443 ssl;
   listen [2605:2700:0:2:a800:ff:fe83:b1e7]:443 ssl;
   server_name www.lobste.rs;
-	access_log /var/log/nginx/lobste.rs.access.log main;
-	error_log /var/log/nginx/lobste.rs.error.log;
+  access_log /var/log/nginx/lobste.rs.access.log main;
+  error_log /var/log/nginx/lobste.rs.error.log;
   keepalive_timeout 0;
   server_tokens off;
 
@@ -33,20 +33,18 @@ server {
   ssl_stapling on;
 
   rewrite ^/(.*)$ https://lobste.rs/$1 permanent;
-	# needs libnginx-mod-http-headers-more-filter available in zesty.
+  # needs libnginx-mod-http-headers-more-filter available in zesty.
   #more_set_headers 'X-Frame-Options: DENY' 'Strict-Transport-Security: max-age=15552000; includeSubDomains; preload';
 }
 
 # main lobste.rs
 server {
-  error_page 420 = @calm;	
-	
   listen 71.19.148.33:443 ssl http2 default_server;
   listen [2605:2700:0:2:a800:ff:fe83:b1e7]:443 ssl http2 default_server;
   server_name lobste.rs;
 
-	access_log /var/log/nginx/lobste.rs.access.log main;
-	error_log /var/log/nginx/lobste.rs.error.log;
+  access_log /var/log/nginx/lobste.rs.access.log main;
+  error_log /var/log/nginx/lobste.rs.error.log;
 
   root /srv/lobste.rs/http/public;
 
@@ -61,16 +59,7 @@ server {
   ssl_stapling on;
 
   if ($http_user_agent ~* "Brave") { return 400 "Blocked cryptocurrency scam."; }
-  if ( $args ~ "q=domain:" ) { return 420; }
-	
-  location @calm {
-    gzip_static on;
-    expires     max;
-    add_header  Cache-Control public;
-    
-    try_files $uri /calm.html;
-  }
-	
+
   location @unicorn {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
@@ -135,7 +124,7 @@ server {
     }
   }
 
-	# needs libnginx-mod-http-headers-more-filter available in zesty.
+  # needs libnginx-mod-http-headers-more-filter available in zesty.
   #more_set_headers 'X-Frame-Options: DENY' 'Strict-Transport-Security: max-age=15552000; includeSubDomains; preload';
 
   error_page 500 502 503 504 /500.html;
