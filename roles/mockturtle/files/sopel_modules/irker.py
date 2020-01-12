@@ -8,15 +8,21 @@ import sopel
 
 from urllib.parse import urlparse
 
-import logging
+import atexit
 import json
+import logging
 import socket
+import sys
 
 class IrkerSection(StaticSection):
     listen_port = ValidatedAttribute('listen_port', int)
 
 def setup(bot):
     bot.config.define_section('irker', IrkerSection)
+
+def close_socket(logger, socket):
+    logger.info('Cleaning up irker socket.')
+    socket.close()
 
 @sopel.module.event(events.RPL_WELCOME)
 @sopel.module.rule('.*')
@@ -28,6 +34,8 @@ def irk(bot, trigger):
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind(("127.0.0.1", bot.config.irker.listen_port))
+
+    atexit.register(close_socket, logger, sock)
 
     while True:
         data, addr = sock.recvfrom(1024)
@@ -45,3 +53,6 @@ def irk(bot, trigger):
 
         except ValueError:
             logger.info('Unable to decode input Received: %s.', data)
+        except OSError as err:
+            logger.error('OS Error encountered: %s.', err)
+            sys.exit(409)
