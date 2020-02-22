@@ -104,10 +104,10 @@
 
 - name: cp /var/lib/sopel/modules/%
   copy:
-    src: "sopel_modules/{{ item | basename }}"
+    src: "{{ item }}"
     dest: "/var/lib/sopel/modules/{{ item | basename}}"
   with_fileglob:
-    "roles/mockturtle/files/sopel_modules/*"
+    "mockturtle/*.py"
   tags: irc
   notify:
     - Restart Sopel
