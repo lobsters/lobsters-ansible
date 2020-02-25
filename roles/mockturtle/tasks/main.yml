@@ -55,6 +55,14 @@
     - { file: 'qmail-default', mode: '0644' }
   tags: mail
 
+- name: pip install sopel
+  pip:
+    name: sopel
+    version: 7.0.0
+    virtualenv: /var/lib/sopel/virtualenv
+    virtualenv_python: /usr/bin/python3
+  tags: irc
+
 # TODO: This override conf is required because the unit included isn't
 #       configuring qmail properly. See about upstreaming this fix.
 
@@ -87,6 +95,16 @@
   notify:
     - Restart qmail-smtpd
 
+- name: cp /etc/systemd/system/%
+  copy:
+    src: "{{ item.file }}"
+    dest: "/etc/systemd/system/{{ item.file }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { file: 'sopel.service', mode: '0644' }
+  tags: irc
+  notify:
+    - Restart sopel
 
 - name: echo % > /var/lib/qmail/control/%
   copy:

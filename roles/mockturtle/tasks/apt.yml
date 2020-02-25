@@ -7,6 +7,8 @@
   tags: pkg
   with_items:
     - gpg
+    - sopel
+    - virtualenv
 
 - name: Add notqmail pgp key
   apt_key:
