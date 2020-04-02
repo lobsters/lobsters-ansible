@@ -43,6 +43,7 @@ fi
 
 # logs and config files not in ansible repo
 /usr/bin/tarsnap -c -f "$(uname -n)-logs-$STAMP" \
+  /etc/letsencrypt/renewal/lobste.rs.conf \
   /root/backup.password.cnf \
   /srv/lobste.rs/http/config/database.yml \
   /srv/lobste.rs/http/config/initializers/production.rb \
