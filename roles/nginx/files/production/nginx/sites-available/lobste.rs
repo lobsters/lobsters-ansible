@@ -48,6 +48,10 @@ server {
 
   root /srv/lobste.rs/http/public;
 
+  if (-f $document_root/maintenance.html) {
+     return 503;
+  }
+
   ssl on;
   ssl_certificate /etc/letsencrypt/live/lobste.rs/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/lobste.rs/privkey.pem;
@@ -127,7 +131,7 @@ server {
   # needs libnginx-mod-http-headers-more-filter available in zesty.
   #more_set_headers 'X-Frame-Options: DENY' 'Strict-Transport-Security: max-age=15552000; includeSubDomains; preload';
 
-  error_page 500 502 503 504 /500.html;
+  error_page 500 502 504 /500.html;
   location = /500.html {
     root /srv/lobste.rs/http/public;
   }

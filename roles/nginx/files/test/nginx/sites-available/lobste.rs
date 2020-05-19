@@ -11,6 +11,10 @@ server {
 
   root /srv/lobste.rs/http/public;
 
+  if (-f $document_root/maintenance.html) {
+     return 503;
+  }
+
   location @unicorn {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
@@ -78,7 +82,7 @@ server {
 	# needs libnginx-mod-http-headers-more-filter available in zesty.
   #more_set_headers 'X-Frame-Options: DENY' 'Strict-Transport-Security: max-age=15552000; includeSubDomains; preload';
 
-  error_page 500 502 503 504 /500.html;
+  error_page 500 502 504 /500.html;
   location = /500.html {
     root /srv/lobste.rs/http/public;
   }
