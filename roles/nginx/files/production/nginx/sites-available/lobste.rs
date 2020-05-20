@@ -1,5 +1,5 @@
 upstream lobsters_unicorn_server {
-  server unix:/srv/lobste.rs/run/unicorn.sock fail_timeout=0;
+  server unix:/srv/lobste.rs/tmp/puma.sock fail_timeout=1;
 }
 
 # lobste.rs http->https redirection
@@ -49,7 +49,8 @@ server {
   root /srv/lobste.rs/http/public;
 
   if (-f $document_root/maintenance.html) {
-     return 503;
+    rewrite  ^(.*)$  /maintenance.html last;
+    return 503;
   }
 
   ssl on;
