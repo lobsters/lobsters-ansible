@@ -1,5 +1,5 @@
 upstream lobsters_unicorn_server {
-  server unix:/srv/lobste.rs/tmp/puma.sock fail_timeout=1;
+  server unix:/srv/lobste.rs/http/tmp/puma.sock fail_timeout=1;
 }
 
 # lobste.rs http->https redirection
