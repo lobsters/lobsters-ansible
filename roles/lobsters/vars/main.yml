@@ -10,6 +10,6 @@ required_packages:
   - make
   - mariadb-client
   - nodejs
-  - ruby2.3
-  - ruby2.3-dev
+  - ruby2.7
+  - ruby2.7-dev
   - sqlite3
