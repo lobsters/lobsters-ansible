@@ -70,7 +70,7 @@
 - name: bundle install
   become: true
   become_user: lobsters
-  shell: bundle install --path vendor/bundle
+  shell: bin/bundle install --path vendor/bundle
   register: bundler
   changed_when: "'Installing' in bundler or 'Updating' in bundler or 'upgrade' in bundler"
   args:
@@ -91,7 +91,7 @@
   become_user: lobsters
   environment:
     RAILS_ENV: "{{ env }}"
-  command: chdir="/srv/lobste.rs/http" bundle exec rails db:migrate
+  command: chdir="/srv/lobste.rs/http" bin/bundle exec rails db:migrate
 
 - name: recompile assets
   when: clone.changed or bundler.changed
@@ -99,12 +99,12 @@
   become_user: lobsters
   environment:
     RAILS_ENV: "{{ env }}"
-  command: chdir="/srv/lobste.rs/http" bundle exec rails assets:precompile
+  command: chdir="/srv/lobste.rs/http" bin/bundle exec rails assets:precompile
 
-- name: restart unicorn
-  when: (clone.changed or bundler.changed or sitefiles.changed) and 'lobsters-unicorn' in services
+- name: restart puma
+  when: (clone.changed or bundler.changed or sitefiles.changed) and 'puma' in services
   systemd: >
-    name="lobsters-unicorn"
+    name="puma"
     state=reloaded
 
 - name: cp 5m maintenance job

@@ -80,7 +80,7 @@ Roles
     nginx           - http proxy and SSL termination.
     sysadm          - accounts and ssh shell acess for system administrators.
     postfix         - MX and smtp server.
-    unicorn         - Rack/Ruby FastCGI server.
+    puma            - App server
 
 https://docs.ansible.com/ansible/latest/playbooks.html
 https://docs.ansible.com/ansible/latest/playbooks_reuse_roles.html

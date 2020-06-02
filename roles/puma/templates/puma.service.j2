@@ -1,0 +1,38 @@
+[Unit]
+Description=Puma HTTP Server
+After=mysql.service
+
+# Uncomment for socket activation (see below)
+# Requires=puma.socket
+
+[Service]
+# Foreground process (do not use --daemon in ExecStart or config.rb)
+Type=simple
+User=lobsters
+Group=lobsters
+WorkingDirectory=/srv/lobste.rs/http
+SyslogIdentifier=puma
+
+Restart=always
+RestartSec=60
+StartLimitBurst=5
+StartLimitInterval=3600
+
+Environment=RAILS_ENV={{ env }} RUBYOPT='-W:no-deprecated'
+# Environment=PUMA_DEBUG=1
+
+# SystemD will not run puma even if it is in your path. You must specify
+# an absolute URL to puma. For example /usr/local/bin/puma
+# Alternatively, create a binstub with `bundle binstubs puma --path ./sbin` in the WorkingDirectory
+ExecStart=/srv/lobste.rs/http/bin/puma -C /srv/lobste.rs/http/config/puma.rb
+
+# Variant: Rails start.
+# ExecStart=/<FULLPATH>/bin/puma -C <YOUR_APP_PATH>/config/puma.rb ../config.ru
+
+# Variant: Use `bundle exec --keep-file-descriptors puma` instead of binstub
+# Variant: Specify directives inline.
+# ExecStart=/<FULLPATH>/puma -b tcp://0.0.0.0:9292 -b ssl://0.0.0.0:9293?key=key.pem&cert=cert.pem
+
+[Install]
+WantedBy=multi-user.target
+
