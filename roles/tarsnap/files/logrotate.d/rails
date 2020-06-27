@@ -2,6 +2,6 @@
 {
   copytruncate
   postrotate
-    kill -s HUP `cat /srv/lobste.rs/run/unicorn.pid`
+    kill -s HUP `cat /srv/lobste.rs/run/puma.pid`
   endscript
 }

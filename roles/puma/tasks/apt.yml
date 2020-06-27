@@ -1,6 +1,0 @@
-- name: apt-get install unicorn
-  apt:
-    name: "{{ required_packages }}"
-    state: latest
-    update_cache: yes
-  tags: pkg

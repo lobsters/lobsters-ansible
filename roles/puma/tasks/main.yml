@@ -1,23 +1,17 @@
 - include_tasks: apt.yml
 
-- name: copy up unicorn config
-  copy: >
-    src="unicorn.conf.rb"
-    dest="/srv/lobste.rs/http/config"
-    owner=lobsters
-    group=lobsters
-    mode="0644"
+# puma config lives in the rails repo
 
-- name: copy unicorn systemd service config
+- name: copy puma systemd service config
   template: >
-    src="lobsters-unicorn.service.j2"
-    dest="/etc/systemd/system/lobsters-unicorn.service"
+    src="lobsters-puma.service.j2"
+    dest="/etc/systemd/system/lobsters-puma.service"
     owner=root
     group=root
     mode="0644"
 
 - name: just force systemd to reread configs
   systemd: >
-    name="lobsters-unicorn"
+    name="lobsters-puma"
     enabled=yes
     daemon_reload=yes

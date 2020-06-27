@@ -102,10 +102,10 @@
   command: chdir="/srv/lobste.rs/http" bin/bundle exec rails assets:precompile
 
 - name: restart puma
-  when: (clone.changed or bundler.changed or sitefiles.changed) and 'puma' in services
+  when: (clone.changed or bundler.changed or sitefiles.changed)
   systemd: >
     name="puma"
-    state=reloaded
+    state=restart
 
 - name: cp 5m maintenance job
   template: >

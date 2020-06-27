@@ -1,4 +1,4 @@
-upstream lobsters_unicorn_server {
+upstream lobsters_puma_server {
   server unix:/srv/lobste.rs/tmp/puma.sock fail_timeout=0;
 }
 
@@ -16,12 +16,12 @@ server {
     return 503;
   }
 
-  location @unicorn {
+  location @puma {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_set_header X-Forwarded-Proto http;
     proxy_redirect off;
-    proxy_pass http://lobsters_unicorn_server;
+    proxy_pass http://lobsters_puma_server;
   }
 
   location ~ ^/assets/ {
@@ -32,12 +32,12 @@ server {
   }
 
   location ~ ^/avatars/ {
-    error_page 418 = @unicorn;
+    error_page 418 = @puma;
     recursive_error_pages on;
 
     expires     max;
     add_header  Cache-Control public;
-    try_files $uri @unicorn;
+    try_files $uri @puma;
     break;
   }
 
@@ -75,12 +75,12 @@ server {
     proxy_redirect off;
 
     if (!-f $request_filename) {
-      proxy_pass http://lobsters_unicorn_server;
+      proxy_pass http://lobsters_puma_server;
       break;
     }
   }
 
-	# needs libnginx-mod-http-headers-more-filter available in zesty.
+  # needs libnginx-mod-http-headers-more-filter available in zesty.
   #more_set_headers 'X-Frame-Options: DENY' 'Strict-Transport-Security: max-age=15552000; includeSubDomains; preload';
 
   error_page 500 502 504 /500.html;

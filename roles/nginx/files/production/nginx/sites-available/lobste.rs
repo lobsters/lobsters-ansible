@@ -1,4 +1,4 @@
-upstream lobsters_unicorn_server {
+upstream lobsters_puma_server {
   server unix:/srv/lobste.rs/http/tmp/puma.sock fail_timeout=1;
 }
 
@@ -65,12 +65,12 @@ server {
 
   if ($http_user_agent ~* "Brave") { return 400 "Blocked cryptocurrency scam."; }
 
-  location @unicorn {
+  location @puma {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_set_header X-Forwarded-Proto https;
     proxy_redirect off;
-    proxy_pass http://lobsters_unicorn_server;
+    proxy_pass http://lobsters_puma_server;
   }
 
   location ~ ^/assets/ {
@@ -81,12 +81,12 @@ server {
   }
 
   location ~ ^/avatars/ {
-    error_page 418 = @unicorn;
+    error_page 418 = @puma;
     recursive_error_pages on;
 
     expires     max;
     add_header  Cache-Control public;
-    try_files $uri @unicorn;
+    try_files $uri @puma;
     break;
   }
 
@@ -124,7 +124,7 @@ server {
     proxy_redirect off;
 
     if (!-f $request_filename) {
-      proxy_pass http://lobsters_unicorn_server;
+      proxy_pass http://lobsters_puma_server;
       break;
     }
   }

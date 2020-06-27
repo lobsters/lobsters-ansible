@@ -20,12 +20,12 @@
   roles:
     - { role: lobsters }
 
-- name: unicorn
-  tags: unicorn
+- name: puma
+  tags: puma
   become: yes
   hosts: www_worker
   roles:
-    - { role: unicorn }
+    - { role: puma }
 
 - name: nginx
   tags: nginx
