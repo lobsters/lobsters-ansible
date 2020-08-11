@@ -11,6 +11,11 @@ trap report ERR
 cd /srv/lobste.rs/http
 export RAILS_ENV={{ env }}
 
+if [ -f public/maintenance.html ];
+then
+  exit 0
+fi
+
 /usr/local/bin/bundle exec ruby script/sync_twitter_users
 /usr/local/bin/bundle exec ruby script/mail_new_activity.rb
 /usr/local/bin/bundle exec ruby script/post_to_twitter
