@@ -105,7 +105,7 @@
   when: (clone.changed or bundler.changed or sitefiles.changed)
   systemd: >
     name="puma"
-    state=restart
+    state=restarted
 
 - name: cp 5m maintenance job
   template: >
