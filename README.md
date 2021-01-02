@@ -91,16 +91,3 @@ https://docs.ansible.com/ansible/latest/playbooks_reuse_roles.html
 To use this playbook, you'll need an account in the sysadm role
 along with an SSH key pair.
 
-    $ ssh-keygen
-    <++> ~/.ssh/config
-    Host lobsters.xen.prgmr.com
-      IdentityAgent none
-      IdentityFile ~/.ssh/id_rsa-lobste.rs
-      IdentitiesOnly yes
-
-    Host lobsters.console.xen.prgmr.com
-      IdentityAgent none
-      IdentityFile ~/.ssh/id_rsa-lobste.rs
-      IdentitiesOnly yes
-      User lobsters
-    <-->

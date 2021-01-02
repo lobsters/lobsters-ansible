@@ -5,7 +5,7 @@ upstream lobsters_puma_server {
 server {
   listen 71.19.144.172:80 default_server;
   listen [2605:2700:0:2:a800:ff:fec3:aba2]:80 default_server;
-  server_name lobsters-test.xen.prgmr.com;
+  server_name test.lobste.rs;
   access_log /var/log/nginx/lobste.rs.access.log main;
   error_log /var/log/nginx/lobste.rs.error.log;
 

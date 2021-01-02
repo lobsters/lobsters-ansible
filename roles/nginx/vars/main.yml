@@ -1,4 +1,5 @@
 ---
 required_packages:
   - nginx
+  - certbot
 # - libnginx-mod-http-headers-more-filter

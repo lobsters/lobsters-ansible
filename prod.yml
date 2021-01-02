@@ -1,18 +1,4 @@
 ---
-- name: mariadb
-  tags: mariadb
-  become: yes
-  hosts: db
-  roles:
-    - { role: mariadb }
-
-# - name: dns
-#   tags: dns
-#   become: yes
-#   hosts: dns
-#   roles:
-#     - { role: dns }
-
 - name: lobsters
   tags: lobsters
   become: yes
@@ -41,51 +27,24 @@
   roles:
     - { role: postfix }
 
-# - name: prgmr
-#   tags: prgmr
-#   become: yes
-#   hosts: console
-#   roles:
-#     - { role: console }
-
-# - name: rsync
-#   tags: rsync
-#   become: yes
-#   hosts: backup
-#   roles:
-#     - { role: rsync,
-#         # don't back up the test system.
-#         when: "env == 'production'"
-#       }
-
-- name: search
-  tags: search
-  become: yes
-  hosts: search
-  roles:
-    - { role: search,
-        # search middleware not present on test.
-        when: "env == 'production'"
-      }
-
-- name: mockturtle
-  tags: mockturtle
-  become: yes
-  hosts: mockturtle
-  roles:
-    - { role: mockturtle }
+#- name: mockturtle
+#  tags: mockturtle
+#  become: yes
+#  hosts: mockturtle
+#  roles:
+#    - { role: mockturtle }
 
 - name: sysadm
   tags: sysadm
   become: yes
-  hosts: all:!console
+  hosts: all
   roles:
     - { role: sysadm }
 
 - name: tarsnap
   tags: tarsnap
   become: true
-  hosts: all:!console:!mockturtle
+  hosts: all:!mockturtle
   roles:
     - { role: tarsnap,
         # don't back up the test system.
