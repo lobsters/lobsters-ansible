@@ -18,7 +18,7 @@
     key="{{ lookup('file', 'ssh/{{ env }}/{{ item.file }}') }}"
     state=present
   with_items:
-    - { file: 'hmadison-20181123.pub' }
+    - { file: 'hmadison.pub' }
 
 #- name: revoke hmadison's ssh keys
 #  tags: user
@@ -27,4 +27,4 @@
 #    key="{{ lookup('file', 'ssh/{{ env }}/{{ item.file }}') }}"
 #    state=absent
 #  with_items:
-#    - { file: 'hmadison-20181123.pub' }
+#    - { file: 'hmadison.pub' }
