@@ -17,7 +17,7 @@
     key="{{ lookup('file', 'ssh/{{ env }}/{{ item.file }}') }}"
     state=present
   with_items:
-    - { file: 'aleph-20190301.pub' }
+    - { file: 'aleph.pub' }
 
 #- name: revoke aleph's ssh keys
 #  tags: user
