@@ -104,7 +104,7 @@
 - name: restart puma
   when: (clone.changed or bundler.changed)
   systemd: >
-    name="puma"
+    name="lobsters-puma"
     state=restarted
 
 - name: cp 5m maintenance job
