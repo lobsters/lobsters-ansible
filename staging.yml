@@ -1,0 +1,37 @@
+---
+- name: lobsters
+  tags: lobsters
+  become: yes
+  hosts: www_worker
+  roles:
+    - { role: lobsters }
+
+- name: puma
+  tags: puma
+  become: yes
+  hosts: www_worker
+  roles:
+    - { role: puma }
+
+- name: mariadb
+  tags: mariadb
+  become: yes
+  hosts: www_worker
+  roles:
+    - { role: puma }
+
+- name: nginx
+  tags: nginx
+  become: yes
+  hosts: www
+  roles:
+    - { role: nginx }
+
+# deliberately no postfix config - don't want staging hassling people
+
+- name: sysadm
+  tags: sysadm
+  become: yes
+  hosts: all
+  roles:
+    - { role: sysadm }

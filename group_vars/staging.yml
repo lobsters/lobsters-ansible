@@ -1,4 +1,4 @@
-db_host: stage01
-mx_host: stage01
-smtp_host: stage01
-www_host: stage01
+db_host: stage01.lobste.rs
+mx_host: stage01.lobste.rs
+smtp_host: stage01.lobste.rs
+www_host: stage01.lobste.rs

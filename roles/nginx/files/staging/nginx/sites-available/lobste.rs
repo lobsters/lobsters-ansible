@@ -1,9 +1,9 @@
 upstream lobsters_puma_server {
-  server unix:/srv/lobste.rs/tmp/puma.sock fail_timeout=0;
+  server unix:/srv/lobste.rs/http/tmp/puma.sock fail_timeout=0;
 }
 
 server {
-  listen :: default_server;
+  listen 80 default_server;
   listen [::]:80 default_server;
   server_name stage01.lobste.rs;
   access_log /var/log/nginx/lobste.rs.access.log main;
