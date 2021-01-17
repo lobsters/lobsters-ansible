@@ -1,0 +1,33 @@
+---
+- include_tasks: apt.yml
+
+- name: Install the bot
+  shell: gem install lobstersbot
+
+- name: mkdir ~lobstersbot/%
+  file: >
+    state=directory
+    path="/srv/lobstersbot/{{ item.file }}"
+    mode="{{ item.mode }}"
+  with_items:
+    - { file: 'config', mode: '0755' }
+
+- name: cp ~lobstersbot/config/config.yml
+  template:
+    src: "config.j2"
+    dest: "/srv/lobstersbot/config/lobstersbot.yml"
+    force: no
+    
+- name: copy bot systemd service config
+  template: >
+    src="unit.j2"
+    dest="/etc/systemd/system/lobstersbot.service"
+    owner=root
+    group=root
+    mode="0644"
+
+- name: just force systemd to reread configs
+  systemd: >
+    name="lobstersbot"
+    enabled=yes
+    daemon_reload=yes

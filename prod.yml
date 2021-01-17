@@ -27,12 +27,12 @@
   roles:
     - { role: postfix }
 
-#- name: mockturtle
-#  tags: mockturtle
-#  become: yes
-#  hosts: mockturtle
-#  roles:
-#    - { role: mockturtle }
+- name: lobstersbot
+  tags: lobstersbot
+  become: yes
+  hosts: lobstersbot
+  roles:
+    - { role: lobstersbot }
 
 - name: sysadm
   tags: sysadm

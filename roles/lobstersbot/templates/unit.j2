@@ -1,0 +1,10 @@
+[Unit]
+Description=Lobste.rs IRC bot
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/lobstersbot /srv/lobstersbot/config
+
+[Install]
+WantedBy=multi-user.target
