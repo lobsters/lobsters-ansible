@@ -134,6 +134,7 @@ alias fd=fdfind
 alias vi=vim
 set -o vi
 alias g=git
+alias gerp=grep
 export EDITOR=vim
 export RAILS_ENV=production
 
