@@ -63,14 +63,6 @@
     dest='/srv/lobste.rs/http'
     force=yes
 
-- name: check ownership of code basedir
-  ansible.builtin.stat:
-    path: /srv/lobste.rs/http
-  register: basedir_state
-
-- name: recursive chown if file does not belong to 'lobsters' 
-  when: basedir_state.stat.pw_name != 'lobsters'
-  file: dest=/srv/lobste.rs/http owner=lobsters group=lobsters recurse=yes
 
 - name: check if bundler needs installing
   register: need_bundler
@@ -114,6 +106,12 @@
   environment:
     RAILS_ENV: "{{ env }}"
   command: chdir="/srv/lobste.rs/http" bin/bundle exec rails assets:precompile
+
+- name: recursive chown as final first-run step before starting puma
+  shell: | 
+    chown -R lobsters.lobsters /srv/lobste.rs/http
+    touch /tmp/.final_baseroot_chown
+  creates: /tmp/.final_baseroot_chown
 
 - name: restart puma
   when: (clone.changed or bundler.changed)
