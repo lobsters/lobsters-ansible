@@ -8,22 +8,6 @@
 export LC_ALL="en_US.UTF-8"
 export LANG="en_US"
 
-function parse_git_dirty {
-  [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working tree clean" ]] && echo "*"
-}
-
-function env_set {
-  if [ -z "$ENV" ]; then
-    echo ""
-    else
-    echo "($ENV)"
-  fi
-}
-
-function parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/[\1$(parse_git_dirty)]/"
-}
-
 RED="\[\e[0;31m\]"
 GRAY="\[\e[0;37m\]"
 YELLOW="\[\e[0;33m\]"
@@ -35,7 +19,6 @@ TXTRST='\[\e[0m\]'
 
 export CLICOLOR=1
 # export LSCOLORS=ExFxCxDxBxegedabagacad
-export PS1="[$RED\t \u@\h:$YELLOW\w$TXTRST]$RED\$(parse_git_branch)$TXTRST\$(env_set) # \[\e[m\]"
 
 
 # don't put duplicate lines in the history. See bash(1) for more options
@@ -140,4 +123,5 @@ alias vi=vim
 set -o vi
 alias g=git
 export EDITOR=vim
+alias gerp=grep
 
