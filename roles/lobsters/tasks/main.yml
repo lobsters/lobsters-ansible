@@ -39,6 +39,9 @@
     - { file: 'http', mode: '0755' }
     - { file: 'run',  mode: '0755' }
     - { file: 'log',  mode: '0755' }
+    - { file: 'http/tmp',  mode: '0775' }
+    - { file: 'http/tmp/pids',  mode: '0775' }
+    - { file: 'http/tmp/cache',  mode: '0775' }
 
 - name: cp % ~lobsters/.%
   copy: >
@@ -49,6 +52,7 @@
     mode={{ item.mode }}
   with_items:
     - { file: 'ssh/known_hosts', mode: '0600' }
+    - { file: 'bashrc', mode: '0644' }
 
 - name: git clone lobsters
   become: true
@@ -58,6 +62,7 @@
     repo='https://github.com/lobsters/lobsters.git'
     dest='/srv/lobste.rs/http'
     force=yes
+
 
 - name: check if bundler needs installing
   register: need_bundler
@@ -101,6 +106,12 @@
   environment:
     RAILS_ENV: "{{ env }}"
   command: chdir="/srv/lobste.rs/http" bin/bundle exec rails assets:precompile
+
+- name: recursive chown as final first-run step before starting puma
+  shell: | 
+    chown -R lobsters.lobsters /srv/lobste.rs/http
+    touch /tmp/.final_baseroot_chown
+  creates: /tmp/.final_baseroot_chown
 
 - name: restart puma
   when: (clone.changed or bundler.changed)

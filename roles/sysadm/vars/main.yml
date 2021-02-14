@@ -6,3 +6,4 @@ required_packages:
   - net-tools
   - tmux
   - vim
+  - tree

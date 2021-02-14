@@ -67,35 +67,23 @@ You can drop by `#lobsters` on Freenode if you have questions.
 
 ```
   ssh root@now box
-   set -o vi
    apt-get update
    apt-get upgrade
    reboot # will almost certainly be a new kernel
-   apt-get install certbot vim fd-find tree net-tools
-   append to /root/.bashrc
-     alias fd=fdfind
-     alias vi=vim
-     set -o vi
-   adduser pushcx
-   cd ~pushcx
-   cp -a /root/.ssh .
-   chown -R pushcx:pushcx .ssh
-   addgroup pushcx admin
-   addgroup pushcx sudo
-   mkdir /tmp/ansible
-   chmod 777 /tmp/ansible
+   apt-get install certbot
+
  time ansible-playbook -K prod.yml # should get an error about connecting to database
- vi ~lobsters/.bashrc, append 'export RAILS_ENV=production'
- mkdir -p /srv/lobste.rs/http/tmp/pids /srv/lobste.rs/http/tmp/cache
- chown -R lobsters:lobsters /srv/lobste.rs/http/tmp
+ 
  mysql -u root
    create database lobsters;
    select sha1(concat('mash keyboard', rand()));
    create user lobsters@'localhost' identified by "[hash]"; # may need to be @'%' for any host, an ip, etc
    grant all privileges on lobsters.* to 'lobsters'@'localhost'; # match host from prev
+
  create /srv/lobste.rs/http/config/database.yml
  create /srv/lobste.rs/http/config/initializers/production.rb
  create /srv/lobste.rs/http/config/secrets.yml
+
  bundle exec rails credentials:edit to create secret key base
  chown -R lobsters:lobsters /srv/lobste.rs/http/config
  echo "your@email.com" > /root/.forward

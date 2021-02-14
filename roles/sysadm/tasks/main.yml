@@ -1,6 +1,21 @@
 - include_tasks: apt.yml
+
 - include_tasks: aleph.yml
   when: "env == 'staging' or 'mockturtle' in group_names"
+
 - include_tasks: hmadison.yml
   when: "env == 'staging' or 'mockturtle' in group_names"
+
+- include_tasks: law.yml
+  when: "env == 'staging' in group_names"
+
 - include_tasks: pushcx.yml
+
+- name: configure root bashrc
+  become: yes
+  template:
+    src: root_bashrc.j2
+    dest: "/root/.bashrc"
+    mode: '0644'
+  tags: configuration
+
