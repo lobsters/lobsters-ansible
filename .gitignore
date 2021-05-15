@@ -3,3 +3,5 @@
 *.swp
 /lobsters-ansible.log
 .vagrant/
+inventories/prod.ini
+inventories/sample.ini

@@ -17,7 +17,7 @@
     src: "config.j2"
     dest: "/srv/lobstersbot/config/lobstersbot.yml"
     force: no
-    
+
 - name: copy bot systemd service config
   template: >
     src="unit.j2"

@@ -35,19 +35,6 @@ function parse_git_branch {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/[\1$(parse_git_dirty)]/"
 }
 
-RED="\[\e[0;36m\]"
-GRAY="\[\e[0;37m\]"
-YELLOW="\[\e[0;33m\]"
-BLUE="\[\e[0;34m\]"
-GREEN="\[\e[0;32m\]"
-WHITE="\[\e[1;37m\]"
-LIGHT_GREEN="\[\e[1;32m\]"
-TXTRST='\[\e[0m\]'
-
-export CLICOLOR=1
-# export LSCOLORS=ExFxCxDxBxegedabagacad
-export PS1="[$GREEN\t \u@\h:$YELLOW\w$TXTRST]$RED\$(parse_git_branch)$TXTRST\$(env_set) $ \[\e[m\]"
-
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 export HISTSIZE=32768
 export HISTFILESIZE=$HISTSIZE
