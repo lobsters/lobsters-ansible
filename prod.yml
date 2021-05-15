@@ -6,6 +6,13 @@
   roles:
     - { role: lobsters }
 
+- name: mariadb
+  tags: mariadb
+  become: yes
+  hosts: db
+  roles:
+    - { role: mariadb }
+
 - name: puma
   tags: puma
   become: yes
@@ -44,7 +51,7 @@
 - name: tarsnap
   tags: tarsnap
   become: true
-  hosts: all:!mockturtle
+  hosts: web01
   roles:
     - { role: tarsnap,
         # don't back up the test system.

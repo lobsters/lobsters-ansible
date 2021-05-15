@@ -1,4 +1,4 @@
-db_host: web01
+db_host: db01
 mx_host: web01
 smtp_host: web01
 www_host: web01
