@@ -47,13 +47,3 @@
   hosts: all
   roles:
     - { role: sysadm }
-
-- name: tarsnap
-  tags: tarsnap
-  become: true
-  hosts: web01
-  roles:
-    - { role: tarsnap,
-        # don't back up the test system.
-        when: "env == 'production'"
-      }
