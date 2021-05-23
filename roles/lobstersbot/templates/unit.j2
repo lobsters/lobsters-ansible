@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/lobstersbot /srv/lobstersbot/config
+ExecStart=/bin/sh -c "cd /srv/lobstersbot && node src/index.js {{ bot_config }}"
 
 [Install]
 WantedBy=multi-user.target

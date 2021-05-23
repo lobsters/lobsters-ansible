@@ -1,2 +1,1 @@
-bot_username: default
-bot_password: default
+bot_config: "irc://unknown:unknown@example.com:6697/#example"
