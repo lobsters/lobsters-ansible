@@ -7,7 +7,7 @@
     dest: /srv/lobstersbot/
     clone: yes
     update: yes
-    version: mockturtlejs
+    version: develop
     
 - name: Run install command
   command: npm install
