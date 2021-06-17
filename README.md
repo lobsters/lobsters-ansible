@@ -62,7 +62,7 @@ To use this playbook, you'll need an account in the sysadm role along with an SS
 
 This is a rough checklist for turning a new Ubuntu LTS VPS into a running instance of Lobsters.
 If you're familiar with Linux sysadmin and Rails it should be pretty self-explanatory.
-You can drop by `#lobsters` on Freenode if you have questions.
+You can drop by `#lobsters` on irc.libera.chat if you have questions.
 
 
 ```
