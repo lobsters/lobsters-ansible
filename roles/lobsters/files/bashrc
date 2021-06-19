@@ -125,3 +125,11 @@ alias gerp=grep
 export EDITOR=vim
 export RAILS_ENV=production
 
+function ip2user {
+  grep "Request $1" /srv/lobste.rs/http/log/production.log | grep Request /srv/lobste.rs/http/log/production.log | head -n 2 | cut -d ' ' -f 17
+}
+export ip2user
+function user2ip {
+  grep "Request.*$1$" /srv/lobste.rs/http/log/production.log | grep -o 'Request [^ ]*' | cut -f 2 -d ' ' | sort | uniq -c | sort -rn
+}
+export user2ip
