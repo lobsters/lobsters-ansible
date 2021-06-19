@@ -107,8 +107,8 @@
     RAILS_ENV: "{{ env }}"
   command: chdir="/srv/lobste.rs/http" bin/bundle exec rails assets:precompile
 
-- name: recursive chown as final first-run step before starting puma
-  shell: chown -R lobsters.lobsters /srv/lobste.rs/http
+#- name: recursive chown as final first-run step before starting puma
+#  shell: chown -R lobsters.lobsters /srv/lobste.rs/http
 
 - name: restart puma
   when: (clone.changed or bundler.changed)
