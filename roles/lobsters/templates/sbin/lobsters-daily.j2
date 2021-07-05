@@ -19,4 +19,6 @@ fi
 /usr/local/bin/bundle exec rails daily_maintenance
 /usr/local/bin/bundle exec rails sitemap:refresh -s
 
+find /srv/lobste.rs/http/tmp -type f -name 'rack%3A%3Aattack*' -mtime +2 -delete
+
 exit $err
