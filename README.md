@@ -7,12 +7,15 @@ See the notes below if you're using this to set up your own site.
 
 To run:
 
-    $ ansible-playbook -K prod.yml
+```bash
+ansible-playbook -K prod.yml
+```
 
 When working on staging:
 
-    $ ansible-playbook --inventory=inventories/staging.ini -K staging.yml
-
+```bash
+ansible-playbook --inventory=inventories/staging.ini -K staging.yml
+```
 
 ## Inventory
 
@@ -62,31 +65,36 @@ To use this playbook, you'll need an account in the sysadm role along with an SS
 
 This is a rough checklist for turning a new Ubuntu LTS VPS into a running instance of Lobsters.
 If you're familiar with Linux sysadmin and Rails it should be pretty self-explanatory.
-You can drop by `#lobsters` on Freenode if you have questions.
+You can drop by `#lobsters` on [Libera Chat](https://libera.chat/) if you have questions.
 
 
+```bash
+ssh root@now box
+apt-get update
+apt-get upgrade
+reboot # will almost certainly be a new kernel
+apt-get install certbot
+
+time ansible-playbook -K prod.yml # should get an error about connecting to database
 ```
-  ssh root@now box
-   apt-get update
-   apt-get upgrade
-   reboot # will almost certainly be a new kernel
-   apt-get install certbot
 
- time ansible-playbook -K prod.yml # should get an error about connecting to database
- 
- mysql -u root
-   create database lobsters;
-   select sha1(concat('mash keyboard', rand()));
-   create user lobsters@'localhost' identified by "[hash]"; # may need to be @'%' for any host, an ip, etc
-   grant all privileges on lobsters.* to 'lobsters'@'localhost'; # match host from prev
+```bash
+mysql -u root
+```
+```mysql
+create database lobsters;
+select sha1(concat('mash keyboard', rand()));
+create user lobsters@'localhost' identified by "[hash]"; # may need to be @'%' for any host, an ip, etc
+grant all privileges on lobsters.* to 'lobsters'@'localhost'; # match host from prev
+```
+```bash
+# create /srv/lobste.rs/http/config/database.yml
+# create /srv/lobste.rs/http/config/initializers/production.rb
+# create /srv/lobste.rs/http/config/secrets.yml
 
- create /srv/lobste.rs/http/config/database.yml
- create /srv/lobste.rs/http/config/initializers/production.rb
- create /srv/lobste.rs/http/config/secrets.yml
-
- bundle exec rails credentials:edit to create secret key base
- chown -R lobsters:lobsters /srv/lobste.rs/http/config
- echo "your@email.com" > /root/.forward
- run ansible again to deploy code + build assets
- reboot again # to see everything comes up properly automatically
+bundle exec rails credentials:edit to create secret key base
+chown -R lobsters:lobsters /srv/lobste.rs/http/config
+echo "your@email.com" > /root/.forward
+run ansible again to deploy code + build assets
+reboot again # to see everything comes up properly automatically
 ```
