@@ -68,28 +68,52 @@ If you're familiar with Linux sysadmin and Rails it should be pretty self-explan
 You can drop by `#lobsters` on [Libera Chat](https://libera.chat/) if you have questions.
 
 
+On the `web01` and `db01` machine:
 ```bash
 ssh root@now box
 apt-get update
 apt-get upgrade
 reboot # will almost certainly be a new kernel
-apt-get install certbot
+apt-get install certbot # only on web01
+```
 
+On the `ansible/sysadmin` machine
+```bash
+cd lobsters-ansible/inventories
+cp prod.ini.sample.ini prod.ini
+# edit prod.ini if you need to
+cd ../
 time ansible-playbook -K prod.yml # should get an error about connecting to database
 ```
 
+On the `db01` machine:
 ```bash
-mysql -u root
+sudo apt install mysql-server
+sudo mysql_secure_installation
+sudo su -
+mysql
 ```
 ```mysql
-create database lobsters;
+create database lobsters_production;
 select sha1(concat('mash keyboard', rand()));
-create user lobsters@'localhost' identified by "[hash]"; # may need to be @'%' for any host, an ip, etc
+create user lobsters@'localhost' identified with mysql_native_password by "[hash-from-sha1-before]"; # may need to be @'%' for any host, an ip, etc
 grant all privileges on lobsters.* to 'lobsters'@'localhost'; # match host from prev
 ```
 ```bash
+vim /etc/mysql/mysql.conf.d/mysqld.cnf
+# edit the "bind-address" to 0.0.0.0 if you want remote access
+systemctl restart mysql
+```
+
+On the `web01` machine:
+```bash
+# Log in as the "lobsters" user
+cd http/
+
 # create /srv/lobste.rs/http/config/database.yml
+# Change the "socket" to "host" if you're mysql server is remote
 # create /srv/lobste.rs/http/config/initializers/production.rb
+# You'll need Pushover, DiffBot, Twitter, GitHub, Keybase API keys
 # create /srv/lobste.rs/http/config/secrets.yml
 
 bundle exec rails credentials:edit to create secret key base

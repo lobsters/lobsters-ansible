@@ -39,9 +39,6 @@
     - { file: 'http', mode: '0755' }
     - { file: 'run',  mode: '0755' }
     - { file: 'log',  mode: '0755' }
-    - { file: 'http/tmp',  mode: '0775' }
-    - { file: 'http/tmp/pids',  mode: '0775' }
-    - { file: 'http/tmp/cache',  mode: '0775' }
 
 - name: cp % ~lobsters/.%
   copy: >
@@ -56,12 +53,32 @@
 
 - name: git clone lobsters
   become: true
-  become_user: lobsters
   register: clone
-  git: >
-    repo='https://github.com/lobsters/lobsters.git'
-    dest='/srv/lobste.rs/http'
-    force=yes
+  ansible.builtin.git:
+    repo: 'https://github.com/lobsters/lobsters.git'
+    dest: '/srv/lobste.rs/http'
+    force: yes
+
+- name: mkdir ~lobste.rs/http/*
+  file: >
+    state=directory
+    path="/srv/lobste.rs/{{ item.file }}/"
+    owner=lobsters
+    group=lobsters
+    mode="{{ item.mode }}"
+  with_items:
+    - { file: 'http/tmp',  mode: '0775' }
+    - { file: 'http/tmp/pids',  mode: '0775' }
+    - { file: 'http/tmp/cache',  mode: '0775' }
+
+- name: change permissions to lobsters
+  ansible.builtin.file:
+    path: /srv/lobste.rs/http
+    owner: lobsters
+    group: lobsters
+    recurse: true
+    mode: '0755'
+    state: directory
 
 
 - name: check if bundler needs installing
@@ -76,7 +93,7 @@
 - name: bundle install
   become: true
   become_user: lobsters
-  shell: bin/bundle install --path vendor/bundle
+  command: bin/bundle install --path vendor/bundle
   register: bundler
   changed_when: "'Installing' in bundler or 'Updating' in bundler or 'upgrade' in bundler"
   args:
@@ -111,7 +128,7 @@
   shell: | 
     chown -R lobsters.lobsters /srv/lobste.rs/http
     touch /tmp/.final_baseroot_chown
-  creates: /tmp/.final_baseroot_chown
+    creates: /tmp/.final_baseroot_chown
 
 - name: restart puma
   when: (clone.changed or bundler.changed)
