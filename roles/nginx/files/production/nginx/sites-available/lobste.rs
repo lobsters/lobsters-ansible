@@ -49,6 +49,7 @@ server {
 
   root /srv/lobste.rs/http/public;
 
+
   if (-f $document_root/maintenance.html) {
     rewrite  ^(.*)$  /maintenance.html last;
     return 503;
@@ -63,6 +64,7 @@ server {
   ssl_dhparam /etc/ssl/dhparams.pem;
   ssl_stapling on;
 
+  add_header Permissions-Policy interest-cohort=(); # Google ad targeting
   if ($http_user_agent ~* "Brave") { return 400 "Blocked cryptocurrency scam."; }
 
   location @puma {
