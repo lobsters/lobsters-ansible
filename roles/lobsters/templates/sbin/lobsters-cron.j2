@@ -16,10 +16,10 @@ then
   exit 0
 fi
 
-/usr/local/bin/bundle exec ruby script/sync_twitter_users
-/usr/local/bin/bundle exec ruby script/mail_new_activity.rb
-/usr/local/bin/bundle exec ruby script/post_to_twitter
-/usr/local/bin/bundle exec ruby script/send_new_webmentions
-/usr/local/bin/bundle exec ruby script/traffic_range
+/usr/local/bin/bundle exec ruby script/mail_new_activity.rb &
+/usr/local/bin/bundle exec ruby script/post_to_twitter &
+/usr/local/bin/bundle exec ruby script/send_new_webmentions &
+/usr/local/bin/bundle exec ruby script/sync_twitter_users &
+/usr/local/bin/bundle exec ruby script/traffic_range &
 
 exit $err
