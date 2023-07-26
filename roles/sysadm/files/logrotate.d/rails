@@ -1,7 +1,11 @@
 /srv/lobste.rs/http/log/*.log
 {
-  copytruncate
+  create lobsters lobsters
+  nocopytruncate
+  norenametruncate
   postrotate
-    kill -s HUP `cat /srv/lobste.rs/run/puma.pid`
+    kill -s SIGUSR2 `cat /srv/lobste.rs/http/tmp/pids/server.pid`
   endscript
+  rotate 12
+  su lobsters lobsters
 }

@@ -16,3 +16,20 @@
     mode: '0644'
   tags: configuration
 
+- name: copy up logrotate config
+  copy: >
+    src="{{ item.file }}"
+    dest="{{ item.dest }}"
+    owner=root
+    group=root
+    mode="0644"
+  with_items:
+    - { dest: "/etc", file: "logrotate.conf",}
+
+- name: copy up logrotate.d
+  copy: src="logrotate.d" dest="/etc/" owner=root group=root mode="0644"
+
+- name: remove logrotate package's cron job
+  file:
+    path: /etc/cron.daily/logrotate
+    state: absent

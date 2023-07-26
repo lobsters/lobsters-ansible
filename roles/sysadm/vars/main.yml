@@ -3,7 +3,10 @@ required_packages:
   - fail2ban
   - fd-find
   - htop
+  - iptables-persistent
   - net-tools
+  - logrotate
+  - restic
   - tmux
   - vim
   - tree
