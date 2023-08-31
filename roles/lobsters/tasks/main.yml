@@ -119,7 +119,7 @@
   when: (clone.changed or bundler.changed)
   systemd: >
     name="lobsters-puma"
-    state=restarted
+    state=reloaded
 
 - name: cp 5m maintenance job
   template: >

@@ -21,10 +21,11 @@ StartLimitInterval=3600
 Environment=RAILS_ENV=production RUBYOPT='-W:no-deprecated'
 # Environment=PUMA_DEBUG=1
 
-# SystemD will not run puma even if it is in your path. You must specify
-# an absolute URL to puma. For example /usr/local/bin/puma
-# Alternatively, create a binstub with `bundle binstubs puma --path ./sbin` in the WorkingDirectory
+# use binstub
 ExecStart=/srv/lobste.rs/http/bin/puma -C /srv/lobste.rs/http/config/puma.rb
+# pumactl assumes the control server is running and I don't want to hassle and
+# set that up
+ExecRestart=/usr/bin/pkill -SIGUSR1 -F /srv/lobste.rs/run/puma.pid
 
 # Variant: Rails start.
 # ExecStart=/<FULLPATH>/bin/puma -C <YOUR_APP_PATH>/config/puma.rb ../config.ru
