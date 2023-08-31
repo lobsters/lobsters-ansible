@@ -83,7 +83,8 @@ server {
   # needs libnginx-mod-http-headers-more-filter available in zesty.
   #more_set_headers 'X-Frame-Options: DENY' 'Strict-Transport-Security: max-age=15552000; includeSubDomains; preload';
 
-  error_page 500 502 504 /500.html;
+  error_page 502 /502.html;
+  error_page 500 504 /500.html;
   location = /500.html {
     root /srv/lobste.rs/http/public;
   }
