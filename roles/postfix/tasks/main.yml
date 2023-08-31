@@ -10,12 +10,21 @@
   copy: >
     src={{ item.name }}
     dest=/{{ item.name }}
-    owner=root
-    group=root
+    owner=opendkim
+    group=opendkim
     mode={{ item.mode }}
   with_items:
     - { name: 'etc/default/opendkim', mode: '0644' }
     - { name: 'etc/opendkim.conf',    mode: '0644' }
+    - { name: 'etc/systemd/system/opendkim.service',    mode: '0644' }
+
+- name: create shared socket dir
+  file:
+    path: /var/spool/postfix/opendkim
+    owner: opendkim
+    group: opendkim
+    state: directory
+    mode: 0755
 
 - name: cp /etc/aliases
   template: >
@@ -41,6 +50,12 @@
 - name: postmap
   when: postfix_config.changed
   shell: postmap /etc/postfix/transport
+
+- name: add postfix to group for opendkim socket
+  user:
+    name: postfix
+    groups: opendkim
+    append: yes
 
 - name: postfix reload
   when: postfix_config.changed

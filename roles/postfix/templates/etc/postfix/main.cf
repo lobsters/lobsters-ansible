@@ -1,8 +1,9 @@
 # See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
 # DKIM
-smtpd_milters = inet:localhost:2525
-non_smtpd_milters = inet:localhost:2525
+# paths relative to chroot /var/spool/postfix
+smtpd_milters = unix:/opendkim/opendkim.socket
+non_smtpd_milters = unix:/opendkim/opendkim.socket
 milter_default_action = accept
 
 # Debian specific:  Specifying a file name will cause the first
