@@ -1,5 +1,6 @@
 ---
 required_packages:
+  - acl
   - cmake
   - g++
   - gcc
