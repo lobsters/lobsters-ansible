@@ -13,3 +13,4 @@ required_packages:
   - ruby2.7
   - ruby2.7-dev
   - sqlite3
+  - acl
