@@ -1,0 +1,33 @@
+---
+- import_tasks: include-vars.yml
+
+- import_tasks: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- import_tasks: install-with-package.yml
+  when: certbot_install_method == 'package'
+
+- import_tasks: install-with-snap.yml
+  when: certbot_install_method == 'snap'
+
+- import_tasks: install-from-source.yml
+  when: certbot_install_method == 'source'
+
+- include_tasks: create-cert-standalone.yml
+  with_items: "{{ certbot_certs }}"
+  when:
+    - certbot_create_if_missing
+    - certbot_create_method == 'standalone'
+  loop_control:
+    loop_var: cert_item
+
+- include_tasks: create-cert-webroot.yml
+  with_items: "{{ certbot_certs }}"
+  when:
+    - certbot_create_if_missing
+    - certbot_create_method == 'webroot'
+  loop_control:
+    loop_var: cert_item
+
+- import_tasks: renew-cron.yml
+  when: certbot_auto_renew

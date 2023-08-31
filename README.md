@@ -67,8 +67,8 @@ You can drop by `#lobsters` on Freenode if you have questions.
 
 ```
   ssh root@now box
-   apt-get update
-   apt-get upgrade
+   apt update
+   apt full-upgrade
    reboot # will almost certainly be a new kernel
    apt-get install certbot
 

@@ -1,0 +1,13 @@
+---
+extends: default
+
+rules:
+  line-length:
+    max: 180
+    level: warning
+  indentation:
+    spaces: 2
+    indent-sequences: consistent
+
+ignore: |
+  .github/stale.yml

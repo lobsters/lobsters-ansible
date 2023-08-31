@@ -20,6 +20,25 @@
   roles:
     - { role: puma }
 
+- name: certbot
+  tags: nginx
+  become: yes
+  hosts: www
+  roles:
+    - certbot
+  vars:
+    certbot_testmode: true
+    certbot_create_if_missing: true
+    certbot_admin_email: peter@push.cx
+    certbot_create_method: standalone
+    certbot_create_standalone_stop_services:
+      - nginx
+    certbot_certs:
+      - email: peter@push.cx
+        webroot: "/srv/lobste.rs/http/public"
+        domains:
+          - lobste.rs
+
 - name: nginx
   tags: nginx
   become: yes
@@ -47,3 +66,4 @@
   hosts: all
   roles:
     - { role: sysadm }
+

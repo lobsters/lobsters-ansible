@@ -28,21 +28,6 @@
   with_items:
   - { file: 'ssh', mode: '02700' }
 
-- name: mkdir ~lobste.rs/%
-  file: >
-    state=directory
-    path="/srv/lobste.rs/{{ item.file }}/"
-    owner=lobsters
-    group=lobsters
-    mode="{{ item.mode }}"
-  with_items:
-    - { file: 'http', mode: '0755' }
-    - { file: 'run',  mode: '0755' }
-    - { file: 'log',  mode: '0755' }
-    - { file: 'http/tmp',  mode: '0775' }
-    - { file: 'http/tmp/pids',  mode: '0775' }
-    - { file: 'http/tmp/cache',  mode: '0775' }
-
 - name: cp % ~lobsters/.%
   copy: >
     src="{{ item.file }}"
@@ -63,6 +48,20 @@
     dest='/srv/lobste.rs/http'
     force=yes
 
+- name: mkdir ~lobste.rs/%
+  file: >
+    state=directory
+    path="/srv/lobste.rs/{{ item.file }}/"
+    owner=lobsters
+    group=lobsters
+    mode="{{ item.mode }}"
+  with_items:
+    - { file: 'http', mode: '0755' }
+    - { file: 'run',  mode: '0755' }
+    - { file: 'log',  mode: '0755' }
+    - { file: 'http/tmp',  mode: '0775' }
+    - { file: 'http/tmp/pids',  mode: '0775' }
+    - { file: 'http/tmp/cache',  mode: '0775' }
 
 - name: check if bundler needs installing
   register: need_bundler
