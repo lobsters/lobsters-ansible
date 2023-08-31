@@ -6,7 +6,7 @@ upstream lobsters_puma_server {
 server {
   listen 80;
   listen [::]:80;
-  server_name _;
+  server_name lobste.rs;
   access_log /srv/lobste.rs/log/http.lobste.rs.access.log main;
   access_log /srv/lobste.rs/log/http.lobste.rs.error.log main;
   rewrite ^/(.*)$ https://lobste.rs/$1 permanent;
@@ -139,6 +139,8 @@ server {
 }
 
 server {
+  listen 80;
+  listen [::]:80;
   listen 443 ssl http2 ;
   listen [::]:443 ssl http2 ;
   server_name www.lobste.rs; # managed by Certbot
