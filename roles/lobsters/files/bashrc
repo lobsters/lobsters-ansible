@@ -126,10 +126,10 @@ export EDITOR=vim
 export RAILS_ENV=production
 
 function ip2user {
-  grep "Request $1" /srv/lobste.rs/http/log/production.log | cut -d ' ' -f 17 | sort | uniq -c | sort -rn
+  grep "Request $1" /srv/lobste.rs/log/production.log | cut -d ' ' -f 17 | sort | uniq -c | sort -rn
 }
 export ip2user
 function user2ip {
-  grep "Request.*$1$" /srv/lobste.rs/http/log/production.log | grep -o 'Request [^ ]*' | cut -f 2 -d ' ' | sort | uniq -c | sort -rn
+  grep "Request.*$1$" /srv/lobste.rs/log/production.log | grep -o 'Request [^ ]*' | cut -f 2 -d ' ' | sort | uniq -c | sort -rn
 }
 export user2ip

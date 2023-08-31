@@ -1,5 +1,5 @@
 upstream lobsters_puma_server {
-  server unix:/srv/lobste.rs/http/tmp/puma.sock fail_timeout=1;
+  server unix:/srv/lobste.rs/run/puma.sock fail_timeout=1;
 }
 
 # lobste.rs http->https redirection
@@ -7,8 +7,8 @@ server {
   listen 80;
   listen [::]:80;
   server_name _;
-  access_log /var/log/nginx/lobste.rs.access.log main;
-  error_log /var/log/nginx/lobste.rs.error.log;
+  access_log /srv/lobste.rs/log/http.lobste.rs.access.log main;
+  access_log /srv/lobste.rs/log/http.lobste.rs.error.log main;
   rewrite ^/(.*)$ https://lobste.rs/$1 permanent;
   keepalive_timeout 0;
 }
@@ -44,8 +44,8 @@ server {
   listen [::]:443 ssl http2 default_server;
   server_name lobste.rs;
 
-  access_log /var/log/nginx/lobste.rs.access.log main;
-  error_log /var/log/nginx/lobste.rs.error.log;
+  access_log /srv/lobste.rs/log/lobste.rs.access.log main;
+  error_log /srv/lobste.rs/log/lobste.rs.error.log;
 
   root /srv/lobste.rs/http/public;
 
@@ -143,8 +143,8 @@ server {
   listen [::]:443 ssl http2 ;
   server_name www.lobste.rs; # managed by Certbot
 
-  access_log /var/log/nginx/lobste.rs.access.log main;
-  error_log /var/log/nginx/lobste.rs.error.log;
+  access_log /srv/lobste.rs/log/lobste.rs.access.log main;
+  error_log /srv/lobste.rs/log/lobste.rs.error.log;
 
   rewrite ^/(.*)$ https://lobste.rs/$1 permanent;
   #root /srv/lobste.rs/http/public;
@@ -153,8 +153,8 @@ server {
   #  rewrite  ^(.*)$  /maintenance.html last;
   #  return 503;
   #}
-  ssl_certificate /etc/letsencrypt/live/www.lobste.rs/fullchain.pem; # managed by Certbot
-  ssl_certificate_key /etc/letsencrypt/live/www.lobste.rs/privkey.pem; # managed by Certbot
+  ssl_certificate /etc/letsencrypt/live/lobste.rs/fullchain.pem; # managed by Certbot
+  ssl_certificate_key /etc/letsencrypt/live/lobste.rs/privkey.pem; # managed by Certbot
 
   ssl_protocols TLSv1.2;
   ssl_ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS;

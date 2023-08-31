@@ -18,6 +18,13 @@
     state=present
     uid=1024
 
+- name: home perms
+  tags: user
+  file:
+    path: /srv/lobste.rs/
+    state: directory
+    mode: 0755
+
 - name: mkdir ~lobste.rs/.%
   file: >
     state=directory
@@ -60,7 +67,6 @@
     - { file: 'run',  mode: '0755' }
     - { file: 'log',  mode: '0755' }
     - { file: 'http/tmp',  mode: '0775' }
-    - { file: 'http/tmp/pids',  mode: '0775' }
     - { file: 'http/tmp/cache',  mode: '0775' }
 
 - name: check if bundler needs installing

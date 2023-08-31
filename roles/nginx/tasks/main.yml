@@ -18,6 +18,11 @@
     group: root
     mode: '0644'
 
+- name: Create dhparams
+  command: openssl dhparam -out /etc/ssl/dhparams.pem 2048
+  args:
+    creates: /etc/ssl/dhparams.pem
+
 - name: Use new config
   when: nginx_agnostic_config.changed or nginx_specific_config.changed
   systemd:

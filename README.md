@@ -73,20 +73,26 @@ You can drop by `#lobsters` on Freenode if you have questions.
    apt-get install certbot
 
  time ansible-playbook -K prod.yml # should get an error about connecting to database
- 
+
  mysql -u root
    create database lobsters;
    select sha1(concat('mash keyboard', rand()));
    create user lobsters@'localhost' identified by "[hash]"; # may need to be @'%' for any host, an ip, etc
    grant all privileges on lobsters.* to 'lobsters'@'localhost'; # match host from prev
 
- create /srv/lobste.rs/http/config/database.yml
  create /srv/lobste.rs/http/config/initializers/production.rb
+ create /srv/lobste.rs/http/config/database.yml
  create /srv/lobste.rs/http/config/secrets.yml
 
  bundle exec rails credentials:edit to create secret key base
- chown -R lobsters:lobsters /srv/lobste.rs/http/config
  echo "your@email.com" > /root/.forward
  run ansible again to deploy code + build assets
  reboot again # to see everything comes up properly automatically
+
+ # probably need to 'systemctl reset-failed lobsters-puma' regularly during setup
+ # when puma exits on start due to misconfig
+
+ # test puma worker serves pages:
+ curl --no-buffer --unix-socket /srv/lobste.rs/run/puma.sock http://localhost/about
 ```
+

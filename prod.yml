@@ -27,7 +27,7 @@
   roles:
     - certbot
   vars:
-    certbot_testmode: true
+    certbot_testmode: false
     certbot_create_if_missing: true
     certbot_admin_email: peter@push.cx
     certbot_create_method: standalone
@@ -38,6 +38,9 @@
         webroot: "/srv/lobste.rs/http/public"
         domains:
           - lobste.rs
+          - www.lobste.rs
+          - lobsters.dev
+          - www.lobsters.dev
 
 - name: nginx
   tags: nginx
@@ -52,13 +55,6 @@
   hosts: mx:smtp
   roles:
     - { role: postfix }
-
-- name: lobstersbot
-  tags: lobstersbot
-  become: yes
-  hosts: lobstersbot
-  roles:
-    - { role: lobstersbot }
 
 - name: sysadm
   tags: sysadm
