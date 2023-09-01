@@ -9,6 +9,6 @@
   create 0640 www-data adm
   sharedscripts
   postrotate
-    invoke-rc.d nginx rotate
+    /usr/sbin/nginx -s reload
   endscript
 }
