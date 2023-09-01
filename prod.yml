@@ -1,10 +1,10 @@
 ---
-- name: lobsters
-  tags: lobsters
+- name: sysadm
+  tags: sysadm
   become: yes
-  hosts: www_worker
+  hosts: all
   roles:
-    - { role: lobsters }
+    - { role: sysadm }
 
 - name: mariadb
   tags: mariadb
@@ -56,10 +56,10 @@
   roles:
     - { role: postfix }
 
-- name: sysadm
-  tags: sysadm
+- name: lobsters
+  tags: lobsters
   become: yes
-  hosts: all
+  hosts: www_worker
   roles:
-    - { role: sysadm }
+    - { role: lobsters }
 
