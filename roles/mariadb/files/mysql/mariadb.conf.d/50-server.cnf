@@ -43,6 +43,9 @@ myisam-recover         = BACKUP
 #table_cache            = 64
 #thread_concurrency     = 10
 
+# InnoDB Buffer Size
+innodb_buffer_pool_size = 3G
+
 #
 # * Query Cache Configuration
 #
