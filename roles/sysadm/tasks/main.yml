@@ -24,7 +24,9 @@
     group=root
     mode="0644"
   with_items:
-    - { dest: "/etc", file: "logrotate.conf",}
+    - { dest: "/etc", file: "logrotate.conf" }
+    - { dest: "/root", file: ".inputrc" }
+    - { dest: "/root", file: ".editrc" }
 
 - name: copy up logrotate.d
   copy: src="logrotate.d" dest="/etc/" owner=root group=root mode="0644"

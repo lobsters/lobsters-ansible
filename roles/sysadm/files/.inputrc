@@ -1,0 +1,12 @@
+set editing-mode vi
+set keymap vi
+set completion-ignore-case On
+set show-all-if-ambiguous On
+set completion-prefix-display-length 2
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+set completion-map-case on
+"\C-j": menu-complete
+"\C-k": menu-complete-backward
+"\C-w": unix-filename-rubout
+"\C-y": kill-whole-line
