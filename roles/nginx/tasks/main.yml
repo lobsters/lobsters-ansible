@@ -18,6 +18,14 @@
     group: root
     mode: '0644'
 
+- name: nginx_agnostic_config.changed
+  ansible.builtin.debug:
+    var: nginx_agnostic_config.changed
+
+- name: nginx_specific_config.changed
+  ansible.builtin.debug:
+    var: nginx_specific_config.changed
+
 - name: Create dhparams
   command: openssl dhparam -out /etc/ssl/dhparams.pem 2048
   args:
