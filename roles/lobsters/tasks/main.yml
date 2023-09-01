@@ -1,8 +1,5 @@
 - include_tasks: apt.yml
 
-- name: populate service facts
-  service_facts:
-
 - name: groupadd lobsters
   tags: user
   group: name=lobsters gid=1024 state=present
