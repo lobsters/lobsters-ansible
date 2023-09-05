@@ -1,0 +1,1 @@
+| "/srv/lobste.rs/http/script/parse_inbound_mail $RECIPIENT $SENDER"

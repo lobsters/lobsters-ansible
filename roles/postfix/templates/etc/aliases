@@ -1,12 +1,14 @@
 # See man 5 aliases for format
 
+# do not include 'lobsters' here - must use .forward to run as 'lobsters'
+# more info on mailing list mode in main.cf
+
 # system
 root: peter@push.cx
 abuse: root
 admin: root
 contact: root
 help: root
-lobsters: root
 support: root
 postmaster: root
 webmaster: root
@@ -14,3 +16,5 @@ webmaster: root
 # personal
 peter: peter@push.cx
 pushcx: peter@push.cx
+
+nobody: /dev/null

@@ -27,12 +27,17 @@
     mode: 0755
 
 - name: cp /etc/aliases
+  register: postfix_aliases
   template: >
     src=etc/aliases
     dest=/etc/aliases
     owner=root
     group=root
     mode=644
+
+- name: load aliases
+  when: postfix_aliases.changed
+  shell: newaliases
 
 - name: cp /etc/postfix
   register: postfix_config
@@ -45,11 +50,6 @@
   with_items:
     - { name: 'main.cf',   mode: '0644' }
     - { name: 'master.cf', mode: '0644' }
-    - { name: 'transport', mode: '0644' }
-
-- name: postmap
-  when: postfix_config.changed
-  shell: postmap /etc/postfix/transport
 
 - name: add postfix to group for opendkim socket
   user:
@@ -58,5 +58,5 @@
     append: yes
 
 - name: postfix reload
-  when: postfix_config.changed
+  when: postfix_config.changed or postfix_aliases.changed
   shell: postfix reload

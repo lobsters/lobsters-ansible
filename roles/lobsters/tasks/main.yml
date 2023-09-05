@@ -42,6 +42,7 @@
   with_items:
     - { file: 'ssh/known_hosts', mode: '0600' }
     - { file: 'bashrc', mode: '0644' }
+    - { file: 'forward', mode: '0644' }
 
 - name: git clone lobsters
   become: true
