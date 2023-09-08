@@ -67,19 +67,25 @@
     - { file: 'http/tmp',  mode: '0775' }
     - { file: 'http/tmp/cache',  mode: '0775' }
 
-- name: check if bundler needs installing
-  register: need_bundler
-  shell: gem list --local bundler
-  changed_when: "'bundler (' not in need_bundler"
+- name: get recent versions, aykm ubuntu
+  become: true
+  become_user: lobsters
+  git: >
+    repo=https://github.com/rbenv/ruby-build.git
+    dest=/srv/lobste.rs/.rbenv/plugins/ruby-build
+    force=yes
 
-- name: install bundler
-  when: need_bundler.changed
-  shell: gem install bundler
+- name: install ruby via rbenv
+  become: true
+  become_user: lobsters
+  shell: rbenv install --skip-existing
+  args:
+    chdir: "/srv/lobste.rs/http/"
 
 - name: bundle install
   become: true
   become_user: lobsters
-  shell: bin/bundle install --path vendor/bundle
+  shell: ~/.rbenv/shims/bundle install --path vendor/bundle
   register: bundler
   changed_when: "'Installing' in bundler or 'Updating' in bundler or 'upgrade' in bundler"
   args:
@@ -109,9 +115,6 @@
   environment:
     RAILS_ENV: "{{ env }}"
   command: chdir="/srv/lobste.rs/http" bin/bundle exec rails assets:precompile
-
-#- name: recursive chown as final first-run step before starting puma
-#  shell: chown -R lobsters.lobsters /srv/lobste.rs/http
 
 - name: phased restart puma
   when: (clone.changed or bundler.changed)

@@ -6,11 +6,11 @@ required_packages:
   - gcc
   - git
   - libc-dev
+  - libffi-dev
+  - libyaml-dev
   - libmysqlclient-dev
-  - libsqlite3-dev
   - make
   - mariadb-client
   - nodejs
-  - ruby3.0
-  - ruby3.0-dev
-  - sqlite3
+  - rbenv
+  - ruby-build

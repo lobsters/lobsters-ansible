@@ -22,7 +22,7 @@ Environment=RAILS_ENV=production RUBYOPT='-W:no-deprecated'
 # Environment=PUMA_DEBUG=1
 
 # use binstub
-ExecStart=/srv/lobste.rs/http/bin/puma -C /srv/lobste.rs/http/config/puma.rb
+ExecStart=/srv/lobste.rs/.rbenv/shims/bundle exec puma -C /srv/lobste.rs/http/config/puma.rb
 # pumactl assumes the control server is running and I don't want to hassle and
 # set that up
 ExecReload=/usr/bin/pkill -SIGUSR1 -F /srv/lobste.rs/run/puma.pid
