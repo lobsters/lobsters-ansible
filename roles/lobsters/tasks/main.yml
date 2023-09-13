@@ -116,11 +116,23 @@
     RAILS_ENV: "{{ env }}"
   command: chdir="/srv/lobste.rs/http" bin/bundle exec rails assets:precompile
 
+# https://github.com/puma/puma/blob/master/docs/restart.md
+# phased restart when only the app code changes
 - name: phased restart puma
-  when: (clone.changed or bundler.changed)
+  when:
+    - clone.changed
+    - not bundler.changed
   systemd: >
     name="lobsters-puma"
     state=reloaded
+
+# hot restart to pick up bundle changes
+- name: restart puma
+  when:
+    - bundler.changed
+  systemd: >
+    name="lobsters-puma"
+    state=restarted
 
 - name: cp 5m maintenance job
   template: >
