@@ -17,3 +17,10 @@
     name="lobsters-puma"
     enabled=yes
     daemon_reload=yes
+
+# hot restart to pick up service change
+- name: restart puma
+  when: puma_service.changed
+  systemd: >
+    name="lobsters-puma"
+    state=restarted

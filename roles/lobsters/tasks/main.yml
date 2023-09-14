@@ -106,7 +106,9 @@
   become_user: lobsters
   environment:
     RAILS_ENV: "{{ env }}"
-  command: chdir="/srv/lobste.rs/http" bin/bundle exec rails db:migrate
+  command: ~/.rbenv/shims/bundle exec rails db:migrate
+  args:
+    chdir: "/srv/lobste.rs/http/"
 
 - name: recompile assets
   when: clone.changed or bundler.changed
@@ -114,7 +116,9 @@
   become_user: lobsters
   environment:
     RAILS_ENV: "{{ env }}"
-  command: chdir="/srv/lobste.rs/http" bin/bundle exec rails assets:precompile
+  command: ~/.rbenv/shims/bundle exec rails assets:precompile
+  args:
+    chdir: "/srv/lobste.rs/http/"
 
 # https://github.com/puma/puma/blob/master/docs/restart.md
 # phased restart when only the app code changes
