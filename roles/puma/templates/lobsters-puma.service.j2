@@ -18,7 +18,7 @@ RestartSec=60
 StartLimitBurst=5
 StartLimitInterval=3600
 
-Environment=RAILS_ENV=production RUBYOPT='-W:no-deprecated' PUMA_WORKERS=30
+Environment=RAILS_ENV=production RUBYOPT='-W:no-deprecated --yjit' PUMA_WORKERS=30
 # Environment=PUMA_DEBUG=1
 
 # use binstub
