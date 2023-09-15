@@ -79,6 +79,8 @@
   become: true
   become_user: lobsters
   shell: rbenv install --skip-existing
+  environment:
+    RUBY_CONFIGURE_OPTS: --enable-yjit
   args:
     chdir: "/srv/lobste.rs/http/"
 
