@@ -20,6 +20,16 @@
   roles:
     - { role: puma }
 
+- name: redis
+  tags: redis
+  become: yes
+  hosts: www
+  roles:
+    - redis
+  vars:
+    redis_maxmemory: "{{ 512 * 1024 * 1024 }}"
+    redis_maxmemory_policy: allkeys-lru
+
 - name: certbot
   tags: nginx
   become: yes
