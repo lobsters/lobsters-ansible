@@ -2,10 +2,12 @@
 {
   create lobsters lobsters
   nocopytruncate
-  norenametruncate
+  norenamecopy
   postrotate
     kill -s SIGUSR2 `cat /srv/lobste.rs/run/puma.pid`
+    /usr/sbin/nginx -s reload
   endscript
-  rotate 12
+  rotate 26
   su lobsters lobsters
+  weekly
 }
