@@ -18,14 +18,29 @@ server {
     return 503;
   }
 
+  # ssl config from https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1k&guideline=5.7
+
   ssl_certificate /etc/letsencrypt/live/lobste.rs/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/lobste.rs/privkey.pem;
-
-  ssl_protocols TLSv1.2;
-  ssl_ciphers ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS;
-  ssl_prefer_server_ciphers on;
   ssl_dhparam /etc/ssl/dhparams.pem;
+
+  ssl_session_timeout 1d;
+  ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+  ssl_session_tickets off;
+
+  ssl_protocols TLSv1.2 TLSv1.3;
+  ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305;
+  ssl_prefer_server_ciphers on;
+
   ssl_stapling on;
+  ssl_stapling_verify on;
+  ssl_trusted_certificate /etc/letsencrypt/live/lobste.rs/fullchain.pem;
+
+  # Strict-Transport-Security header is configured for HSTS preload in config/environments/production.rb
+
+  # prohibit presenting the site in an iframe
+  # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors
+  add_header Content-Security-Policy "frame-ancestors 'none'" always;
 
   if ($http_user_agent ~* "Brave") { return 400 "Blocked cryptocurrency scam."; }
 
@@ -36,6 +51,7 @@ server {
     proxy_redirect off;
     proxy_pass http://lobsters_puma_server;
   }
+
 
   location ~ ^/assets/ {
     gzip_static on;
@@ -92,9 +108,6 @@ server {
       break;
     }
   }
-
-  # needs libnginx-mod-http-headers-more-filter available in zesty.
-  #more_set_headers 'X-Frame-Options: DENY' 'Strict-Transport-Security: max-age=15552000; includeSubDomains; preload';
 
   error_page 500 /500.html;
   location = /500.html { root /srv/lobste.rs/http/public; }
