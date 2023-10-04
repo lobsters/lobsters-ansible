@@ -14,7 +14,7 @@ server {
   root /srv/lobste.rs/http/public;
 
   if (-f $document_root/maintenance.html) {
-    rewrite  ^(.*)$  /maintenance.html last;
+    rewrite ^(.*)$ /maintenance.html last;
     return 503;
   }
 
@@ -149,4 +149,17 @@ server {
   ssl_prefer_server_ciphers on;
   ssl_dhparam /etc/ssl/dhparams.pem;
   ssl_stapling on;
+}
+
+# lobsters.dev backup, serve an explanation page
+server {
+  listen 443 ssl http2 ;
+  listen [::]:443 ssl http2 ;
+  server_name lobsters.dev;
+
+  access_log /srv/lobste.rs/log/lobsters.dev.access.log main;
+  error_log /srv/lobste.rs/log/lobsters.dev.error.log;
+
+  root /srv/lobste.rs/http/public;
+  rewrite ^(.*)$ /lobsters.dev.html last;
 }
