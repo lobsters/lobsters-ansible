@@ -41,6 +41,12 @@
     certbot_create_if_missing: true
     certbot_admin_email: peter@push.cx
     certbot_create_method: standalone
+    certbot_hsts: true
+    # the ubuntu certbot package added a systemd timer service
+    certbot_auto_renew: false
+    #certbot_auto_renew_user: root
+    #certbot_auto_renew_hour: "5"
+    #certbot_auto_renew_minute: "23"
     certbot_create_standalone_stop_services:
       - nginx
     certbot_certs:
