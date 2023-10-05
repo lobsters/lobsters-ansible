@@ -152,6 +152,7 @@ server {
 }
 
 # lobsters.dev backup, serve an explanation page
+# to use lobsters.dev in prod, delete this section and add lobsters.dev to the first server block
 server {
   listen 443 ssl http2 ;
   listen [::]:443 ssl http2 ;
