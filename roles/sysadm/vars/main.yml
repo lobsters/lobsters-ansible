@@ -1,5 +1,6 @@
 ---
 required_packages:
+  - unattended-upgrades
   - fail2ban
   - fd-find
   - htop

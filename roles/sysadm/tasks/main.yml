@@ -35,3 +35,20 @@
   file:
     path: /etc/cron.daily/logrotate
     state: absent
+
+# https://help.ubuntu.com/community/AutomaticSecurityUpdates
+# https://github.com/artefactual-labs/ansible-unattended-upgrades/blob/master/tasks/main.yml
+- name: "Create apt file that would be made by interactive dpkg-reconfigure"
+  file:
+    path: "/etc/apt/apt.conf.d/20auto-upgrades"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    state: "touch"
+- name: "Populate 20auto-upgrades apt file"
+  lineinfile:
+    dest: "/etc/apt/apt.conf.d/20auto-upgrades"
+    line: '{{item}}'
+  with_items:
+    - 'APT::Periodic::Update-Package-Lists "1";'
+    - 'APT::Periodic::Unattended-Upgrade "1";'
