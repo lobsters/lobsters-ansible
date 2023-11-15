@@ -1,1 +1,4 @@
+if [ -f "$HOME/.bashrc" ]; then
+. "$HOME/.bashrc"
+fi
 eval "$(/usr/bin/env rbenv init - bash)"
