@@ -144,9 +144,9 @@
 - name: cp 5m maintenance job
   template: >
     src="sbin/lobsters-cron.j2"
-    dest="/usr/local/sbin/lobsters-cron"
-    owner=root
-    group=root
+    dest="/srv/lobste.rs/http/script/lobsters-cron"
+    owner=lobsters
+    group=lobsters
     mode='0755'
 
 - name: add crontab entry for maintenance job
@@ -156,14 +156,14 @@
     name=lobsters-cron
     user=lobsters
     minute="*/5"
-    job=/usr/local/sbin/lobsters-cron
+    job="/bin/bash -c 'export PATH=\"$HOME/.rbenv/bin:$PATH\" ; eval \"$(/usr/bin/env rbenv init -)\" ; /srv/lobste.rs/http/script/lobsters-cron'"
 
 - name: cp daily job
   template: >
     src="sbin/lobsters-daily.j2"
-    dest="/usr/local/sbin/lobsters-daily"
-    owner=root
-    group=root
+    dest="/srv/lobste.rs/http/script/lobsters-daily"
+    owner=lobsters
+    group=lobsters
     mode='0755'
 
 - name: add crontab entry for daily job
@@ -174,7 +174,7 @@
     user=lobsters
     minute="0"
     hour="0"
-    job=/usr/local/sbin/lobsters-daily
+    job="/bin/bash -c 'export PATH=\"$HOME/.rbenv/bin:$PATH\" ; eval \"$(/usr/bin/env rbenv init -)\" ; /srv/lobste.rs/http/script/lobsters-cron'"
 
 - name: page expiration cron job
   tags: cron
