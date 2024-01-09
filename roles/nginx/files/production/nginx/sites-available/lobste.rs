@@ -70,6 +70,22 @@ server {
     break;
   }
 
+  # /search does not use the cache, but does use ?page=N, so skip the rest
+  # of the rules and proxy the request.
+  if ($uri ~* "^/search") {
+    break;
+  }
+
+  # if there is a page parameter, rewrite it to the page path format,
+  # so /hottest.json?page=1 becomes /hottest/page/1.json.
+  # this prevents cache pollution in rails because rails cache ignores
+  # parameters, so /foo.json?page=10 will overwite the cache for /foo.json
+  # NB This redirect drops any other parameters. There may be other
+  # ways to pollute the cache but this is the most common.
+  if ($arg_page) {
+    rewrite "^(.*?)([.][^.?/]*)?$" $1/page/$arg_page$2? redirect;
+  }
+
   # file-based full-page caching, bypass if user has cookies
   set $use_file_cache "";
   if ($cookie_lobster_trap = "") {
