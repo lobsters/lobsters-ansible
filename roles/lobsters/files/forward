@@ -1,1 +1,1 @@
-| "/srv/lobste.rs/http/script/parse_inbound_mail $RECIPIENT $SENDER"
+| "/bin/bash -c 'export PATH=\"$HOME/.rbenv/bin:$PATH\" ; eval \"$(/usr/bin/env rbenv init -)\" ; /srv/lobste.rs/http/script/parse_inbound_mail $RECIPIENT $SENDER'"
