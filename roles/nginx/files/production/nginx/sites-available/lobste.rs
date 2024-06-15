@@ -42,6 +42,10 @@ server {
   # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors
   add_header Content-Security-Policy "frame-ancestors 'none'" always;
 
+  # spam
+  add_header X-Robots-Tag "noai, noimageai" always;
+
+
   if ($http_user_agent ~* "Brave") { return 400 "Blocked cryptocurrency scam."; }
 
   location @puma {
