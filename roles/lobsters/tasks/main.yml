@@ -80,6 +80,7 @@
   become: true
   become_user: lobsters
   shell: rbenv install --skip-existing
+  register: bundler
   environment:
     RUBY_CONFIGURE_OPTS: --enable-yjit
   args:
@@ -184,3 +185,13 @@
     user=lobsters
     minute="*"
     job=/srv/lobste.rs/http/script/expire_page_cache
+
+- name: add crontab entry for backups
+  tags: cron
+  cron: >
+    state=present
+    name=restic
+    user=root
+    minute="11"
+    hour="0"
+    job="/bin/bash -c 'source /etc/restic-env ; restic self-update ; restic backup --cleanup-cache --no-scan /etc /srv/lobste.rs/http/config /srv/lobste.rs/log'"

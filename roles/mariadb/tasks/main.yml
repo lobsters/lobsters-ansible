@@ -24,3 +24,26 @@
   systemd:
     name: mysql
     enabled: yes
+
+- name: create dir for overly why does ansible make this an extra step
+  file:
+    path: /etc/systemd/system/mariadb.service.d
+    state: directory
+
+- name: mariadb systemd config
+  copy:
+    src: restart.conf
+    dest: /etc/systemd/system/mariadb.service.d/restart.conf
+    owner: root
+    group: root
+    mode: 0600
+
+- name: add crontab entry for backups
+  tags: cron
+  cron: >
+    state=present
+    name=restic
+    user=root
+    minute="31"
+    hour="*/6"
+    job="/bin/bash -c 'source /etc/restic-env ; restic self-update ; mariadb-backup --backup --user=root --stream=xbstream 2> mariadb-backup.log | restic backup --stdin --stdin-filename mariadb.xb --tag mariadb'"
