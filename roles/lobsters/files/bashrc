@@ -125,15 +125,18 @@ alias gerp=grep
 export EDITOR=vim
 export RAILS_ENV=production
 
+
+# methods for working with logs, sample:
+# {"method":"GET","path":"/404","format":"*/*","controller":"AboutController","action":"four_oh_four","status":404,"allocations":1037,"duration":11.98,"view":2.63,"db":1.25,"params":{},"exception":null,"exception_message":null,"remote_ip":"2a01:cb08:2a9:3b00:15e1:dad6:9b26:a46","user_id":0,"username":"nobody"}
 alias user2ip='function _user2ip() {
-    jq -r "select(.username == \"$1\") | .remote_ip" /srv/lobste.rs/log/production.log |
-    sort | uniq -c | sort -rn;
+    cat /srv/lobste.rs/log/production.log | grep $1 | jq -R -r "fromjson? | select(.username == \"$1\") | .remote_ip" | sort | uniq -c | sort -rn;
 }; _user2ip'
 alias ip2user='function _ip2user() {
-    jq -r "select(.remote_ip | startswith(\"$1\")) | .username" /srv/lobste.rs/log/production.log |
-    sort | uniq -c | sort -rn;
+    cat /srv/lobste.rs/log/production.log | grep $1 | jq -R -r "fromjson? | select(.remote_ip | startswith(\"$1\")) | .username" | sort | uniq -c | sort -rn;
 }; _ip2user'
-alias reqs='function _logreq() {
-    jq -r "select(.username == \"$1\" or .remote_ip | startswith(\"$1\")) |
-    \"\(.timestamp | strptime(\"%Y-%m-%dT%H:%M:%S.%f%z\") | strftime(\"%Y-%m-%d %H:%M:%S\")) \(.method) \(.path) \(.status) \(.params | tostring)\"" /srv/lobste.rs/log/production.log;
-}; _logreq'
+alias reqs='function _reqs() {
+    cat /srv/lobste.rs/log/production.log | grep $1 | jq -R -r "fromjson? | select(.username == \"$1\" or (.remote_ip | startswith(\"$1\"))) | \"\(.timestamp) \(.username) \(.remote_ip) \(.method) \(.path) \(.status) \(.params | tostring)\"";
+}; _reqs'
+alias reqsf='function _reqsf() {
+    tail -f /srv/lobste.rs/log/production.log | grep $1 | jq -R -r "fromjson? | select(.username == \"$1\" or (.remote_ip | startswith(\"$1\"))) | \"\(.timestamp) \(.username) \(.remote_ip) \(.method) \(.path) \(.status) \(.params | tostring)\"";
+}; _reqsf'
