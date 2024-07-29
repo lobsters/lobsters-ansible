@@ -125,11 +125,15 @@ alias gerp=grep
 export EDITOR=vim
 export RAILS_ENV=production
 
-function ip2user {
-  grep "Request $1" /srv/lobste.rs/log/production.log | cut -d ' ' -f 17 | sort | uniq -c | sort -rn
-}
-export ip2user
-function user2ip {
-  grep "Request.*$1$" /srv/lobste.rs/log/production.log | grep -o 'Request [^ ]*' | cut -f 2 -d ' ' | sort | uniq -c | sort -rn
-}
-export user2ip
+alias user2ip='function _user2ip() {
+    jq -r "select(.username == \"$1\") | .remote_ip" /srv/lobste.rs/log/production.log |
+    sort | uniq -c | sort -rn;
+}; _user2ip'
+alias ip2user='function _ip2user() {
+    jq -r "select(.remote_ip | startswith(\"$1\")) | .username" /srv/lobste.rs/log/production.log |
+    sort | uniq -c | sort -rn;
+}; _ip2user'
+alias reqs='function _logreq() {
+    jq -r "select(.username == \"$1\" or .remote_ip | startswith(\"$1\")) |
+    \"\(.timestamp | strptime(\"%Y-%m-%dT%H:%M:%S.%f%z\") | strftime(\"%Y-%m-%d %H:%M:%S\")) \(.method) \(.path) \(.status) \(.params | tostring)\"" /srv/lobste.rs/log/production.log;
+}; _logreq'
