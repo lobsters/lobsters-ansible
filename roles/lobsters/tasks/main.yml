@@ -62,11 +62,20 @@
     group=lobsters
     mode="{{ item.mode }}"
   with_items:
+    - { file: '.bundle', mode: '0755' }
     - { file: 'http', mode: '0755' }
     - { file: 'run',  mode: '0755' }
     - { file: 'log',  mode: '0755' }
     - { file: 'http/tmp',  mode: '0775' }
     - { file: 'http/tmp/cache',  mode: '0775' }
+
+- name: cp ~/.bundle/config
+  copy: >
+    src=bundle-config
+    dest="/srv/lobste.rs/.bundle/config"
+    owner=lobsters
+    group=lobsters
+    mode=0644
 
 - name: get recent versions, aykm ubuntu
   become: true
@@ -89,7 +98,7 @@
 - name: bundle install
   become: true
   become_user: lobsters
-  shell: ~/.rbenv/shims/bundle install --path vendor/bundle
+  shell: ~/.rbenv/shims/bundle install
   register: bundler
   changed_when: "'Installing' in bundler or 'Updating' in bundler or 'upgrade' in bundler"
   args:

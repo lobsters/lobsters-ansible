@@ -1,0 +1,3 @@
+---
+BUNDLE_PATH: "/srv/lobste.rs/http/vendor/bundle/"
+BUNDLE_WITHOUT: "test,development"
