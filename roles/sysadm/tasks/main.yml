@@ -16,6 +16,14 @@
     mode: '0644'
   tags: configuration
 
+- name: copy up sshd config
+  copy: >
+    src=ssh/50-lastlog.conf
+    dest=/etc/ssh/sshd_config.d
+    owner=root
+    group=root
+    mode="0644"
+
 - name: copy up logrotate config
   copy: >
     src="{{ item.file }}"
