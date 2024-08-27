@@ -16,6 +16,14 @@
     mode: '0644'
   tags: configuration
 
+- name: copy up motd config
+  copy: >
+    src=update-motd.d/50-landscape-sysinfo
+    dest=/etc/update-motd.d/50-landscape-sysinfo
+    owner=root
+    group=root
+    mode="0644"
+
 - name: copy up sshd config
   copy: >
     src=ssh/50-lastlog.conf

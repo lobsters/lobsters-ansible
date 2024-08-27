@@ -1,0 +1,47 @@
+#!/bin/sh
+
+# don't try refresh this more than once per minute
+# Due to cpu consumption and login delays (LP: #1893716)
+CACHE="/var/lib/landscape/landscape-sysinfo.cache"
+HAS_CACHE="FALSE"
+CACHE_NEEDS_UPDATE="FALSE"
+
+[ -r "$CACHE" ] && HAS_CACHE="TRUE"
+[ -z "$(find "$CACHE" -newermt 'now-1 minutes' 2> /dev/null)" ] && CACHE_NEEDS_UPDATE="TRUE"
+
+if [ "$HAS_CACHE" = "TRUE" ] && [ "$CACHE_NEEDS_UPDATE" = "FALSE" ]; then
+    cat "$CACHE"
+else
+    SYSINFO=""
+
+    # pam_motd does not carry the environment
+    [ -f /etc/default/locale ] && . /etc/default/locale
+    export LANG
+    CORES=$(grep -c ^processor /proc/cpuinfo 2>/dev/null)
+    [ "$CORES" -eq "0" ] && CORES=1
+    THRESHOLD="${cores:-1}.0"
+
+    if [ $(echo "`cut -f1 -d ' ' /proc/loadavg` < $THRESHOLD" | bc) -eq 1 ]; then
+        SYSINFO=$(printf "\n System information as of %s\n\n%s\n" \
+            "$(/bin/date)" \
+            "$(/usr/bin/landscape-sysinfo --exclude-sysinfo-plugins=Network)")
+        echo "$SYSINFO" 2>/dev/null >"$CACHE" || true
+        chmod 0644 "$CACHE" 2>/dev/null || true
+    else
+        SYSINFO=$(printf "\n System information disabled due to load higher than %s\n" "$THRESHOLD")
+
+        if [ "$HAS_CACHE" = "TRUE" ]; then
+            if ! grep -q "System information as of" $CACHE 2>/dev/null; then
+                # do not replace a formerly good result due to load
+                echo "$SYSINFO" 2>/dev/null >"$CACHE" || true
+                chmod 0644 "$CACHE" 2>/dev/null || true
+            else
+                SYSINFO=$(cat "$CACHE")
+            fi
+        fi
+    fi
+
+    printf "%s\n" "$SYSINFO"
+fi
+
+exit 0
