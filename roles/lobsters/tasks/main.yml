@@ -88,6 +88,13 @@
   become: true
   become_user: lobsters
   shell: ~/.rbenv/shims/bundle install --path vendor/bundle
+  environment:
+    # Don't install dev and test dependencies. Ensure they don't get accidentally loaded in production
+    BUNDLE_WITHOUT: "development:test" 
+    # Fail if the Gemfile.lock isn't up to date and dependency resolution has to be redone.
+    # Ensure the installed gems are extraclty the one in the committed Gemfile.lock and not
+    # sneakily updated in production.
+    BUNDLE_DEPLOYMENT: "true"
   register: bundler
   changed_when: "'Installing' in bundler or 'Updating' in bundler or 'upgrade' in bundler"
   args:
