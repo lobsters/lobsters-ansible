@@ -5,6 +5,7 @@ required_packages:
   - g++
   - gcc
   - git
+  - libjemalloc2
   - libc-dev
   - libffi-dev
   - libyaml-dev
