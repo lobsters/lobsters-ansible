@@ -1,6 +1,7 @@
 *.retry
 *.log
 *.swp
+become-password
 /lobsters-ansible.log
 .vagrant/
 inventories/prod.ini
