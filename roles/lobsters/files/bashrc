@@ -128,15 +128,25 @@ export RAILS_ENV=production
 
 # methods for working with logs, sample:
 # {"method":"GET","path":"/404","format":"*/*","controller":"AboutController","action":"four_oh_four","status":404,"allocations":1037,"duration":11.98,"view":2.63,"db":1.25,"params":{},"exception":null,"exception_message":null,"remote_ip":"2a01:cb08:2a9:3b00:15e1:dad6:9b26:a46","user_id":0,"username":"nobody"}
-alias user2ip='function _user2ip() {
-    cat /srv/lobste.rs/log/production.log | grep $1 | jq -R -r "fromjson? | select(.username == \"$1\") | .remote_ip" | sort | uniq -c | sort -rn;
-}; _user2ip'
-alias ip2user='function _ip2user() {
-    cat /srv/lobste.rs/log/production.log | grep $1 | jq -R -r "fromjson? | select(.remote_ip | startswith(\"$1\")) | .username" | sort | uniq -c | sort -rn;
-}; _ip2user'
-alias reqs='function _reqs() {
-    cat /srv/lobste.rs/log/production.log | grep $1 | jq -R -r "fromjson? | select(.username == \"$1\" or (.remote_ip | startswith(\"$1\"))) | \"\(.timestamp) \(.username) \(.remote_ip) \(.method) \(.path) \(.status) \(.params | tostring)\"";
-}; _reqs'
-alias reqsf='function _reqsf() {
-    tail -f /srv/lobste.rs/log/production.log | grep $1 | jq -R -r "fromjson? | select(.username == \"$1\" or (.remote_ip | startswith(\"$1\"))) | \"\(.timestamp) \(.username) \(.remote_ip) \(.method) \(.path) \(.status) \(.params | tostring)\"";
-}; _reqsf'
+# the initial grep is a huge speedup over parsing all rows; -a required because
+# grep prints zero results if there's a single odd byte, and there always are
+# from driveby vuln scanners
+user2ip() {
+    local pattern=$(printf "|%s" "$@" | cut -c 2-)
+    jq -R -r "fromjson? | select(.username | test(\"$pattern\")) | \"\(.username) \(.remote_ip)\"" | sort | uniq -c | sort -rn
+}
+
+ip2user() {
+    local pattern=$(printf "|%s" "$@" | cut -c 2-)
+    jq -R -r "fromjson? | select(.remote_ip | test(\"$pattern\")) | \"\(.remote_ip) \(.username)\"" | sort | uniq -c | sort -rn
+}
+
+reqs() {
+    local pattern=$(printf "|%s" "$@" | cut -c 2-)
+    jq -R -r "fromjson? | select(.username | test(\"$pattern\") or (.remote_ip | test(\"$pattern\"))) | \"\(.timestamp) \(.username) \(.remote_ip) \(.method) \(.path) \(.status) \(.params | tostring)\"" | sort
+}
+
+reqsf() {
+    local pattern=$(printf "|%s" "$@" | cut -c 2-)
+    jq -R -r "fromjson? | select(.username | test(\"$pattern\") or (.remote_ip | test(\"$pattern\"))) | \"\(.timestamp) \(.username) \(.remote_ip) \(.method) \(.path) \(.status) \(.params | tostring)\""
+}
