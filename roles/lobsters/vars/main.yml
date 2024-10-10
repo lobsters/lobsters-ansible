@@ -8,6 +8,7 @@ required_packages:
   - libjemalloc2
   - libc-dev
   - libffi-dev
+  - libvips
   - libyaml-dev
   - libmysqlclient-dev
   - make
