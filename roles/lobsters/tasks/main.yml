@@ -22,6 +22,17 @@
     state: directory
     mode: 0755
 
+- name: mkdir ~lobste.rs/ dirs
+  file: >
+    state=directory
+    path="/srv/lobste.rs/{{ item }}"
+    owner=lobsters
+    group=lobsters
+    mode="0755"
+  with_items:
+  - log
+  - storage
+
 - name: mkdir ~lobste.rs/.%
   file: >
     state=directory
@@ -203,4 +214,4 @@
     user=root
     minute="11"
     hour="0"
-    job="/bin/bash -c 'source /etc/restic-env ; restic self-update ; restic backup --cleanup-cache --no-scan /etc /srv/lobste.rs/http/config /srv/lobste.rs/log'"
+    job="/bin/bash -c 'source /etc/restic-env ; restic self-update ; restic backup --cleanup-cache --no-scan /etc /srv/lobste.rs/http/config /srv/lobste.rs/log /srv/lobste.rs/storage'"
