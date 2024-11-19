@@ -38,7 +38,6 @@ function parse_git_branch {
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 export HISTSIZE=32768
 export HISTFILESIZE=$HISTSIZE
-export HISTCONTROL=ignoredups
 # export HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help"
 HISTTIMEFORMAT='%F %T '
 export HISTTIMEFORMAT

@@ -64,6 +64,9 @@ server {
     break;
   }
 
+  # max upload size for avatars (the only upload the site takes now)
+  client_max_body_size 2M;
+
   location ~ ^/avatars/ {
     error_page 418 = @puma;
     recursive_error_pages on;
