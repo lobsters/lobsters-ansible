@@ -6,3 +6,4 @@ become-password
 .vagrant/
 inventories/prod.ini
 inventories/sample.ini
+roles/nginx/files/nginx/snippets/abuse-*.conf

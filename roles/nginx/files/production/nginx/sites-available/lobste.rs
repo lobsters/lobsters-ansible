@@ -45,8 +45,8 @@ server {
   # spam
   add_header X-Robots-Tag "noai, noimageai" always;
 
-
-  if ($http_user_agent ~* "Brave") { return 400 "Blocked cryptocurrency scam."; }
+  /* https://github.com/lobsters/lobsters/issues/761#issuecomment-2509149290 */
+  include "snippets/abuse-*.conf";
 
   location @puma {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
