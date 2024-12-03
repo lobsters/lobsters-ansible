@@ -45,7 +45,7 @@ server {
   # spam
   add_header X-Robots-Tag "noai, noimageai" always;
 
-  /* https://github.com/lobsters/lobsters/issues/761#issuecomment-2509149290 */
+  # https://github.com/lobsters/lobsters/issues/761#issuecomment-2509149290
   include "snippets/abuse-*.conf";
 
   location @puma {
