@@ -45,19 +45,21 @@ server {
   # spam
   add_header X-Robots-Tag "noai, noimageai" always;
 
-  # https://github.com/lobsters/lobsters/issues/761#issuecomment-2509149290
-  include "snippets/abuse-*.conf";
-
   location @puma {
+    include "snippets/abuse-*.conf"; # https://github.com/lobsters/lobsters/issues/761#issuecomment-2509149290
+
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_set_header X-Forwarded-Proto https;
     proxy_redirect off;
     proxy_pass http://lobsters_puma_server;
+
   }
 
 
   location ~ ^/assets/ {
+    include "snippets/abuse-*.conf"; # https://github.com/lobsters/lobsters/issues/761#issuecomment-2509149290
+
     gzip_static on;
     expires     max;
     add_header  Cache-Control public;
@@ -68,6 +70,8 @@ server {
   client_max_body_size 2M;
 
   location ~ ^/avatars/ {
+    include "snippets/abuse-*.conf"; # https://github.com/lobsters/lobsters/issues/761#issuecomment-2509149290
+
     error_page 418 = @puma;
     recursive_error_pages on;
 
@@ -107,6 +111,8 @@ server {
   # add_header X-ufc "($use_file_cache)" always;
 
   location / {
+    include "snippets/abuse-*.conf"; # https://github.com/lobsters/lobsters/issues/761#issuecomment-2509149290
+
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_set_header X-Forwarded-Proto https;
