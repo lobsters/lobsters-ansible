@@ -99,7 +99,9 @@ server {
     set $use_file_cache "${use_file_cache}H";       # H = HTML file cached
   }
   if ($use_file_cache = "SFH") {
-    rewrite (.*) /cache/$1.html break;
+    # 2025-01-13 disable because only UK users should see the warning footer for /s/ukosa1
+    # and with full-page caching it's a coinflip.
+    # rewrite (.*) /cache/$1.html break;
   }
   if (-f $document_root/cache$uri) {
     set $use_file_cache "${use_file_cache}O";       # O = other non-extentioned file cached
