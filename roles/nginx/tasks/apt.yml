@@ -1,4 +1,4 @@
-- name: apt-get install nginx
+- name: apt-get install nginx libnginx-mod-http-geoip2
   apt:
     name: "{{ required_packages }}"
     state: latest
