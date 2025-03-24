@@ -83,11 +83,14 @@ server {
 
   # file-based full-page caching, bypass if user has cookies
   set $use_file_cache "";
-  if ($geoip2_data_country_code != "GB") {
-    # 2025-01-13 disable because only UK users should see the warning footer for /s/ukosa1
-    # and with full-page caching it's a coinflip.
-    set $use_file_cache "${use_file_cache}W";       # W = not in UK, eg World
-  }
+  # 2025-03-16 disable uk geoblock until there's more-direct threats: https://lobste.rs/c/xevn8a
+  # if ($geoip2_data_country_code != "GB") {
+  #   # disable cache because only UK users should see the warning footer for /s/ukosa1
+  #   # and with full-page caching it's a coinflip.
+  #   set $use_file_cache "${use_file_cache}W";       # W = not in UK, eg World
+  #   # to reactivate, add 'W' to the predicates below
+  # }
+  # debug geocoding:
   #add_header X-geoip2-data-country-code "$geoip2_data_country_code" always;
   if ($cookie_lobster_trap = "") {
     set $use_file_cache "${use_file_cache}S";       # S = no session cookie
@@ -98,19 +101,19 @@ server {
   if (-f $document_root/cache$uri/index.html) {
     set $use_file_cache "${use_file_cache}I";       # I = index file cached
   }
-  if ($use_file_cache = "WSFI") {
+  if ($use_file_cache = "SFI") {
     rewrite (.*) /cache/$1/index.html break;
   }
   if (-f $document_root/cache$uri.html) {
     set $use_file_cache "${use_file_cache}H";       # H = HTML file cached
   }
-  if ($use_file_cache = "WSFH") {
+  if ($use_file_cache = "SFH") {
     rewrite (.*) /cache/$1.html break;
   }
   if (-f $document_root/cache$uri) {
     set $use_file_cache "${use_file_cache}O";       # O = other non-extentioned file cached
   }
-  if ($use_file_cache = "WSFO") {
+  if ($use_file_cache = "SFO") {
     rewrite (.*) /cache/$1 break;
   }
   # add_header X-uri "($uri)" always;
