@@ -14,7 +14,7 @@
 - name: systemctl reload new puma config
   when: puma_service.changed
   systemd: >
-    name="lobsters-puma"
+    name=lobsters-puma
     enabled=yes
     daemon_reload=yes
 
@@ -22,5 +22,29 @@
 - name: restart puma
   when: puma_service.changed
   systemd: >
-    name="lobsters-puma"
+    name=lobsters-puma
+    state=restarted
+
+# solid_queue is here because it uses the 'http' dir and we're nowhere near
+# needing to split out a worker role on its own server
+- name: copy solid_queue systemd service config
+  register: solid_queue_service
+  template: >
+    src="solid_queue.service.j2"
+    dest="/etc/systemd/system/solid_queue.service"
+    owner=root
+    group=root
+    mode="0644"
+
+- name: systemctl reload new solid_queue service
+  when: solid_queue_service.changed
+  systemd: >
+    name=solid_queue
+    enabled=yes
+    daemon_reload=yes
+
+- name: restart solid_queue
+  when: solid_queue_service.changed
+  systemd: >
+    name=solid_queue
     state=restarted

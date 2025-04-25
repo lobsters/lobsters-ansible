@@ -1,0 +1,40 @@
+[Unit]
+Description=Puma HTTP Server
+After=mysql.service
+
+# Uncomment for socket activation (see below)
+# Requires=puma.socket
+
+[Service]
+# Foreground process (do not use --daemon in ExecStart or config.rb)
+Type=simple
+User=lobsters
+Group=lobsters
+WorkingDirectory=/srv/lobste.rs/http
+SyslogIdentifier=solid_queue
+
+Restart=always
+RestartSec=60
+StartLimitBurst=5
+StartLimitInterval=3600
+
+# RUBYOPT to silence deprecations is: -W:no-deprecated
+#Environment=RAILS_ENV=production RUBYOPT='--yjit' PUMA_WORKERS=20
+# experiment for addressing https://github.com/Shopify/ruby/issues/556#issuecomment-2141028595
+Environment=RAILS_ENV=production RUBYOPT='--yjit --yjit-exec-mem-size=8' LD_PRELOAD="libjemalloc.so.2"
+# Environment=PUMA_DEBUG=1
+
+# use binstub
+ExecStart=/srv/lobste.rs/.rbenv/shims/bundle exec rails solid_queue:start
+ExecReload=/usr/bin/pkill -SIGUSR1 -F /srv/lobste.rs/run/solid_queue.pid
+
+# Variant: Rails start.
+# ExecStart=/<FULLPATH>/bin/puma -C <YOUR_APP_PATH>/config/puma.rb ../config.ru
+
+# Variant: Use `bundle exec --keep-file-descriptors puma` instead of binstub
+# Variant: Specify directives inline.
+# ExecStart=/<FULLPATH>/puma -b tcp://0.0.0.0:9292 -b ssl://0.0.0.0:9293?key=key.pem&cert=cert.pem
+
+[Install]
+WantedBy=multi-user.target
+
