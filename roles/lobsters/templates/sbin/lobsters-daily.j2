@@ -16,7 +16,6 @@ then
   exit 0
 fi
 
-/srv/lobste.rs/.rbenv/shims/bundle exec rails daily_maintenance
 /srv/lobste.rs/.rbenv/shims/bundle exec rails sitemap:refresh -s
 
 find /srv/lobste.rs/http/tmp -type f -name 'rack%3A%3Aattack*' -mtime +2 -delete
