@@ -30,7 +30,7 @@
     group=lobsters
     mode="0755"
   with_items:
-  - cache
+  - db
   - log
   - storage
 
