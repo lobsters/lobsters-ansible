@@ -163,11 +163,6 @@
     name="lobsters-puma"
     state=restarted
 
-- name: restart solid_queue
-  systemd: >
-    name="solid_queue"
-    state=restarted
-
 - name: cp 5m maintenance job
   template: >
     src="sbin/lobsters-cron.j2"
