@@ -180,24 +180,6 @@
     minute="*/5"
     job="/bin/bash -c 'export PATH=\"$HOME/.rbenv/bin:$PATH\" ; eval \"$(/usr/bin/env rbenv init -)\" ; /srv/lobste.rs/http/script/lobsters-cron'"
 
-- name: cp daily job
-  template: >
-    src="sbin/lobsters-daily.j2"
-    dest="/srv/lobste.rs/http/script/lobsters-daily"
-    owner=lobsters
-    group=lobsters
-    mode='0755'
-
-- name: add crontab entry for daily job
-  tags: cron
-  cron: >
-    state=present
-    name=lobsters-daily
-    user=lobsters
-    minute="0"
-    hour="0"
-    job="/bin/bash -c 'export PATH=\"$HOME/.rbenv/bin:$PATH\" ; eval \"$(/usr/bin/env rbenv init -)\" ; /srv/lobste.rs/http/script/lobsters-cron'"
-
 - name: page expiration cron job
   tags: cron
   cron: >
