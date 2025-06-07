@@ -1,5 +1,14 @@
 # Lobste.rs Ansible Playbook
 
+# 2025-06-07 Archived
+
+From 2017-10 to 2025-06, Lobsters used Ansible to deploy production.
+We've migrated to [using Hatchbox](https://github.com/lobsters/lobsters/tree/hatchbox) for provisioning and deployment.
+
+Press F to Pay Respects
+
+---
+
 Ansible playbook for lobste.rs.
 Lobsters is a technology-focused link aggregation site.
 
