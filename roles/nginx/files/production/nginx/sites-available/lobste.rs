@@ -66,6 +66,14 @@ server {
     break;
   }
 
+  location ~ ^/(apple-touch-icon|touch-icon).*\.png$ {
+    include "snippets/abuse-*.conf"; # https://github.com/lobsters/lobsters/issues/761#issuecomment-2509149290
+
+    expires     max;
+    add_header  Cache-Control public;
+    break;
+  }
+
   # max upload size for avatars (the only upload the site takes now)
   client_max_body_size 2M;
 
